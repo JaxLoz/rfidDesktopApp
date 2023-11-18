@@ -12,6 +12,7 @@ public class StudentTableModel extends AbstractTableModel {
     private final String COLUMN_NAME[];
 
     public StudentTableModel (){
+        super();
         this.studentList = new ArrayList<>();
         this.COLUMN_NAME = new String[]{"Identificacion", "Nombres", "Apellidos", "Saldo"};
     }
@@ -56,5 +57,9 @@ public class StudentTableModel extends AbstractTableModel {
         }
 
         return student;
+    }
+
+    public Student getStudentOfList (int rowIndex){
+        return studentList.get(rowIndex);
     }
 }

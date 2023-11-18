@@ -4,9 +4,11 @@ import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-public class StudentController {
+public class StudentController implements ActionListener {
 
     private StudentDao studentDao;
     private String prueba;
@@ -21,6 +23,7 @@ public class StudentController {
 
     public void initView (){
         this.listsStudentInTable();
+        view.setActionListener(this);
     }
 
     public String getPrueba() {
@@ -48,4 +51,12 @@ public class StudentController {
         view.listStudents(studentList);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String commad = e.getActionCommand();
+
+        if(commad.equals("Actualizar")){
+
+        }
+    }
 }
