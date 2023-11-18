@@ -7,6 +7,7 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import org.wrs.connectionFactory.ConnectionFactory;
 import org.wrs.controllers.LogController;
+import org.wrs.controllers.OverViewController;
 import org.wrs.controllers.StudentController;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
@@ -14,6 +15,7 @@ import org.wrs.models.Student;
 import javax.swing.*;
 
 import org.wrs.view.LogView;
+import org.wrs.view.OverviewView;
 import org.wrs.view.view;
 
 public class Main {
@@ -27,10 +29,15 @@ public class Main {
 
          view vista = new view();
         LogView logView = new LogView();
+        OverviewView overviewView = new OverviewView();
+
         ConnectionFactory connectionFactory = new ConnectionFactory();
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
+
         StudentController controller = new StudentController(studentDao, vista);
         LogController logController = new LogController(studentDao, logView, controller);
+        OverViewController overViewController = new OverViewController(studentDao, overviewView);
+
         logView.setActionListener(logController);
         controller.initView();
         PanamaHitek_Arduino pha = new PanamaHitek_Arduino();
@@ -49,8 +56,8 @@ public class Main {
                                 String data = pha.printMessage();
                                 boolean thereIsStudent = controller.verificarEstudiante(data);
                                 if(thereIsStudent){
-                                    Student student = controller.getStudent(data);
-                                    System.out.println("El alumno solicitado es: "+student.getFirst_name());
+                                    overViewController.getStudent(data);
+                                    overviewView.setVisible(true);
                                 }else{
                                     logView.setVisible(true);
                                     logController.setTextUid(data);
