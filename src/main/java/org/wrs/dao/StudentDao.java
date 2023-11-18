@@ -2,6 +2,8 @@ package org.wrs.dao;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.wrs.models.Student;
 
@@ -15,9 +17,10 @@ public class StudentDao {
 
     public boolean thereIsStudent (String uid){
 
+
         try(Connection con = dataSource.getConnection()){
 
-            PreparedStatement preparedStatement = con.prepareStatement("select * from alumno where ?");
+            PreparedStatement preparedStatement = con.prepareStatement("select * from student where uuid = ?");
             preparedStatement.setString(1, uid);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
@@ -27,7 +30,7 @@ public class StudentDao {
                     System.out.println("ya existe el alumno con el uid: "+uid);
                     return true;
                 }else {
-                    System.out.printf("No hay registro del alumno con el uid: "+uid);
+                    System.out.println("No hay registro del alumno con el uid: "+uid);
                     return false;
                     //throw new RuntimeException ("estudiante no registrado");
                 }
@@ -43,7 +46,7 @@ public class StudentDao {
 
         try(Connection con = dataSource.getConnection()){
 
-            PreparedStatement preparedStatement = con.prepareStatement("select * from alumno where uid = ?");
+            PreparedStatement preparedStatement = con.prepareStatement("select * from student where uuid = ?");
             preparedStatement.setString(1, uid);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
@@ -51,9 +54,12 @@ public class StudentDao {
             try(resultSet){
                 if(resultSet.next()){
                     student = new Student(
-                            resultSet.getInt("id_alumno"),
-                            resultSet.getString("uid"),
-                            resultSet.getString("nombre"));
+                                    resultSet.getInt(1),
+                                    resultSet.getDouble(2),
+                                    resultSet.getString(3),
+                                    resultSet.getString(4),
+                                    resultSet.getString(5),
+                                    resultSet.getString(6));
 
                 }else{
                     System.out.printf("Algo salio mal al tratar de obtener el registro del alumno con el uid: "+uid);
@@ -71,9 +77,13 @@ public class StudentDao {
         int idRegisteredStudent = 0;
         try(Connection con = dataSource.getConnection()){
 
-            PreparedStatement preparedStatement = con.prepareStatement("insert into alumno (uid, nombre) values (?,?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, student.getUid());
-            preparedStatement.setString(2, student.getNombre());
+            PreparedStatement preparedStatement = con.prepareStatement("insert into student (balance, first_name, identification, last_name, uuid) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setDouble(1,student.getBalance());
+            preparedStatement.setString(2,student.getFirst_name());
+            preparedStatement.setString(3, student.getIdentification());
+            preparedStatement.setString(4, student.getLast_name());
+            preparedStatement.setString(5, student.getUuid());
+
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             try(resultSet){
@@ -87,6 +97,32 @@ public class StudentDao {
 
         System.out.println("Se registro el alumno con el id: "+idRegisteredStudent);
 
+    }
+
+    public List<Student> listar (){
+        List<Student> listStudent = new ArrayList<>();
+
+        try(Connection con = dataSource.getConnection()){
+            PreparedStatement preparedStatement = con.prepareStatement("select * from student");
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+            while (resultSet.next()){
+                Student student = new Student(
+                        resultSet.getInt(1),
+                        resultSet.getDouble(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6));
+
+                listStudent.add(student);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+        return listStudent;
     }
 
 }

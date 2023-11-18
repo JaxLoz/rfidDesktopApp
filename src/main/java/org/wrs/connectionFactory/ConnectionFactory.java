@@ -11,8 +11,9 @@ public class ConnectionFactory {
     public ConnectionFactory(){
         ComboPooledDataSource poolDataSource = new ComboPooledDataSource();
         poolDataSource.setJdbcUrl("jdbc:mysql://aws.connect.psdb.cloud/rfidschoolstore?sslMode=VERIFY_IDENTITY");
-        poolDataSource.setUser("ptfvm8tjp8gdqbqzdb48");
-        poolDataSource.setPassword("pscale_pw_szX3P8nNodz6LLsSJYBabb68SZcbRQOtfZNa0U1TI0");
+        poolDataSource.setUser("6putfcseyef3ia7csfhb");
+        poolDataSource.setPassword("pscale_pw_dwJ8IspMahmMtegePVPIW7s3QWipThHXqxZRGvXFDvh");
+        poolDataSource.setMinPoolSize(2);
         poolDataSource.setMaxPoolSize(2);
         this.poolConnection = poolDataSource;
 

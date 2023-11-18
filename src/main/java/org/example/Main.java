@@ -1,57 +1,70 @@
 package org.example;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
-import org.wrs.configArduino.SerialLector;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
 import org.wrs.connectionFactory.ConnectionFactory;
+import org.wrs.controllers.LogController;
+import org.wrs.controllers.StudentController;
+import org.wrs.dao.StudentDao;
+import org.wrs.models.Student;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.*;
+
+import org.wrs.view.LogView;
+import org.wrs.view.view;
 
 public class Main {
     public static void main(String[] args) {
 
-        PanamaHitek_Arduino pha = new PanamaHitek_Arduino();
-        SerialLector listener = new SerialLector(pha);
-        AtomicReference<String> atomicUid = new AtomicReference<>("defaul value");
-        boolean algo = true;
-
-        Thread t = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    pha.arduinoRXTX("COM7", 9600, listener);
-                    while (true) {
-                        if (listener.getUidmessage() != null && !listener.getUidmessage().isEmpty()) {
-                            atomicUid.set(listener.getUidmessage());
-                            System.out.println("Mensaje recibido: " + listener.getUidmessage());
-                            // Realizar otras operaciones con el mensaje
-                            listener.setUidmessage(""); // Limpiar el mensaje
-
-                        }
-                        Thread.sleep(100); // Esperar un poco antes de verificar nuevamente
-                    }
-                } catch (ArduinoException | InterruptedException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        t.start();
-
-        while (true){
-            String uid = atomicUid.get();
-            if(!uid.isEmpty()){
-                System.out.println("Valor en Main: "+uid);
-               t.interrupt();
-            }
-
-            try{
-                Thread.sleep(100);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
+         try {
+            UIManager.setLookAndFeel( new FlatMacLightLaf() );
+        } catch( Exception ex ) {
+            System.err.println( "Failed to initialize LaF" );
         }
+
+         view vista = new view();
+        LogView logView = new LogView();
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
+        StudentController controller = new StudentController(studentDao, vista);
+        LogController logController = new LogController(studentDao, logView, controller);
+        logView.setActionListener(logController);
+        controller.initView();
+        PanamaHitek_Arduino pha = new PanamaHitek_Arduino();
+        
+        vista.setVisible(true);
+         
+
+        try {
+            pha.arduinoRXTX("COM7", 9600, new SerialPortEventListener() {
+                @Override
+                public void serialEvent(SerialPortEvent serialPortEvent) {
+                    if (serialPortEvent.isRXCHAR() && serialPortEvent.getEventValue() > 0) {
+                        try {
+                            if(pha.isMessageAvailable()) {
+                                //System.out.println(pha.printMessage());
+                                String data = pha.printMessage();
+                                boolean thereIsStudent = controller.verificarEstudiante(data);
+                                if(thereIsStudent){
+                                    Student student = controller.getStudent(data);
+                                    System.out.println("El alumno solicitado es: "+student.getFirst_name());
+                                }else{
+                                    logView.setVisible(true);
+                                    logController.setTextUid(data);
+                                }
+                            }
+                        } catch (SerialPortException | ArduinoException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+        } catch (ArduinoException e) {
+            e.printStackTrace();
+        }
+
     }
 }

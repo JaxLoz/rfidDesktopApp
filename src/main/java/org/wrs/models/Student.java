@@ -2,43 +2,78 @@ package org.wrs.models;
 
 public class Student {
 
-    private int id_alumno;
-    private String uid;
-    private String nombre;
+    private int id;
+    private double balance;
+    private String first_name;
+    private String identification;
+    private String last_name;
+    private String uuid;
 
-    public Student(int id_alumno, String uid, String nombre){
-        this.id_alumno = id_alumno;
-        this.uid = uid;
-        this.nombre = nombre;
+
+
+    public Student(double balance, String first_name, String identification, String last_name, String uuid) {
+        this.id = 0;
+        this.balance = balance;
+        this.first_name = first_name;
+        this.identification = identification;
+        this.last_name = last_name;
+        this.uuid = uuid;
     }
 
-    public Student(){
-        this.id_alumno = 0;
-        this.uid = "";
-        this.nombre = "";
+    public Student(int id, double balance, String first_name, String identification, String last_name, String uuid) {
+        this.id = id;
+        this.balance = balance;
+        this.first_name = first_name;
+        this.identification = identification;
+        this.last_name = last_name;
+        this.uuid = uuid;
     }
 
-    public int getId_alumno() {
-        return id_alumno;
+    public int getId() {
+        return id;
     }
 
-    public void setId_alumno(int id_alumno) {
-        this.id_alumno = id_alumno;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUid() {
-        return uid;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
+    }
+
+    public String getLast_name() {
+        return last_name;
+    }
+
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
