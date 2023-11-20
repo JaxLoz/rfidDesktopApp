@@ -14,19 +14,18 @@ import java.util.List;
 public class view extends javax.swing.JFrame {
 
     StudentTableModel modelTableRegister;
-    String titleRegisterTable[] = {""};
 
     public view() {
 
         initComponents();
         modelTableRegister = new StudentTableModel();
         jtableRegister.setModel(modelTableRegister);
+        setLocationRelativeTo(null);
     }
 
     public Student getOneStudenOfList (){
         int selectRow = jtableRegister.getSelectedRow();
-        Student student = modelTableRegister.getStudentOfList(selectRow);
-        return student;
+        return modelTableRegister.getStudentOfList(selectRow);
     }
 
     public void listStudents (List<Student> students){

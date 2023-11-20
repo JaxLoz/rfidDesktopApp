@@ -32,7 +32,7 @@ public class StudentDao {
                 }else {
                     System.out.println("No hay registro del alumno con el uid: "+uid);
                     return false;
-                    //throw new RuntimeException ("estudiante no registrado");
+
                 }
             }
         }catch (SQLException e){
@@ -123,6 +123,32 @@ public class StudentDao {
         }
 
         return listStudent;
+    }
+
+    public void updataStudent (Student student, String uuidOld){
+
+        try(Connection con = dataSource.getConnection()){
+
+            PreparedStatement preparedStatement = con.prepareStatement("update student set balance = ?, first_name = ?, identification = ?, last_name = ?, uuid = ? where uuid = ?");
+            preparedStatement.setDouble(1, student.getBalance());
+            preparedStatement.setString(2, student.getFirst_name());
+            preparedStatement.setString(3, student.getIdentification());
+            preparedStatement.setString(4, student.getLast_name());
+            preparedStatement.setString(5, student.getUuid());
+            preparedStatement.setString(6, uuidOld);
+
+            int updateRow = preparedStatement.executeUpdate();
+
+            if (updateRow > 0){
+                System.out.println("Se actualizo el resgistro");
+            }else {
+                System.out.println("no se actualizo ningun registro");
+            }
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
     }
 
 

@@ -36,7 +36,6 @@ public class LogController implements ActionListener {
        String command = e.getActionCommand();
 
        if(command.equals("Guardar")){
-           System.out.println("presionando el boton guardar nuevo alumno");
            this.regNewStudent();
        }
     }

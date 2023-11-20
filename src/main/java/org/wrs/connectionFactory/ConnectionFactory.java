@@ -20,8 +20,8 @@ public class ConnectionFactory {
         poolDataSource.setJdbcUrl(url);
         poolDataSource.setUser(user);
         poolDataSource.setPassword(password);
-        poolDataSource.setMinPoolSize(2);
-        poolDataSource.setMaxPoolSize(2);
+        poolDataSource.setMinPoolSize(3);
+        poolDataSource.setMaxPoolSize(3);
         this.poolConnection = poolDataSource;
 
     }

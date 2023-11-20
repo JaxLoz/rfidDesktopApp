@@ -1,4 +1,5 @@
 package org.example;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
@@ -22,7 +23,7 @@ public class Main {
     public static void main(String[] args) {
 
          try {
-            UIManager.setLookAndFeel( new FlatMacLightLaf() );
+            UIManager.setLookAndFeel( new FlatMacDarkLaf() );
         } catch( Exception ex ) {
             System.err.println( "Failed to initialize LaF" );
         }
@@ -35,10 +36,8 @@ public class Main {
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
 
         StudentController controller = new StudentController(studentDao, vista);
-        LogController logController = new LogController(studentDao, logView, controller);
-        OverViewController overViewController = new OverViewController(studentDao, overviewView);
 
-        logView.setActionListener(logController);
+
         controller.initView();
         PanamaHitek_Arduino pha = new PanamaHitek_Arduino();
         
@@ -54,14 +53,9 @@ public class Main {
                             if(pha.isMessageAvailable()) {
                                 //System.out.println(pha.printMessage());
                                 String data = pha.printMessage();
+                                controller.setData(data);
                                 boolean thereIsStudent = controller.verificarEstudiante(data);
-                                if(thereIsStudent){
-                                    overViewController.getStudent(data);
-                                    overviewView.setVisible(true);
-                                }else{
-                                    logView.setVisible(true);
-                                    logController.setTextUid(data);
-                                }
+
                             }
                         } catch (SerialPortException | ArduinoException e) {
                             e.printStackTrace();

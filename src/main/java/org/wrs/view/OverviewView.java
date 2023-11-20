@@ -20,6 +20,7 @@ public class OverviewView extends javax.swing.JFrame {
     public OverviewView() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     public void showStudentInformation (Student student){
