@@ -1,22 +1,18 @@
 package org.example;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import org.wrs.connectionFactory.ConnectionFactory;
-import org.wrs.controllers.LogController;
-import org.wrs.controllers.OverViewController;
 import org.wrs.controllers.StudentController;
 import org.wrs.dao.StudentDao;
-import org.wrs.models.Student;
 
 import javax.swing.*;
 
 import org.wrs.view.LogView;
-import org.wrs.view.OverviewView;
+import org.wrs.view.SellView;
 import org.wrs.view.view;
 
 public class Main {
@@ -30,7 +26,7 @@ public class Main {
 
          view vista = new view();
         LogView logView = new LogView();
-        OverviewView overviewView = new OverviewView();
+        SellView overviewView = new SellView();
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());

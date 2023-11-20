@@ -3,7 +3,7 @@ package org.wrs.controllers;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.LogView;
-import org.wrs.view.OverviewView;
+import org.wrs.view.SellView;
 import org.wrs.view.updateUidView;
 import org.wrs.view.view;
 
@@ -15,11 +15,11 @@ public class StudentController implements ActionListener {
 
     private StudentDao studentDao;
 
-    private OverviewView overviewView;
+    private SellView overviewView;
     private LogView logView;
     private updateUidView updateUidView;
     private LogController logController;
-    private OverViewController overViewController;
+    private SellViewController overViewController;
     private updateInfoController updateInfoController;
 
     private String data;
@@ -30,13 +30,13 @@ public class StudentController implements ActionListener {
         this.studentDao = studentDAO;
         this.view = view;
         this.data = "default";
-        this.overviewView = new OverviewView();
+        this.overviewView = new SellView();
         this.logView = new LogView();
         this.updateUidView = new updateUidView();
 
         this.updateInfoController = new updateInfoController(this.studentDao, this.updateUidView, this);
         this.logController = new LogController(this.studentDao, logView, this);
-        this.overViewController = new OverViewController(this.studentDao, overviewView);
+        this.overViewController = new SellViewController(this.studentDao, overviewView);
 
     }
 
