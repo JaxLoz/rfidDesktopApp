@@ -11,103 +11,102 @@ public class StudentDao {
 
     private final DataSource dataSource;
 
-    public StudentDao(DataSource datasource){
+    public StudentDao(DataSource datasource) {
         this.dataSource = datasource;
     }
 
-    public boolean thereIsStudent (String uid){
+    public boolean thereIsStudent(String uid) {
 
-
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
 
             PreparedStatement preparedStatement = con.prepareStatement("select * from student where uuid = ?");
             preparedStatement.setString(1, uid);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            try(resultSet){
-                if(resultSet.next()){
-                    System.out.println("ya existe el alumno con el uid: "+uid);
+            try (resultSet) {
+                if (resultSet.next()) {
+                    System.out.println("ya existe el alumno con el uid: " + uid);
                     return true;
-                }else {
-                    System.out.println("No hay registro del alumno con el uid: "+uid);
+                } else {
+                    System.out.println("No hay registro del alumno con el uid: " + uid);
                     return false;
 
                 }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    public Student getStudent (String uid){
+    public Student getStudent(String uid) {
         Student student = null;
 
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
 
             PreparedStatement preparedStatement = con.prepareStatement("select * from student where uuid = ?");
             preparedStatement.setString(1, uid);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            try(resultSet){
-                if(resultSet.next()){
+            try (resultSet) {
+                if (resultSet.next()) {
                     student = new Student(
-                                    resultSet.getInt(1),
-                                    resultSet.getDouble(2),
-                                    resultSet.getString(3),
-                                    resultSet.getString(4),
-                                    resultSet.getString(5),
-                                    resultSet.getString(6));
+                            resultSet.getInt(1),
+                            resultSet.getDouble(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getString(6));
 
-                }else{
-                    System.out.printf("Algo salio mal al tratar de obtener el registro del alumno con el uid: "+uid);
+                } else {
+                    System.out.printf("Algo salio mal al tratar de obtener el registro del alumno con el uid: " + uid);
                 }
             }
-        }catch (SQLException e){
-            throw new RuntimeException (e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         return student;
     }
 
-    public void registerNewStudent (Student student){
+    public void registerNewStudent(Student student) {
 
         int idRegisteredStudent = 0;
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
 
             PreparedStatement preparedStatement = con.prepareStatement("insert into student (balance, first_name, identification, last_name, uuid) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setDouble(1,student.getBalance());
-            preparedStatement.setString(2,student.getFirst_name());
+            preparedStatement.setDouble(1, student.getBalance());
+            preparedStatement.setString(2, student.getFirst_name());
             preparedStatement.setString(3, student.getIdentification());
             preparedStatement.setString(4, student.getLast_name());
             preparedStatement.setString(5, student.getUuid());
 
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            try(resultSet){
-                while (resultSet.next()){
+            try (resultSet) {
+                while (resultSet.next()) {
                     idRegisteredStudent = resultSet.getInt(1);
                 }
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Se registro el alumno con el id: "+idRegisteredStudent);
+        System.out.println("Se registro el alumno con el id: " + idRegisteredStudent);
 
     }
 
-    public List<Student> listar (){
+    public List<Student> listar() {
         List<Student> listStudent = new ArrayList<>();
 
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement("select * from student");
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Student student = new Student(
                         resultSet.getInt(1),
                         resultSet.getDouble(2),
@@ -118,16 +117,16 @@ public class StudentDao {
 
                 listStudent.add(student);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         return listStudent;
     }
 
-    public void updataStudent (Student student, String uuidOld){
+    public void updataStudent(Student student, String uuidOld) {
 
-        try(Connection con = dataSource.getConnection()){
+        try (Connection con = dataSource.getConnection()) {
 
             PreparedStatement preparedStatement = con.prepareStatement("update student set balance = ?, first_name = ?, identification = ?, last_name = ?, uuid = ? where uuid = ?");
             preparedStatement.setDouble(1, student.getBalance());
@@ -139,18 +138,47 @@ public class StudentDao {
 
             int updateRow = preparedStatement.executeUpdate();
 
-            if (updateRow > 0){
+            if (updateRow > 0) {
                 System.out.println("Se actualizo el resgistro");
-            }else {
+            } else {
                 System.out.println("no se actualizo ningun registro");
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
     }
 
+    //TODO: search student by name or identification
+    public List<Student> searchStudent(String key) {
+        String sql = "SELECT * FROM student as s "
+                + "WHERE s.identification ILIKE ? "
+                + "OR (s.first_name  || ' ' || s.last_name) ILIKE ?";
 
+        List<Student> listStudent = new ArrayList<>();
+        try (Connection con = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + key + "%");
+            preparedStatement.setString(2, "%" + key + "%");
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            while (resultSet.next()) {
+                Student student = new Student(
+                        resultSet.getInt(1),
+                        resultSet.getDouble(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getString(6));
+
+                listStudent.add(student);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return listStudent;
+    }
 
 }

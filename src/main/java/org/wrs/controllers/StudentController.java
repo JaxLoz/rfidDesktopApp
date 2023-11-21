@@ -5,7 +5,7 @@ import org.wrs.models.Student;
 import org.wrs.view.LogView;
 import org.wrs.view.SellView;
 import org.wrs.view.updateUidView;
-import org.wrs.view.view;
+import org.wrs.view.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,19 +13,17 @@ import java.util.List;
 
 public class StudentController implements ActionListener {
 
-    private StudentDao studentDao;
-
-    private SellView overviewView;
-    private LogView logView;
-    private updateUidView updateUidView;
-    private LogController logController;
-    private SellViewController overViewController;
-    private updateInfoController updateInfoController;
-
+    private final StudentDao studentDao;
+    private final SellView overviewView;
+    private final LogView logView;
+    private final updateUidView updateUidView;
+    private final LogController logController;
+    private final SellViewController overViewController;
+    private final updateInfoController updateInfoController;
     private String data;
-    private view view;
+    private final View view;
 
-    public StudentController (StudentDao studentDAO, view view){
+    public StudentController(StudentDao studentDAO, View view) {
 
         this.studentDao = studentDAO;
         this.view = view;
@@ -40,7 +38,7 @@ public class StudentController implements ActionListener {
 
     }
 
-    public void initView (){
+    public void initView() {
         this.listsStudentInTable();
         view.setActionListener(this);
     }
@@ -53,13 +51,13 @@ public class StudentController implements ActionListener {
         this.data = data;
     }
 
-    public boolean verificarEstudiante (String uid){
+    public boolean verificarEstudiante(String uid) {
 
         boolean thereIsStudent = studentDao.thereIsStudent(uid);
-        if(thereIsStudent && !updateUidView.isActive()){
+        if (thereIsStudent && !updateUidView.isActive()) {
             overViewController.getStudent(data);
             overviewView.setVisible(true);
-        }else if (!thereIsStudent && !updateUidView.isActive()){
+        } else if (!thereIsStudent && !updateUidView.isActive()) {
             logController.initLogController();
             logView.setVisible(true);
             logController.setTextUid(data);
@@ -68,22 +66,29 @@ public class StudentController implements ActionListener {
         return thereIsStudent;
     }
 
-    public Student getStudent(String uid){
+    public Student getStudent(String uid) {
         return studentDao.getStudent(uid);
     }
 
-    public void registerStudent (Student student){
+    public void registerStudent(Student student) {
         studentDao.registerNewStudent(student);
     }
 
-    public void selectStudent (){
+    public void selectStudent() {
         Student student = view.getOneStudenOfList();
-        System.out.println("Selecionaste al estudiante: "+student.getFirst_name());
+        System.out.println("Selecionaste al estudiante: " + student.getFirst_name());
         updateInfoController.setDataStudenUpdateView(student);
     }
 
-    public void listsStudentInTable (){
+    public void listsStudentInTable() {
         List<Student> studentList = studentDao.listar();
+        view.listStudents(studentList);
+    }
+
+    //TODO: search student by name or identification
+    public void searchStudentByNameOrIdentification() {
+        String key = view.getTextSearch();
+        List<Student> studentList = studentDao.searchStudent(key);
         view.listStudents(studentList);
     }
 
@@ -91,12 +96,16 @@ public class StudentController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String commad = e.getActionCommand();
 
-        if(commad.equals("Actualizar")){
+        if (commad.equals("Actualizar")) {
             System.out.println("presionando el boton actualizar");
             this.selectStudent();
             updateInfoController.initUpdateInfoController();
             updateUidView.setVisible(true);
 
+        } else if (commad.equals("buscar")){
+            searchStudentByNameOrIdentification();
+        } else if (commad.equals("reset")) {
+            listsStudentInTable();
         }
     }
 }
