@@ -7,12 +7,13 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import org.wrs.connectionFactory.ConnectionFactory;
 import org.wrs.controllers.StudentController;
+import org.wrs.dao.SellDao;
 import org.wrs.dao.StudentDao;
 
 import javax.swing.*;
 
 import org.wrs.view.LogView;
-import org.wrs.view.SellView;
+import org.wrs.view.InfoSellView;
 import org.wrs.view.view;
 
 public class Main {
@@ -26,12 +27,13 @@ public class Main {
 
          view vista = new view();
         LogView logView = new LogView();
-        SellView overviewView = new SellView();
+        InfoSellView overviewView = new InfoSellView();
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
+        SellDao sellDao = new SellDao(connectionFactory.getConnection());
 
-        StudentController controller = new StudentController(studentDao, vista);
+        StudentController controller = new StudentController(studentDao,sellDao,vista);
 
 
         controller.initView();

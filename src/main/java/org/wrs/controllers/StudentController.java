@@ -1,9 +1,10 @@
 package org.wrs.controllers;
 
+import org.wrs.dao.SellDao;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.LogView;
-import org.wrs.view.SellView;
+import org.wrs.view.InfoSellView;
 import org.wrs.view.updateUidView;
 import org.wrs.view.view;
 
@@ -14,29 +15,31 @@ import java.util.List;
 public class StudentController implements ActionListener {
 
     private StudentDao studentDao;
+    private SellDao sellDao;
 
-    private SellView overviewView;
+    private InfoSellView infoSellView;
     private LogView logView;
     private updateUidView updateUidView;
     private LogController logController;
-    private SellViewController overViewController;
+    private InfoSellViewController infoSellViewController;
     private updateInfoController updateInfoController;
 
     private String data;
     private view view;
 
-    public StudentController (StudentDao studentDAO, view view){
+    public StudentController (StudentDao studentDAO,SellDao sellDao, view view){
 
         this.studentDao = studentDAO;
+        this.sellDao = sellDao;
         this.view = view;
         this.data = "default";
-        this.overviewView = new SellView();
+        this.infoSellView = new InfoSellView();
         this.logView = new LogView();
         this.updateUidView = new updateUidView();
 
         this.updateInfoController = new updateInfoController(this.studentDao, this.updateUidView, this);
         this.logController = new LogController(this.studentDao, logView, this);
-        this.overViewController = new SellViewController(this.studentDao, overviewView);
+        this.infoSellViewController = new InfoSellViewController(this.studentDao, this.sellDao,infoSellView);
 
     }
 
@@ -57,8 +60,9 @@ public class StudentController implements ActionListener {
 
         boolean thereIsStudent = studentDao.thereIsStudent(uid);
         if(thereIsStudent && !updateUidView.isActive()){
-            overViewController.getStudent(data);
-            overviewView.setVisible(true);
+            infoSellViewController.getStudent(data);
+            infoSellViewController.initSellViewListener();
+            infoSellView.setVisible(true);
         }else if (!thereIsStudent && !updateUidView.isActive()){
             logController.initLogController();
             logView.setVisible(true);
