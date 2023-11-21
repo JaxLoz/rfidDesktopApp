@@ -35,6 +35,7 @@ public class RechargeController implements ActionListener, SerialComunicationInt
     public void saveRecharge() {
         Recharge recharge = rechargeView.getRecharge();
         rechargeDao.save(recharge);
+        rechargeView.updateBalance();
     }
 
     @Override

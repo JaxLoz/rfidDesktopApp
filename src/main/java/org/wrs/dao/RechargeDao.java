@@ -17,7 +17,7 @@ public class RechargeDao {
 
     public void save(Recharge recharge){
         String sqlRecharge = "insert into recharge (amount, date, is_confirmed, payment_type, status, student_id, transaction_id) values (?, CURRENT_TIMESTAMP, TRUE, 'EFECTIVO', 'REALIZADO', ?, 'N/A')";
-        String sqlUpdateStudentBalance = "update student set balance = balance - ? where id = ?";
+        String sqlUpdateStudentBalance = "update student set balance = balance + ? where id = ?";
         try(Connection connection = dataSource.getConnection();
             PreparedStatement rechargeStatement = connection.prepareStatement(sqlRecharge);
             PreparedStatement updateBalanceStatement = connection.prepareStatement(sqlUpdateStudentBalance)){

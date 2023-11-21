@@ -1,6 +1,7 @@
 package org.example;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import jssc.SerialPortEvent;
@@ -27,6 +28,7 @@ public class Main {
 
         try {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
+            //UIManager.setLookAndFeel(new FlatMacLightLaf());
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
