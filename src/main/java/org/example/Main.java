@@ -49,7 +49,7 @@ public class Main {
         //recharge view and controller
         RechargeView rechargeView = new RechargeView(vista);
         RechargeDao rechargeDao = new RechargeDao(connectionFactory.getConnection());
-        RechargeController rechargeController = new RechargeController(studentDao,rechargeDao, rechargeView);
+        RechargeController rechargeController = new RechargeController(studentDao,rechargeDao, rechargeView, controller);
 
 
 

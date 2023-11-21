@@ -10,6 +10,7 @@ import org.wrs.dao.StudentDao;
 import org.wrs.models.Recharge;
 import org.wrs.models.Student;
 import org.wrs.view.RechargeView;
+import org.wrs.controllers.StudentController;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,22 +21,27 @@ public class RechargeController implements ActionListener, SerialComunicationInt
     private final StudentDao studentDao;
     private final RechargeDao rechargeDao;
     private final RechargeView rechargeView;
+    private final StudentController studentController;
 
     public RechargeController(
             StudentDao studentDao,
             RechargeDao rechargeDao,
-            RechargeView rechargeView
+            RechargeView rechargeView,
+            StudentController studentController
     ) {
         this.studentDao = studentDao;
         this.rechargeDao = rechargeDao;
         this.rechargeView = rechargeView;
+        this.studentController = studentController;
         rechargeView.setActionListener(this);
     }
 
     public void saveRecharge() {
         Recharge recharge = rechargeView.getRecharge();
-        rechargeDao.save(recharge);
-        rechargeView.updateBalance();
+        Student student = rechargeDao.save(recharge);
+        rechargeView.updateBalance(student);
+        studentController.listsStudentInTable();
+
     }
 
     @Override

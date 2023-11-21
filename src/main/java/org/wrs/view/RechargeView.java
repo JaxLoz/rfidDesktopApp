@@ -32,16 +32,16 @@ public class RechargeView extends javax.swing.JDialog {
         this.setVisible(true);
     }
 
-    private void loadInfo() {
+    public void loadInfo() {
         this.lblName.setText(student.getFirst_name() + " " + student.getLast_name());
         this.lblIdentification.setText(student.getIdentification());
 
         Double balance = student.getBalance();
         if(balance < 0){
-            this.lblBalance.setText(String.valueOf(student.getBalance()));
+            this.lblBalance.setText(String.valueOf(student.getBalance())+" COP");
             this.lblBalance.setForeground(Color.RED);
         } else if (balance > 0) {
-            this.lblBalance.setText(String.valueOf(student.getBalance()));
+            this.lblBalance.setText(String.valueOf(student.getBalance())+" COP");
             this.lblBalance.setForeground(Color.GREEN);
         }else {
             this.lblBalance.setText(String.valueOf(student.getBalance()));
@@ -49,17 +49,20 @@ public class RechargeView extends javax.swing.JDialog {
 
     }
 
-    public void updateBalance (){
+    public void updateBalance (Student student){
+
+        this.lblName.setText(student.getFirst_name() + " " + student.getLast_name());
+        this.lblIdentification.setText(student.getIdentification());
 
         Double balance = student.getBalance();
         if(balance < 0){
-            this.lblBalance.setText(String.valueOf(student.getBalance()));
+            this.lblBalance.setText(String.valueOf(student.getBalance())+" COP");
             this.lblBalance.setForeground(Color.RED);
         } else if (balance > 0) {
-            this.lblBalance.setText(String.valueOf(student.getBalance()));
+            this.lblBalance.setText(String.valueOf(student.getBalance())+" COP");
             this.lblBalance.setForeground(Color.GREEN);
         }else {
-            this.lblBalance.setText(String.valueOf(student.getBalance()));
+            this.lblBalance.setText(String.valueOf(student.getBalance()) +" COP");
         }
     }
 
