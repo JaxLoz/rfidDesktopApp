@@ -112,7 +112,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        arduinoMode.setText("MODO VENTA");
+        arduinoMode.setText("MODO RECARGA");
         arduinoMode.setActionCommand("toggleArduinoMode");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -34,7 +34,13 @@ public class RechargeView extends javax.swing.JDialog {
     }
 
     private double getAmount() {
-        return Double.parseDouble(amountTxt.getText());
+
+        if(student.getBalance() < 0){
+            return Double.parseDouble(amountTxt.getText()) * -1;
+        }else{
+            return Double.parseDouble(amountTxt.getText());
+        }
+        
     }
 
     public Recharge getRecharge() {

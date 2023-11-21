@@ -24,8 +24,8 @@ public class RechargeDao {
 
             connection.setAutoCommit(false);
 
-            rechargeStatement.setString(1, recharge.getPhone());
-            rechargeStatement.setString(2, recharge.getPhone());
+            rechargeStatement.setDouble(1, recharge.getAmount());
+            rechargeStatement.setInt(2, recharge.getStudent().getId());
 
             updateBalanceStatement.setDouble(1, recharge.getAmount());
             updateBalanceStatement.setLong(2, recharge.getStudent().getId());
