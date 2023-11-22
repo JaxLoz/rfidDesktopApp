@@ -6,6 +6,8 @@ import org.wrs.models.Student;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SellDao {
 
@@ -73,6 +75,35 @@ public class SellDao {
         }
         System.out.println("Se registro la venta con el id: "+idSell);
         return studentUpdate;
+    }
+
+    public List<Sell> sellList (Student student){
+        List<Sell> sellList = new ArrayList<>();
+        Sell sell;
+
+        try(Connection con = dataSource.getConnection()){
+            PreparedStatement preparedStatement = con.prepareStatement("select * from purchase where student_id = ?");
+            preparedStatement.setInt(1,student.getId());
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getResultSet();
+
+            try(resultSet){
+                while (resultSet.next()){
+                    sell = new Sell(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getDouble(3));
+
+                    sellList.add(sell);
+                }
+            }
+
+        }catch (SQLException e){
+            e.getMessage();
+        }
+
+        return sellList;
+
     }
 
 }

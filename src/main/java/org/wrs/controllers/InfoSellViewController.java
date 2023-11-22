@@ -9,6 +9,8 @@ import org.wrs.view.SellView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InfoSellViewController implements ActionListener {
 
@@ -43,6 +45,14 @@ public class InfoSellViewController implements ActionListener {
        Student student = this.studenNow;
        Student studentP = sellDao.setNewSell(student, sell);
        infoSellView.showStudentInformation(studentP);
+        List<Sell> sellList = sellDao.sellList(student);
+        infoSellView.setSellTable(sellList);
+    }
+
+    public void setTableSell (){
+        List<Sell> sellList = new ArrayList<>();
+        sellList = sellDao.sellList(this.studenNow);
+        infoSellView.setSellTable(sellList);
     }
 
     @Override
@@ -51,6 +61,7 @@ public class InfoSellViewController implements ActionListener {
 
         if(command.equals("Nueva venta")){
             this.setNewSell();
+            this.setTableSell();
             System.out.println("Se esta precionando el boton de nueva compra");
         }
     }

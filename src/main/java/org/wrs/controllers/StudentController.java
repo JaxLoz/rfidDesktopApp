@@ -2,6 +2,7 @@ package org.wrs.controllers;
 
 import org.wrs.dao.SellDao;
 import org.wrs.dao.StudentDao;
+import org.wrs.models.Sell;
 import org.wrs.models.Student;
 import org.wrs.view.LogView;
 import org.wrs.view.InfoSellView;
@@ -62,6 +63,7 @@ public class StudentController implements ActionListener {
         if(thereIsStudent && !updateUidView.isActive()){
             infoSellViewController.getStudent(data);
             infoSellViewController.initSellViewListener();
+            infoSellViewController.setTableSell();
             infoSellView.setVisible(true);
         }else if (!thereIsStudent && !updateUidView.isActive()){
             logController.initLogController();

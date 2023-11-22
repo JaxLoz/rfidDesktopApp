@@ -6,9 +6,12 @@ package org.wrs.view;
 
 import org.wrs.models.Sell;
 import org.wrs.models.Student;
+import org.wrs.view.modelTable.SellTableModel;
+import org.wrs.view.modelTable.StudentTableModel;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  *
@@ -16,13 +19,19 @@ import java.awt.event.ActionListener;
  */
 public class InfoSellView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form OverviewView
-     */
+    private SellTableModel sellTableModel;
+
     public InfoSellView() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        sellTableModel = new SellTableModel();
+        tableInfoSell.setModel(sellTableModel);
+
+    }
+
+    public void setSellTable (List<Sell> sellList){
+        sellTableModel.setSellList(sellList);
     }
 
     public void showStudentInformation (Student student){
