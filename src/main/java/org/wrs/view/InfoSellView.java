@@ -10,8 +10,11 @@ import org.wrs.view.modelTable.SellTableModel;
 import org.wrs.view.modelTable.StudentTableModel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
+
+import static javax.print.attribute.standard.Chromaticity.COLOR;
 
 /**
  *
@@ -40,7 +43,15 @@ public class InfoSellView extends javax.swing.JFrame {
         lblUuid.setText(student.getUuid());
         lblIdentification.setText(student.getIdentification());
         lblName.setText(nombre);
-        lblBalance.setText(String.valueOf(student.getBalance()));
+
+        if(student.getBalance() < 0.0){
+            lblBalance.setForeground(Color.RED);
+            lblBalance.setText(String.valueOf(student.getBalance())+" COP");
+        }else if(student.getBalance() > 0.0){
+            lblBalance.setForeground(Color.green);
+            lblBalance.setText(String.valueOf(student.getBalance())+" COP");
+        }
+
 
     }
 
