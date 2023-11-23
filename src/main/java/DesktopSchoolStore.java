@@ -1,11 +1,7 @@
 
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
 import org.wrs.configArduino.ArduinoController;
 import org.wrs.configArduino.SerialComunicationInterface;
 import org.wrs.configArduino.SerialLector;
@@ -17,9 +13,8 @@ import org.wrs.dao.StudentDao;
 
 import javax.swing.*;
 
-import org.wrs.view.LogView;
+
 import org.wrs.view.RechargeView;
-import org.wrs.view.SellView;
 import org.wrs.view.View;
 
 public class DesktopSchoolStore {
