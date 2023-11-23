@@ -112,6 +112,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        arduinoMode.setSelected(true);
         arduinoMode.setText("MODO VENTA");
         arduinoMode.setActionCommand("toggleArduinoMode");
 

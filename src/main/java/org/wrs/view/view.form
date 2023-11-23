@@ -139,6 +139,7 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="arduinoMode">
       <Properties>
+        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="MODO VENTA"/>
         <Property name="actionCommand" type="java.lang.String" value="toggleArduinoMode"/>
       </Properties>

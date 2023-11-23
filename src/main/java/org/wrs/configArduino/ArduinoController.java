@@ -1,6 +1,5 @@
 package org.wrs.configArduino;
 
-import org.wrs.view.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
