@@ -16,6 +16,7 @@ public class LogController implements ActionListener {
         this.studentController = studentController;
         this.logView = logView;
         this.studentDao = studentDao;
+        this.initLogController();
     }
 
     public void initLogController (){

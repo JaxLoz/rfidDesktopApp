@@ -50,11 +50,9 @@ public class StudentController implements ActionListener, SerialComunicationInte
 
         if(thereIsStudent && !updateInfoController.isWindowActive()){
             infoSellViewController.getStudent(uid);
-            infoSellViewController.initSellViewListener();
             infoSellViewController.setTableSell();
             infoSellView.setVisible(true);
         } else if (!thereIsStudent && !updateInfoController.isWindowActive()){
-            logController.initLogController();
             logView.setVisible(true);
             logController.setTextUid(uid);
         }

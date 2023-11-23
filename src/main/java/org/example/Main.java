@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
 
             ConnectionFactory connectionFactory = new ConnectionFactory();
             SellDao sellDao = new SellDao(connectionFactory.getConnection());
