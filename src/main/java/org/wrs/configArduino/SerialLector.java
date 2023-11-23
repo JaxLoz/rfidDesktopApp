@@ -5,16 +5,14 @@ import com.panamahitek.PanamaHitek_Arduino;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-import org.example.Main;
 
-import java.io.Serial;
-import java.lang.reflect.Type;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SerialLector implements SerialPortEventListener {
 
-    private PanamaHitek_Arduino pha;
+    private final PanamaHitek_Arduino pha;
 
     /**
      * read mode Arduino
@@ -29,8 +27,8 @@ public class SerialLector implements SerialPortEventListener {
 
 
     public SerialLector(PanamaHitek_Arduino pha) {
-        mode = true;
         this.pha = pha;
+        mode = true;
     }
 
     public void toggleMode() {

@@ -1,4 +1,4 @@
-package org.example;
+
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -17,7 +17,7 @@ import javax.swing.*;
 
 import org.wrs.view.*;
 
-public class Main {
+public class DesktopSchoolStore {
     public static void main(String[] args) {
 
         try {
