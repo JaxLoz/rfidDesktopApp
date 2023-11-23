@@ -140,8 +140,11 @@
     <Component class="javax.swing.JCheckBox" name="arduinoMode">
       <Properties>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Property name="text" type="java.lang.String" value="MODO RECARGA"/>
 =======
+=======
+>>>>>>> 74141ac7d6652fdfdf6cb7cfb21f349fe8d19f95
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="MODO VENTA"/>
 >>>>>>> 459f4c1 (arduino connection, view and log)

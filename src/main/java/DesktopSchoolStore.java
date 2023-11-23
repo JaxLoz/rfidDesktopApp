@@ -1,7 +1,8 @@
 
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
+
+
 import com.panamahitek.PanamaHitek_Arduino;
 import org.wrs.configArduino.ArduinoController;
 import org.wrs.configArduino.SerialLector;
@@ -12,13 +13,9 @@ import org.wrs.controllers.UpdateInfoController;
 import org.wrs.dao.SellDao;
 import org.wrs.dao.RechargeDao;
 import org.wrs.dao.StudentDao;
-
 import javax.swing.*;
-
-
-
-import org.wrs.view.RechargeView;
 import org.wrs.view.UpdateUidView;
+import org.wrs.view.RechargeView;
 import org.wrs.view.View;
 
 
@@ -27,6 +24,7 @@ public class DesktopSchoolStore {
 
         try {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
+
 
             ConnectionFactory connectionFactory = new ConnectionFactory();
             SellDao sellDao = new SellDao(connectionFactory.getConnection());
@@ -68,6 +66,5 @@ public class DesktopSchoolStore {
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
-
     }
 }
