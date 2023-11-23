@@ -17,7 +17,6 @@ import javax.swing.*;
 
 import org.wrs.view.*;
 
-
 public class Main {
     public static void main(String[] args) {
 
@@ -61,7 +60,7 @@ public class Main {
             serialLector.setRechargeInterface(rechargeController);
             serialLector.setUpdateStudent(updateInfoController);
 
-        } catch (Exception ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
 

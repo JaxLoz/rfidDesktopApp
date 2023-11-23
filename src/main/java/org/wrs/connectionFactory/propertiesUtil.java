@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class propertiesUtil {
+public class PropertiesUtil {
 
     private static final String PROPERTIES_FILE = "src/application.properties";
     private static final Properties properties = loadProperties();
 
-    private propertiesUtil (){
+    private PropertiesUtil (){
 
     }
 
