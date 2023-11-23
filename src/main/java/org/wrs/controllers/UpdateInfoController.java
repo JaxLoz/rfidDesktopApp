@@ -3,14 +3,14 @@ package org.wrs.controllers;
 import org.wrs.configArduino.SerialComunicationInterface;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
-import org.wrs.view.updateUidView;
+import org.wrs.view.UpdateUidView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UpdateInfoController implements ActionListener, SerialComunicationInterface {
 
-    private updateUidView updateUidView;
+    private UpdateUidView updateUidView;
     private StudentDao studentDao;
 
     private StudentController studentController;
@@ -18,7 +18,7 @@ public class UpdateInfoController implements ActionListener, SerialComunicationI
     private String uuidOld;
     private String uuidNew;
 
-    public UpdateInfoController(StudentDao studentDao, updateUidView updateUidView, StudentController studentController){
+    public UpdateInfoController(StudentDao studentDao, UpdateUidView updateUidView, StudentController studentController){
         this.updateUidView = updateUidView;
         this.studentDao = studentDao;
         this.studentController = studentController;

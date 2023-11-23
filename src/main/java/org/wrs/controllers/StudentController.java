@@ -6,7 +6,7 @@ import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.LogView;
 import org.wrs.view.InfoSellView;
-import org.wrs.view.updateUidView;
+import org.wrs.view.UpdateUidView;
 import org.wrs.view.View;
 
 import java.awt.event.ActionEvent;

@@ -15,7 +15,12 @@ import org.wrs.dao.StudentDao;
 
 import javax.swing.*;
 
-import org.wrs.view.*;
+
+
+import org.wrs.view.RechargeView;
+import org.wrs.view.UpdateUidView;
+import org.wrs.view.View;
+
 
 public class DesktopSchoolStore {
     public static void main(String[] args) {
@@ -42,7 +47,7 @@ public class DesktopSchoolStore {
             RechargeController rechargeController = new RechargeController(studentDao, rechargeDao, rechargeView, controller);
 
             //Update student
-            updateUidView updateView = new updateUidView();
+            UpdateUidView updateView = new UpdateUidView();
             UpdateInfoController updateInfoController = new UpdateInfoController(studentDao, updateView, controller);
             controller.setUpdateInfoController(updateInfoController);
 

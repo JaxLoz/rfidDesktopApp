@@ -39,6 +39,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-
 nbactions.xml
 nb-configuration.xml
