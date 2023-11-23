@@ -23,12 +23,17 @@ public class InfoSellViewController implements ActionListener {
 
     private Student studenNow;
 
-    public InfoSellViewController(StudentDao studentDao,SellDao sellDao, InfoSellView overviewView){
+    public InfoSellViewController(StudentDao studentDao,SellDao sellDao, InfoSellView infoSellView){
         this.studentDao = studentDao;
-        this.infoSellView = overviewView;
+        this.infoSellView = infoSellView;
         this.sellView = new SellView();
         this.sellDao = sellDao;
         this.studenNow = null;
+        this.initSellViewListener();
+    }
+
+    public boolean isWindowActive (){
+        return this.infoSellView.isActive();
     }
 
     public void initSellViewListener (){
