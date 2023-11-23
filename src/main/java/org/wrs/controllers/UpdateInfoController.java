@@ -1,5 +1,6 @@
 package org.wrs.controllers;
 
+import org.wrs.configArduino.SerialComunicationInterface;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.updateUidView;
@@ -7,7 +8,7 @@ import org.wrs.view.updateUidView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class updateInfoController implements ActionListener {
+public class UpdateInfoController implements ActionListener, SerialComunicationInterface {
 
     private updateUidView updateUidView;
     private StudentDao studentDao;
@@ -17,7 +18,7 @@ public class updateInfoController implements ActionListener {
     private String uuidOld;
     private String uuidNew;
 
-    public updateInfoController (StudentDao studentDao, updateUidView updateUidView, StudentController studentController){
+    public UpdateInfoController(StudentDao studentDao, updateUidView updateUidView, StudentController studentController){
         this.updateUidView = updateUidView;
         this.studentDao = studentDao;
         this.studentController = studentController;
@@ -25,8 +26,16 @@ public class updateInfoController implements ActionListener {
         this.uuidOld = "";
     }
 
+    public void initView(){
+        updateUidView.setVisible(true);
+    }
+
     public void initUpdateInfoController (){
         updateUidView.setActionListener(this);
+    }
+
+    public boolean isWindowActive(){
+        return updateUidView.isActive();
     }
 
     public void setDataStudenUpdateView (Student student){
@@ -35,7 +44,6 @@ public class updateInfoController implements ActionListener {
 
     public void updateUuidOfStudent (){
         this.uuidOld = updateUidView.getUuid();
-        this.uuidNew = studentController.getData();
         boolean thereIsStudent = studentDao.thereIsStudent(uuidNew);
 
         if (!thereIsStudent){
@@ -68,5 +76,11 @@ public class updateInfoController implements ActionListener {
             System.out.println("Precionando el boton cambiar");
             this.updateUuidOfStudent();
         }
+    }
+
+    @Override
+    public void setValueArduino(String data) {
+        System.out.println("updateController: " + data);
+        this.uuidNew = data;
     }
 }

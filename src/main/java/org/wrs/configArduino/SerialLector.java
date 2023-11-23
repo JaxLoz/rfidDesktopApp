@@ -8,48 +8,69 @@ import jssc.SerialPortException;
 import org.example.Main;
 
 import java.io.Serial;
+import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SerialLector implements SerialPortEventListener {
 
     private PanamaHitek_Arduino pha;
-    private SerialComunicationInterface sci;
 
-    private String data;
+    /**
+     * read mode Arduino
+     * mode = true: mode purchase is active
+     * mode = false: mode recharge is active
+     */
+    private boolean mode;
 
-    public SerialLector (PanamaHitek_Arduino pha){
+    private SerialComunicationInterface purchase;
+    private SerialComunicationInterface recharge;
+    private SerialComunicationInterface updateStudent;
 
+
+    public SerialLector(PanamaHitek_Arduino pha) {
+        mode = true;
         this.pha = pha;
-        this.data = "Defaul dataSerialLector";
     }
 
-
-    public String getData() {
-        return data;
+    public void toggleMode() {
+        this.mode = !this.mode;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setRechargeInterface(SerialComunicationInterface iRecharge) {
+        this.recharge = iRecharge;
     }
 
-    public void setSerialComunicationInterface (SerialComunicationInterface sci){
-        this.sci = sci;
+    public void setPurchaseInterface(SerialComunicationInterface iPurchase) {
+        this.purchase = iPurchase;
     }
 
-    public void startConnectionArduino (){
+    public void setUpdateStudent(SerialComunicationInterface updateStudent) {
+        this.updateStudent = updateStudent;
+    }
+
+    public void startConnectionArduino() {
         try {
             pha.arduinoRXTX("COM7", 9600, this);
         } catch (ArduinoException ex) {
-
+            System.out.println(ex.getMessage());
         }
     }
+
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
         try {
-            if (this.pha.isMessageAvailable()){
-                data = pha.printMessage();
-                //sci.setValueArduino(pha.printMessage());
+            if (serialPortEvent.isRXCHAR() && serialPortEvent.getEventValue() > 0) {
+                if (pha.isMessageAvailable()) {
+                    String data = pha.printMessage();
+
+                    if (mode) {
+                        purchase.setValueArduino(data);
+                    } else {
+                        recharge.setValueArduino(data);
+                    }
+                    updateStudent.setValueArduino(data);
+                }
             }
         } catch (SerialPortException | ArduinoException ex) {
             Logger.getLogger(SerialLector.class.getName()).log(Level.SEVERE, null, ex);

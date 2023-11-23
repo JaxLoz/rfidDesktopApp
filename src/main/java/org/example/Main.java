@@ -1,68 +1,68 @@
 package org.example;
+
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.panamahitek.ArduinoException;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.PanamaHitek_Arduino;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import org.wrs.configArduino.ArduinoController;
+import org.wrs.configArduino.SerialLector;
 import org.wrs.connectionFactory.ConnectionFactory;
+import org.wrs.controllers.RechargeController;
 import org.wrs.controllers.StudentController;
+import org.wrs.controllers.UpdateInfoController;
 import org.wrs.dao.SellDao;
+import org.wrs.dao.RechargeDao;
 import org.wrs.dao.StudentDao;
 
 import javax.swing.*;
 
-import org.wrs.view.LogView;
-import org.wrs.view.InfoSellView;
-import org.wrs.view.view;
+import org.wrs.view.*;
+
 
 public class Main {
     public static void main(String[] args) {
 
-         try {
-            UIManager.setLookAndFeel( new FlatMacDarkLaf() );
-        } catch( Exception ex ) {
-            System.err.println( "Failed to initialize LaF" );
-        }
-
-         view vista = new view();
-        LogView logView = new LogView();
-        InfoSellView overviewView = new InfoSellView();
-
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
-        SellDao sellDao = new SellDao(connectionFactory.getConnection());
-
-        StudentController controller = new StudentController(studentDao,sellDao,vista);
-
-
-        controller.initView();
-        PanamaHitek_Arduino pha = new PanamaHitek_Arduino();
-        
-        vista.setVisible(true);
-         
-
         try {
-            pha.arduinoRXTX("COM7", 9600, new SerialPortEventListener() {
-                @Override
-                public void serialEvent(SerialPortEvent serialPortEvent) {
-                    if (serialPortEvent.isRXCHAR() && serialPortEvent.getEventValue() > 0) {
-                        try {
-                            if(pha.isMessageAvailable()) {
-                                //System.out.println(pha.printMessage());
-                                String data = pha.printMessage();
-                                controller.setData(data);
-                                boolean thereIsStudent = controller.verificarEstudiante(data);
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
 
-                            }
-                        } catch (SerialPortException | ArduinoException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        } catch (ArduinoException e) {
-            e.printStackTrace();
+            ConnectionFactory connectionFactory = new ConnectionFactory();
+            SellDao sellDao = new SellDao(connectionFactory.getConnection());
+
+
+            //create serial lector and init arduino connection
+            SerialLector serialLector = new SerialLector(new PanamaHitek_Arduino());
+            serialLector.startConnectionArduino();
+            ArduinoController arduinoController = new ArduinoController(serialLector);
+
+            View vista = new View();
+            StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
+            StudentController controller = new StudentController(studentDao, sellDao, vista);
+
+            //recharge view and controller
+            RechargeView rechargeView = new RechargeView(vista);
+            RechargeDao rechargeDao = new RechargeDao(connectionFactory.getConnection());
+            RechargeController rechargeController = new RechargeController(studentDao, rechargeDao, rechargeView, controller);
+
+            //Update student
+            updateUidView updateView = new updateUidView();
+            UpdateInfoController updateInfoController = new UpdateInfoController(studentDao, updateView, controller);
+            controller.setUpdateInfoController(updateInfoController);
+
+            vista.setActionListener(rechargeController);
+            vista.setActionListener(arduinoController);
+
+
+            controller.initView();
+
+
+            vista.setVisible(true);
+
+
+            serialLector.setPurchaseInterface(controller);
+            serialLector.setRechargeInterface(rechargeController);
+            serialLector.setUpdateStudent(updateInfoController);
+
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
         }
 
     }

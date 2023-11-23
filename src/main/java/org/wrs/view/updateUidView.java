@@ -24,10 +24,10 @@ public class updateUidView extends javax.swing.JFrame {
     }
 
 
-
     public void setActionListener (ActionListener actionListener){
         btnChange.addActionListener(actionListener);
         btnUpdateInfo.addActionListener(actionListener);
+        setVisible(true);
     }
 
     public void setUuid (String uuidNew){
