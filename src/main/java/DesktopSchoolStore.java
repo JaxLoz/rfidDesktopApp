@@ -1,4 +1,4 @@
-package org.example;
+
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.panamahitek.ArduinoException;
@@ -22,7 +22,7 @@ import org.wrs.view.RechargeView;
 import org.wrs.view.SellView;
 import org.wrs.view.View;
 
-public class Main {
+public class DesktopSchoolStore {
     public static void main(String[] args) {
 
         try {
