@@ -4,6 +4,8 @@ package org.wrs.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.wrs.configArduino.ISerialComunication;
+import org.wrs.models.Purchase;
+import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
 import raven.application.form.other.PurchaseForm;
 
@@ -26,15 +28,18 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     }
     
     public void registerPurchase(){
-        //Logic to get data form view and call purchase service
+        Student student = purchaseForm.getStudentFromForm();
+        Purchase purchase = purchaseForm.getPurchaseDataFromForm();
+        purchaseService.registerPurchase(student, purchase);
+        purchaseForm.showRegisterPurchaseView(false);
     }
     
     @Override
     public void receiveDataSerialPort(String data) {
         boolean studentExists = purchaseService.studentExists(data);
-        
         if(studentExists){
-            purchaseForm.showRegisterPurchaseView();
+            Student student = purchaseService.getStudent(data);
+            purchaseForm.loadStudentInRegisterPurchaseView(student);
         }
     }
 

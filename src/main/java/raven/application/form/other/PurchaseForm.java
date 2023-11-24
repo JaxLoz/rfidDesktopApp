@@ -1,6 +1,8 @@
 package raven.application.form.other;
 
 import java.awt.event.ActionListener;
+import org.wrs.models.Purchase;
+import org.wrs.models.Student;
 import org.wrs.view.dialog.RegisterPurchaseDialog;
 
 /**
@@ -17,12 +19,25 @@ public class PurchaseForm extends javax.swing.JPanel {
         registerPurchaseDialog = new RegisterPurchaseDialog(null);
     }
     
-    public void setActionListener(ActionListener actionListener){
-        
+    public Student getStudentFromForm(){
+        return registerPurchaseDialog.getStudent();
     }
     
-    public void showRegisterPurchaseView() {
-        registerPurchaseDialog.setVisible(true);
+    public Purchase getPurchaseDataFromForm(){
+        return registerPurchaseDialog.getPurchaseFromForm();
+    }
+    
+    public void setActionListener(ActionListener actionListener){
+        registerPurchaseDialog.setActionListener(actionListener);
+    }
+    
+    public void loadStudentInRegisterPurchaseView(Student studetn) {
+        registerPurchaseDialog.setStudent(studetn);
+        showRegisterPurchaseView(true);
+    }
+    
+    public void showRegisterPurchaseView(boolean show){
+        registerPurchaseDialog.setVisible(show);
     }
 
     /**
@@ -38,11 +53,11 @@ public class PurchaseForm extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 505, Short.MAX_VALUE)
+            .addGap(0, 742, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 385, Short.MAX_VALUE)
+            .addGap(0, 445, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

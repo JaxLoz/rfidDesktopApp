@@ -9,6 +9,7 @@ import org.wrs.controllers.ISearchStudent;
 import org.wrs.models.Student;
 import org.wrs.view.dialog.RegisterStudentDialog;
 import org.wrs.view.model.table.StudentTableModel;
+import raven.toast.Notifications;
 
 /**
  *
@@ -16,6 +17,7 @@ import org.wrs.view.model.table.StudentTableModel;
  */
 public class StudentForm extends javax.swing.JPanel {
 
+    private String uuid = null;
     private ISearchStudent iSearchStudent;
     private final StudentTableModel studentTableModel;
     private final RegisterStudentDialog registerStudentDialog;
@@ -29,27 +31,34 @@ public class StudentForm extends javax.swing.JPanel {
 
     private void init() {
         studentTable.setModel(studentTableModel);
-        
+
         updateBtn.putClientProperty(FlatClientProperties.STYLE, ""
                 + "borderWidth:0;"
                 + "focusWidth:0");
-        
+
         Timer timer = new Timer(500, (ActionEvent e) -> {
             String searchText = searchTxt.getText();
             iSearchStudent.searchStudent(searchText);
         });
-        
+
         timer.setRepeats(false);
         searchTxt.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             // Se reinicia el temporizador cada vez que se inserta un carácter
             @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) {timer.restart();}
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                timer.restart();
+            }
+
             // Se reinicia el temporizador cada vez que se elimina un carácter
             @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) {timer.restart();}
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                timer.restart();
+            }
+
             // No relevante para JTextField
             @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) {}
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            }
         });
         searchTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Buscar estudiante por nombre o identificación");
     }
@@ -62,7 +71,7 @@ public class StudentForm extends javax.swing.JPanel {
     public void setISearchStudent(ISearchStudent iSearchStudent) {
         this.iSearchStudent = iSearchStudent;
     }
-    
+
     public Student getStudentFromTable() {
         int selectRow = studentTable.getSelectedRow();
         return studentTableModel.getStudentOfList(selectRow);
@@ -76,7 +85,7 @@ public class StudentForm extends javax.swing.JPanel {
         registerStudentDialog.setUuid(uuid);
         registerStudentDialog.setVisible(true);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -170,7 +179,7 @@ public class StudentForm extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //showRegisterStudentView();
+        Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.TOP_CENTER, "Antes de registrar un estudiante, por favor pase el llavero por el lector");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -180,5 +189,5 @@ public class StudentForm extends javax.swing.JPanel {
     private javax.swing.JTable studentTable;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
-    
+
 }

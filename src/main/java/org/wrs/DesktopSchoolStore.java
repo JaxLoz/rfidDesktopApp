@@ -38,7 +38,9 @@ public class DesktopSchoolStore {
         
         //MainJFrame and Forms
         Application app = Application.getInstance();
+        
         StudentForm studentForm = app.getMainForm().getStudentForm();
+        
         PurchaseForm purchaseForm = app.getMainForm().getPurcharseForm();
 
         ConnectionFactory connectionFactory = new ConnectionFactory();

@@ -20,8 +20,6 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
     }
     
     private void init(){
-        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
-                + "font:$h1.font");
         
         uuidLb.putClientProperty(FlatClientProperties.STYLE, "");
         
@@ -61,7 +59,6 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
 
         registerStudentBtn = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        lbTitle = new javax.swing.JLabel();
         identificationTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -70,6 +67,8 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         uuidLb = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("REGISTRAR ESTUDIANTE");
+        setResizable(false);
 
         registerStudentBtn.setText("Registrar");
         registerStudentBtn.setActionCommand("registerStudentCmd");
@@ -80,10 +79,6 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        lbTitle.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        lbTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbTitle.setText("Registrar nuevo estudiante");
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("UUID");
@@ -98,7 +93,6 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(20, 20, 20)
@@ -118,9 +112,7 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(lbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(uuidLb, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -130,7 +122,7 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
                 .addComponent(identificationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(firstNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
                 .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -155,7 +147,6 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField lastNameTxt;
-    private javax.swing.JLabel lbTitle;
     private javax.swing.JButton registerStudentBtn;
     private javax.swing.JLabel uuidLb;
     // End of variables declaration//GEN-END:variables
