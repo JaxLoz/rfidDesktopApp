@@ -4,10 +4,10 @@
  */
 package org.wrs.view;
 
-import org.wrs.models.Sell;
+import org.wrs.models.Purchase;
 import org.wrs.models.Student;
-import org.wrs.view.modelTable.SellTableModel;
-import org.wrs.view.modelTable.StudentTableModel;
+import org.wrs.view.model.table.SellTableModel;
+import org.wrs.view.model.table.StudentTableModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +33,7 @@ public class InfoSellView extends javax.swing.JFrame {
 
     }
 
-    public void setSellTable (List<Sell> sellList){
+    public void setSellTable (List<Purchase> sellList){
         sellTableModel.setSellList(sellList);
     }
 
@@ -55,10 +55,10 @@ public class InfoSellView extends javax.swing.JFrame {
 
     }
 
-    public Sell getTotalSell (){
+    public Purchase getTotalSell (){
         Integer totalInt = (Integer) spTotal.getValue();
         Double total = totalInt.doubleValue();
-        Sell sell = new Sell(total);
+        Purchase sell = new Purchase(total);
         return sell;
     }
 

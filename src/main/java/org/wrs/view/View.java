@@ -1,7 +1,7 @@
 package org.wrs.view;
 
 import org.wrs.models.Student;
-import org.wrs.view.modelTable.StudentTableModel;
+import org.wrs.view.model.table.StudentTableModel;
 
 import java.awt.event.ActionListener;
 import java.util.List;

@@ -1,8 +1,8 @@
 package org.wrs.controllers;
 
-import org.wrs.dao.SellDao;
+import org.wrs.dao.PurchaseDao;
 import org.wrs.dao.StudentDao;
-import org.wrs.models.Sell;
+import org.wrs.models.Purchase;
 import org.wrs.models.Student;
 import org.wrs.view.InfoSellView;
 import org.wrs.view.SellView;
@@ -16,14 +16,14 @@ public class InfoSellViewController implements ActionListener {
 
     private StudentDao studentDao;
 
-    private SellDao sellDao;
+    private PurchaseDao sellDao;
     private InfoSellView infoSellView;
 
     private SellView sellView;
 
     private Student studenNow;
 
-    public InfoSellViewController(StudentDao studentDao,SellDao sellDao, InfoSellView infoSellView){
+    public InfoSellViewController(StudentDao studentDao,PurchaseDao sellDao, InfoSellView infoSellView){
         this.studentDao = studentDao;
         this.infoSellView = infoSellView;
         this.sellView = new SellView();
@@ -46,16 +46,16 @@ public class InfoSellViewController implements ActionListener {
     }
 
     public void setNewSell (){
-       Sell sell = this.infoSellView.getTotalSell();
+       Purchase sell = this.infoSellView.getTotalSell();
        Student student = this.studenNow;
-       Student studentP = sellDao.setNewSell(student, sell);
+       Student studentP = sellDao.createPurchase(student, sell);
        infoSellView.showStudentInformation(studentP);
-        List<Sell> sellList = sellDao.sellList(student);
+        List<Purchase> sellList = sellDao.sellList(student);
         infoSellView.setSellTable(sellList);
     }
 
     public void setTableSell (){
-        List<Sell> sellList = new ArrayList<>();
+        List<Purchase> sellList = new ArrayList<>();
         sellList = sellDao.sellList(this.studenNow);
         infoSellView.setSellTable(sellList);
     }

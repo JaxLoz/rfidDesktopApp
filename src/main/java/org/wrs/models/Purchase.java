@@ -1,19 +1,19 @@
 package org.wrs.models;
 
-public class Sell {
+public class Purchase {
 
     private int id;
     private String date;
     private Double total;
 
 
-    public Sell(int id, String date, Double total) {
+    public Purchase(int id, String date, Double total) {
         this.id = id;
         this.date = date;
         this.total = total;
     }
 
-    public Sell (Double total){
+    public Purchase (Double total){
         this.id = 0;
         this.date = "";
         this.total = total;

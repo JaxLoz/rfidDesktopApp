@@ -1,14 +1,14 @@
 package org.wrs.controllers;
 
-import org.wrs.configArduino.SerialComunicationInterface;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.UpdateUidView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.wrs.configArduino.ISerialComunication;
 
-public class UpdateInfoController implements ActionListener, SerialComunicationInterface {
+public class UpdateInfoController implements ActionListener, ISerialComunication {
 
     private UpdateUidView updateUidView;
     private StudentDao studentDao;
@@ -79,7 +79,7 @@ public class UpdateInfoController implements ActionListener, SerialComunicationI
     }
 
     @Override
-    public void setValueArduino(String data) {
+    public void receiveDataSerialPort(String data) {
         System.out.println("updateController: " + data);
         this.uuidNew = data;
     }

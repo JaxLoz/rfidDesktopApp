@@ -1,19 +1,18 @@
 package org.wrs.controllers;
 
-import org.wrs.configArduino.SerialComunicationInterface;
-import org.wrs.dao.SellDao;
+import org.wrs.dao.PurchaseDao;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import org.wrs.view.LogView;
 import org.wrs.view.InfoSellView;
-import org.wrs.view.UpdateUidView;
 import org.wrs.view.View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import org.wrs.configArduino.ISerialComunication;
 
-public class StudentController implements ActionListener, SerialComunicationInterface {
+public class StudentController implements ActionListener, ISerialComunication {
 
     private final LogView logView;
     private final StudentDao studentDao;
@@ -25,7 +24,7 @@ public class StudentController implements ActionListener, SerialComunicationInte
     private final View view;
 
 
-    public StudentController (StudentDao studentDAO,SellDao sellDao, View view){
+    public StudentController (StudentDao studentDAO,PurchaseDao sellDao, View view){
         this.studentDao = studentDAO;
         this.view = view;
         this.infoSellView = new InfoSellView();
@@ -102,7 +101,7 @@ public class StudentController implements ActionListener, SerialComunicationInte
     }
 
     @Override
-    public void setValueArduino(String data) {
+    public void receiveDataSerialPort(String data) {
         verificarEstudiante(data);
     }
 }

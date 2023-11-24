@@ -1,4 +1,4 @@
-package org.wrs.view.modelTable;
+package org.wrs.view.model.table;
 
 import org.wrs.models.Student;
 

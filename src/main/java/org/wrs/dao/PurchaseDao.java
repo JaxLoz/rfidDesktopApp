@@ -1,7 +1,7 @@
 package org.wrs.dao;
 
 import org.apache.commons.math3.stat.descriptive.summary.Product;
-import org.wrs.models.Sell;
+import org.wrs.models.Purchase;
 import org.wrs.models.Student;
 
 import javax.sql.DataSource;
@@ -9,15 +9,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SellDao {
+public class PurchaseDao {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    public SellDao (DataSource dataSource){
+    public PurchaseDao (DataSource dataSource){
         this.dataSource = dataSource;
     }
 
-    public Student setNewSell (Student student, Sell sell){
+    public Student createPurchase (Student student, Purchase sell){
         Student studentUpdate = null;
         int idSell = 0;
         String insertSQL = "insert into purchase (date_time, total, student_id) values (CURRENT_TIMESTAMP, ?, ?)";
@@ -77,9 +77,9 @@ public class SellDao {
         return studentUpdate;
     }
 
-    public List<Sell> sellList (Student student){
-        List<Sell> sellList = new ArrayList<>();
-        Sell sell;
+    public List<Purchase> sellList (Student student){
+        List<Purchase> sellList = new ArrayList<>();
+        Purchase sell;
 
         try(Connection con = dataSource.getConnection()){
             PreparedStatement preparedStatement = con.prepareStatement("select * from purchase where student_id = ?");
@@ -89,7 +89,7 @@ public class SellDao {
 
             try(resultSet){
                 while (resultSet.next()){
-                    sell = new Sell(
+                    sell = new Purchase(
                             resultSet.getInt(1),
                             resultSet.getString(2),
                             resultSet.getDouble(3));

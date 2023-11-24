@@ -1,6 +1,6 @@
-package org.wrs.view.modelTable;
+package org.wrs.view.model.table;
 
-import org.wrs.models.Sell;
+import org.wrs.models.Purchase;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SellTableModel extends AbstractTableModel {
 
-    private List<Sell> listSell;
+    private List<Purchase> listSell;
     private final String COLUMN_NAMES[];
 
     public SellTableModel (){
@@ -17,12 +17,12 @@ public class SellTableModel extends AbstractTableModel {
         this.COLUMN_NAMES = new String[]{"ID", "Fecha de compra", "Total"};
     }
 
-    public void setSellList (List<Sell> listSell){
+    public void setSellList (List<Purchase> listSell){
         this.listSell = listSell;
         fireTableDataChanged();
     }
 
-    public List<Sell> getListSell (){
+    public List<Purchase> getListSell (){
         return this.listSell;
     }
 
@@ -43,7 +43,7 @@ public class SellTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-       Sell sell = listSell.get(rowIndex);
+       Purchase sell = listSell.get(rowIndex);
 
        switch (columnIndex){
            case 0:

@@ -6,7 +6,6 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,16 +14,14 @@ public class SerialLector implements SerialPortEventListener {
     private final PanamaHitek_Arduino pha;
 
     /**
-     * read mode Arduino
-     * mode = true: mode purchase is active
-     * mode = false: mode recharge is active
+     * read mode Arduino mode = true: mode purchase is active mode = false: mode
+     * recharge is active
      */
     private boolean mode;
 
-    private SerialComunicationInterface purchase;
-    private SerialComunicationInterface recharge;
-    private SerialComunicationInterface updateStudent;
-
+    private ISerialComunication purchase;
+    private ISerialComunication recharge;
+    private ISerialComunication updateStudent;
 
     public SerialLector(PanamaHitek_Arduino pha) {
         this.pha = pha;
@@ -35,15 +32,15 @@ public class SerialLector implements SerialPortEventListener {
         this.mode = !this.mode;
     }
 
-    public void setRechargeInterface(SerialComunicationInterface iRecharge) {
+    public void setRechargeInterface(ISerialComunication iRecharge) {
         this.recharge = iRecharge;
     }
 
-    public void setPurchaseInterface(SerialComunicationInterface iPurchase) {
+    public void setPurchaseInterface(ISerialComunication iPurchase) {
         this.purchase = iPurchase;
     }
 
-    public void setUpdateStudent(SerialComunicationInterface updateStudent) {
+    public void setUpdateStudent(ISerialComunication updateStudent) {
         this.updateStudent = updateStudent;
     }
 
@@ -62,12 +59,11 @@ public class SerialLector implements SerialPortEventListener {
                 if (pha.isMessageAvailable()) {
                     String data = pha.printMessage();
 
-                    if (mode) {
-                        purchase.setValueArduino(data);
-                    } else {
-                        recharge.setValueArduino(data);
-                    }
-                    updateStudent.setValueArduino(data);
+                    purchase.receiveDataSerialPort(data);
+
+                    recharge.receiveDataSerialPort(data);
+
+                    //updateStudent.receiveDataSerialPort(data);
                 }
             }
         } catch (SerialPortException | ArduinoException ex) {

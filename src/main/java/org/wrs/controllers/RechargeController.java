@@ -4,7 +4,6 @@
  */
 package org.wrs.controllers;
 
-import org.wrs.configArduino.SerialComunicationInterface;
 import org.wrs.dao.RechargeDao;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Recharge;
@@ -15,8 +14,9 @@ import org.wrs.controllers.StudentController;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.wrs.configArduino.ISerialComunication;
 
-public class RechargeController implements ActionListener, SerialComunicationInterface {
+public class RechargeController implements ActionListener, ISerialComunication {
 
     private final StudentDao studentDao;
     private final RechargeDao rechargeDao;
@@ -53,7 +53,7 @@ public class RechargeController implements ActionListener, SerialComunicationInt
     }
 
     @Override
-    public void setValueArduino(String data) {
+    public void receiveDataSerialPort(String data) {
         boolean existsStudent = studentDao.thereIsStudent(data);
         if (existsStudent) {
             Student student = studentDao.getStudent(data);
