@@ -49,9 +49,9 @@ public class StudentTableModel extends AbstractTableModel {
             case 0:
                 return student.getIdentification();
             case 1:
-                return student.getFirst_name();
+                return student.getFirtsName();
             case 2:
-                return student.getLast_name();
+                return student.getLastName();
             case 3:
                 return student.getBalance();
         }

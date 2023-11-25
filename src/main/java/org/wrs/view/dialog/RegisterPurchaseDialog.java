@@ -29,7 +29,7 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
     
 
     private void loadInfo() {
-        nameLb.setText(student.getFirst_name() + " " + student.getLast_name());
+        nameLb.setText(student.getFirtsName() + " " + student.getLastName());
         identificationLb.setText(student.getIdentification());
         balanceLb.setText("" + student.getBalance());
     }

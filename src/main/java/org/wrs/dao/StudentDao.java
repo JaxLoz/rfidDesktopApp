@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.wrs.models.Student;
+import raven.toast.Notifications;
 
 public class StudentDao {
 
@@ -58,7 +59,8 @@ public class StudentDao {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getString(6));
+                            resultSet.getString(6),
+                            resultSet.getString(7));
 
                 } else {
                     System.out.printf("Algo salio mal al tratar de obtener el registro del alumno con el uid: " + uid);
@@ -76,12 +78,13 @@ public class StudentDao {
         int idRegisteredStudent = 0;
         try (Connection con = dataSource.getConnection()) {
 
-            PreparedStatement preparedStatement = con.prepareStatement("insert into student (balance, first_name, identification, last_name, uuid) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = con.prepareStatement("insert into student (balance, first_name, identification, last_name, uuid, email) values (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setDouble(1, student.getBalance());
-            preparedStatement.setString(2, student.getFirst_name());
+            preparedStatement.setString(2, student.getFirtsName());
             preparedStatement.setString(3, student.getIdentification());
-            preparedStatement.setString(4, student.getLast_name());
+            preparedStatement.setString(4, student.getLastName());
             preparedStatement.setString(5, student.getUuid());
+            preparedStatement.setString(6, student.getMail());
 
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -113,7 +116,8 @@ public class StudentDao {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        resultSet.getString(6));
+                        resultSet.getString(6),
+                        resultSet.getString(7));
 
                 listStudent.add(student);
             }
@@ -124,22 +128,24 @@ public class StudentDao {
         return listStudent;
     }
 
-    public void updataStudent(Student student, String uuidOld) {
+    public void updataStudent(Student student) {
 
         try (Connection con = dataSource.getConnection()) {
 
-            PreparedStatement preparedStatement = con.prepareStatement("update student set balance = ?, first_name = ?, identification = ?, last_name = ?, uuid = ? where uuid = ?");
-            preparedStatement.setDouble(1, student.getBalance());
-            preparedStatement.setString(2, student.getFirst_name());
-            preparedStatement.setString(3, student.getIdentification());
-            preparedStatement.setString(4, student.getLast_name());
-            preparedStatement.setString(5, student.getUuid());
-            preparedStatement.setString(6, uuidOld);
+            PreparedStatement preparedStatement = con.prepareStatement("update student set first_name = ?, identification = ?, last_name = ?, uuid = ?, email = ?  where id = ?");
+            
+            preparedStatement.setString(1, student.getFirtsName());
+            preparedStatement.setString(2, student.getIdentification());
+            preparedStatement.setString(3, student.getLastName());
+            preparedStatement.setString(4, student.getUuid());
+            preparedStatement.setString(5, student.getMail());
+            preparedStatement.setInt(6, student.getId());
 
             int updateRow = preparedStatement.executeUpdate();
 
             if (updateRow > 0) {
                 System.out.println("Se actualizo el resgistro");
+                Notifications.getInstance().show(Notifications.Type.INFO, Notifications.Location.TOP_CENTER, "Haz actualizado la informacion de "+student.getFirtsName()+" "+student.getLastName());
             } else {
                 System.out.println("no se actualizo ningun registro");
             }
@@ -170,7 +176,8 @@ public class StudentDao {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        resultSet.getString(6));
+                        resultSet.getString(6),
+                        resultSet.getString(7));
 
                 listStudent.add(student);
             }

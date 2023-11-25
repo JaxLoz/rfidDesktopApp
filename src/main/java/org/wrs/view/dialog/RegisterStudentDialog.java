@@ -3,6 +3,9 @@ package org.wrs.view.dialog;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.wrs.models.Student;
 
 /**
  *
@@ -26,11 +29,35 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         identificationTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingrese el numero de identificación");
         firstNameTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingrese los nombres");
         lastNameTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Ingrese los apellidos");
+        mailTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Mail del acudiente");
         
-        registerStudentBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
+        registerStudentBtn.putClientProperty(FlatClientProperties.STYLE, "" + "borderWidth:0;" + "focusWidth:0");
         
+    }
+    
+    public boolean validateLetters(String texto) {
+        Pattern patron = Pattern.compile("^[a-zA-Z ]+$");
+        Matcher matcher = patron.matcher(texto);
+        return matcher.matches();
+    }
+    
+     public boolean validateNumbers(String texto) {
+        return texto.matches("\\d+"); // Verifica si contiene solo dígitos
+    }
+     
+    public boolean validatePost(String correo) {
+        String patronCorreo = "^[a-zA-Z0-9_.]+@gmail\\.com$";
+        Pattern patron = Pattern.compile(patronCorreo);
+        Matcher matcher = patron.matcher(correo);
+        return matcher.matches();
+    }
+    
+    public void cleanField (){
+        identificationTxt.setText("");
+        firstNameTxt.setText("");
+        lastNameTxt.setText("");
+        mailTxt.setText("");
+        uuidLb.setText("");
     }
 
     public String getUuid() {
@@ -42,10 +69,40 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         uuidLb.setText(uuid);
     }
     
+    public Student getNewStudent () throws RuntimeException{
+        
+        Student student = null;
+        
+        String identification = identificationTxt.getText();
+        String firtsName = firstNameTxt.getText();
+        String lastName = lastNameTxt.getText();
+        String mailAddres = mailTxt.getText();
+        String uuid = uuidLb.getText();
+        
+        if (!this.validateNumbers(identification)){
+         throw new RuntimeException("Solo se admiten caracteres numericos para la identificacion");   
+        }
+        if (!this.validateLetters(firtsName)){
+            throw new RuntimeException("Solo se admiten caracateres alfabeticos para los nombres");
+        }
+        if (!this.validateLetters(lastName)){
+            throw new RuntimeException("Solo se admiten caracateres alfabeticos para los apellidos");
+        }
+        if (!this.validatePost(mailAddres)){
+            throw new RuntimeException("Direccion de correo no valida");
+        }
+           
+        student = new Student(firtsName, identification, lastName, uuid, mailAddres);
+        
+        return student;
+        
+    }
+    
     
     
     public void setActionListener(ActionListener actionListener){
         registerStudentBtn.addActionListener(actionListener);
+        cancelbtn.addActionListener (actionListener);
     }
 
     /**
@@ -58,14 +115,14 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         registerStudentBtn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancelbtn = new javax.swing.JButton();
         identificationTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         firstNameTxt = new javax.swing.JTextField();
         lastNameTxt = new javax.swing.JTextField();
         uuidLb = new javax.swing.JLabel();
-        lastNameTxt1 = new javax.swing.JTextField();
+        mailTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("REGISTRAR ESTUDIANTE");
@@ -74,15 +131,22 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         registerStudentBtn.setText("Registrar");
         registerStudentBtn.setActionCommand("registerStudentCmd");
 
-        jButton2.setText("Cancelar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelbtn.setText("Cancelar");
+        cancelbtn.setActionCommand("CancelarStudentCmd");
+        cancelbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelbtnActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("UUID");
+
+        lastNameTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastNameTxtActionPerformed(evt);
+            }
+        });
 
         uuidLb.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         uuidLb.setText("jLabel3");
@@ -91,9 +155,10 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(35, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(20, 20, 20)
@@ -104,13 +169,11 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
                         .addGap(249, 249, 249)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lastNameTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(registerStudentBtn)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2))
-                            .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(registerStudentBtn)
+                            .addGap(165, 165, 165)
+                            .addComponent(cancelbtn))
+                        .addComponent(lastNameTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,13 +188,13 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
                 .addComponent(identificationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(firstNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(lastNameTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(31, 31, 31)
                 .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(27, 27, 27)
+                .addComponent(mailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(cancelbtn)
                     .addComponent(registerStudentBtn))
                 .addGap(14, 14, 14))
         );
@@ -140,19 +203,23 @@ public class RegisterStudentDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancelbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelbtnActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_cancelbtnActionPerformed
+
+    private void lastNameTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastNameTxtActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelbtn;
     private javax.swing.JTextField firstNameTxt;
     private javax.swing.JTextField identificationTxt;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField lastNameTxt;
-    private javax.swing.JTextField lastNameTxt1;
+    private javax.swing.JTextField mailTxt;
     private javax.swing.JButton registerStudentBtn;
     private javax.swing.JLabel uuidLb;
     // End of variables declaration//GEN-END:variables

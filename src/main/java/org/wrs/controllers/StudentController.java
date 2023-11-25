@@ -7,6 +7,7 @@ import org.wrs.dao.StudentDao;
 import org.wrs.models.Student;
 import raven.application.form.other.StudentForm;
 import org.wrs.configArduino.ISerialComunication;
+import raven.toast.Notifications;
 
 /**
  *
@@ -16,10 +17,12 @@ public class StudentController implements ActionListener, ISerialComunication {
 
     private final StudentForm studentForm;
     private final StudentDao studentDao;
+    private String uuid;
 
     public StudentController(StudentDao studentDAO, StudentForm studentForm) {
         this.studentDao = studentDAO;
         this.studentForm = studentForm;
+        this.uuid = "";
         init();
     }
 
@@ -40,7 +43,26 @@ public class StudentController implements ActionListener, ISerialComunication {
     }
 
     public void registerStudent() {
-        studentDao.registerNewStudent(null);
+        try{
+        studentDao.registerNewStudent(studentForm.getNewStudentRegister());
+        }catch (RuntimeException e){
+            Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, e.getMessage());
+        }
+        System.out.println("Registrando");
+    }
+    
+    
+    public void closeRegisterStudentView (){
+        studentForm.closeRegisterStudentView();
+    }
+    
+    public void setUuidUpdateView (){
+        studentForm.setNewUuid(this.uuid);
+    }
+    
+    public void updateInfoStudent (){
+        Student updateStudent = studentForm.getUpdateStudent();
+        studentDao.updataStudent(updateStudent);
     }
 
     /**
@@ -57,21 +79,42 @@ public class StudentController implements ActionListener, ISerialComunication {
         if (!studentExists) {
             studentForm.showRegisterStudentView(data);
         }
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String commad = e.getActionCommand();
 
-        refreshStudentTable();
         switch (commad) {
-            case "refreshStudentTableCmd" ->
-                refreshStudentTable();
-            case "registerStudentCmd" ->
+            case "updateStudentRfidCmd" ->{
+                System.out.println("actualizar rfid");
+                studentForm.showUpdateStudenView();
+            }
+                
+            case "registerStudentCmd" ->{
                 registerStudent();
+                refreshStudentTable();
+            }
+           
+            case "RefreshTableStudent" ->{
+                refreshStudentTable();
+            }
+            
+            case "CambiarbtnUpdate" ->{
+                System.out.println("Presionando el boton de cambiar");
+                this.setUuidUpdateView();
+            }
+            
+            case "ActualizarBtnUpdate" ->{
+                System.out.println("Presionando el boton de actualizar");
+                this.updateInfoStudent();
+            }
+                
+            case "CancelarStudentCmd" ->
+                this.closeRegisterStudentView();  
             default -> {
             }
         }
     }
-
 }

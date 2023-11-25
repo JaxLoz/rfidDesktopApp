@@ -8,25 +8,58 @@ public class Student {
     private String identification;
     private String last_name;
     private String uuid;
+    private String mail;
 
 
 
-    public Student(double balance, String first_name, String identification, String last_name, String uuid) {
+    public Student(String first_name, String identification, String last_name, String uuid, String mail) {
+        this.id = 0;
+        this.balance = 0.0;
+        this.first_name = first_name;
+        this.identification = identification;
+        this.last_name = last_name;
+        this.uuid = uuid;
+        this.mail = mail;
+    }
+    
+    public Student(double balance, String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = 0;
         this.balance = balance;
         this.first_name = first_name;
         this.identification = identification;
         this.last_name = last_name;
         this.uuid = uuid;
+        this.mail = mail;
     }
 
-    public Student(int id, double balance, String first_name, String identification, String last_name, String uuid) {
+    public Student(int id, double balance, String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = id;
         this.balance = balance;
         this.first_name = first_name;
         this.identification = identification;
         this.last_name = last_name;
         this.uuid = uuid;
+        this.mail = mail;
+    }
+    
+    public Student(int id, String first_name, String identification, String last_name, String uuid, String mail) {
+        this.id = id;
+        this.balance = 0.0;
+        this.first_name = first_name;
+        this.identification = identification;
+        this.last_name = last_name;
+        this.uuid = uuid;
+        this.mail = mail;
+    }
+    
+    public Student(){
+        this.id = 0;
+        this.balance = 0.0;
+        this.first_name = "";
+        this.identification = "";
+        this.last_name = "";
+        this.uuid = "";
+        this.mail = "";
     }
 
     public int getId() {
@@ -45,11 +78,11 @@ public class Student {
         this.balance = balance;
     }
 
-    public String getFirst_name() {
+    public String getFirtsName() {
         return first_name;
     }
 
-    public void setFirst_name(String first_name) {
+    public void setFirstName(String first_name) {
         this.first_name = first_name;
     }
 
@@ -61,11 +94,11 @@ public class Student {
         this.identification = identification;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
+    public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
@@ -76,4 +109,14 @@ public class Student {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+    
+    public String getMail (){
+        return this.mail;
+    }
+    
+    public void getMail (String mail){
+        this.mail = mail;
+    }
+    
+    
 }
