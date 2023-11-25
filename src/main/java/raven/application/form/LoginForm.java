@@ -10,7 +10,6 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import org.wrs.models.User;
 
-
 /**
  *
  * @author Raven
@@ -42,35 +41,39 @@ public class LoginForm extends javax.swing.JPanel {
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
     }
 
-    public User getUserDataFromForm(){
+    public User getUserDataFromForm() {
         User user = new User();
-        
+
+        /*
         String username = txtUser.getText();
         String password = new String(txtPass.getPassword());
-        
-        if(username.isEmpty()){
+         */
+        String username = "mateo092";
+        String password = "mateo";
+
+        if (username.isEmpty()) {
             throw new RuntimeException("¡Username no puede estar vacio!");
         }
-        
-        if(password.isEmpty()){
-            throw new RuntimeException( "¡password no puede estar vacio!");
+
+        if (password.isEmpty()) {
+            throw new RuntimeException("¡password no puede estar vacio!");
         }
-        
+
         user.setUsername(username);
         user.setPassword(password);
-        
+
         return user;
     }
-    
-    public void setActionListener(ActionListener actionListener){
+
+    public void setActionListener(ActionListener actionListener) {
         loginBtn.addActionListener(actionListener);
     }
-    
+
     public void clearInputs() {
         txtUser.setText("");
         txtPass.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -165,9 +168,8 @@ public class LoginForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-        
-    }//GEN-LAST:event_loginBtnActionPerformed
 
+    }//GEN-LAST:event_loginBtnActionPerformed
 
     private class LoginFormLayout implements LayoutManager {
 

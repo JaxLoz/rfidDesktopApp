@@ -1,21 +1,13 @@
 package org.wrs.view;
 
-import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-
-
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import org.wrs.models.User;
 import raven.application.form.LoginForm;
 import raven.application.form.MainForm;
 import raven.toast.Notifications;
-
 
 /**
  *
@@ -30,7 +22,7 @@ public class Application extends javax.swing.JFrame {
 
     private Application() {
         initComponents();
-        setTitle("Windor Royal School - ");
+        setTitle();
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         mainForm = new MainForm();
@@ -39,18 +31,29 @@ public class Application extends javax.swing.JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
-    public void setUser(User user){
+    private void setTitle() {
+        if (user == null) {
+            setTitle("Windsor Royal School");
+
+        } else {
+            String firstName = user.getFirstName().substring(0, 1).toUpperCase() + user.getFirstName().substring(1).toLowerCase();
+            String lastName = user.getLastName().substring(0, 1).toUpperCase() + user.getLastName().substring(1).toLowerCase();
+            setTitle("Windsor Royal School - " + firstName + " " + lastName);
+        }
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
-    
+
     public LoginForm getLoginForm() {
         return loginForm;
     }
-    
+
     public MainForm getMainForm() {
         return mainForm;
     }
-    
+
     public static Application getInstance() {
         if (app == null) {
             app = new Application();
@@ -65,6 +68,7 @@ public class Application extends javax.swing.JFrame {
 
     public static void login(User user) {
         getInstance().setUser(user);
+        getInstance().setTitle();
         FlatAnimatedLafChange.showSnapshot();
         getInstance().setContentPane(getInstance().mainForm);
         getInstance().mainForm.applyComponentOrientation(getInstance().getComponentOrientation());
@@ -76,6 +80,8 @@ public class Application extends javax.swing.JFrame {
 
     public static void logout() {
         FlatAnimatedLafChange.showSnapshot();
+        getInstance().setUser(null);
+        getInstance().setTitle();
         getInstance().setContentPane(getInstance().loginForm);
         getInstance().loginForm.applyComponentOrientation(getInstance().getComponentOrientation());
         SwingUtilities.updateComponentTreeUI(getInstance().loginForm);
@@ -118,8 +124,7 @@ public class Application extends javax.swing.JFrame {
             app.setVisible(true);
         });
     }
-*/
-    
+     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
