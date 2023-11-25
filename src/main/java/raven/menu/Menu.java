@@ -41,8 +41,7 @@ public class Menu extends JPanel {
         {"Special Pages", "Blank page", "Faq", "Invoice", "Profile", "Pricing", "Timeline"},
         {"Logout"}
     };
-    */
-    
+     */
     private final String menuItems[][] = {
         {"~PRINCIPAL~"},
         {"Estudiantes"},
@@ -60,9 +59,11 @@ public class Menu extends JPanel {
         this.menuFull = menuFull;
         if (menuFull) {
             header.setText(headerName);
+            header.setIcon(new ImageIcon(getClass().getResource("/icon/png/logo1.png")));
             header.setHorizontalAlignment(getComponentOrientation().isLeftToRight() ? JLabel.LEFT : JLabel.RIGHT);
         } else {
             header.setText("");
+            header.setIcon(new ImageIcon(getClass().getResource("/icon/png/logo.png")));
             header.setHorizontalAlignment(JLabel.CENTER);
         }
         for (Component com : panelMenu.getComponents()) {
@@ -96,7 +97,7 @@ public class Menu extends JPanel {
                 + "background:$Menu.background;"
                 + "arc:10");
         header = new JLabel(headerName);
-        header.setIcon(new ImageIcon(getClass().getResource("/icon/png/logo.png")));
+        header.setIcon(new ImageIcon(getClass().getResource("/icon/png/logo1.png")));
         header.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$Menu.header.font;"
                 + "foreground:$Menu.foreground");
@@ -258,7 +259,7 @@ public class Menu extends JPanel {
                 int hgap = menuFull ? sheaderFullHgap : 0;
                 int accentColorHeight = 0;
                 if (toolBarAccentColor.isVisible()) {
-                    accentColorHeight = toolBarAccentColor.getPreferredSize().height+gap;
+                    accentColorHeight = toolBarAccentColor.getPreferredSize().height + gap;
                 }
 
                 header.setBounds(x + hgap, y, iconWidth - (hgap * 2), iconHeight);
@@ -266,7 +267,7 @@ public class Menu extends JPanel {
                 int ldWidth = width - ldgap * 2;
                 int ldHeight = lightDarkMode.getPreferredSize().height;
                 int ldx = x + ldgap;
-                int ldy = y + height - ldHeight - ldgap  - accentColorHeight;
+                int ldy = y + height - ldHeight - ldgap - accentColorHeight;
 
                 int menux = x;
                 int menuy = y + iconHeight + gap;
