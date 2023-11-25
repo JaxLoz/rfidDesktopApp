@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import org.wrs.models.User;
 import raven.application.form.LoginForm;
 import raven.application.form.MainForm;
 import raven.toast.Notifications;
@@ -23,6 +24,7 @@ import raven.toast.Notifications;
 public class Application extends javax.swing.JFrame {
 
     private static Application app;
+    private User user;
     private final MainForm mainForm;
     private final LoginForm loginForm;
 
@@ -37,6 +39,14 @@ public class Application extends javax.swing.JFrame {
         Notifications.getInstance().setJFrame(this);
     }
 
+    public void setUser(User user){
+        this.user = user;
+    }
+    
+    public LoginForm getLoginForm() {
+        return loginForm;
+    }
+    
     public MainForm getMainForm() {
         return mainForm;
     }
@@ -53,7 +63,8 @@ public class Application extends javax.swing.JFrame {
         getInstance().mainForm.showForm(component);
     }
 
-    public static void login() {
+    public static void login(User user) {
+        getInstance().setUser(user);
         FlatAnimatedLafChange.showSnapshot();
         getInstance().setContentPane(getInstance().mainForm);
         getInstance().mainForm.applyComponentOrientation(getInstance().getComponentOrientation());

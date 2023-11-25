@@ -16,14 +16,17 @@ import org.wrs.dao.PurchaseDao;
 import org.wrs.dao.RechargeDao;
 import org.wrs.dao.StudentDao;
 import javax.swing.*;
+import org.wrs.controllers.AuthController;
 import org.wrs.controllers.PurchaseController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentControllerV2;
+import org.wrs.dao.UserDao;
 import org.wrs.service.PurchaseService;
 import org.wrs.view.Application;
 import org.wrs.view.UpdateUidView;
 import org.wrs.view.RechargeView;
 import org.wrs.view.View;
+import raven.application.form.LoginForm;
 import raven.application.form.other.PurchaseForm;
 import raven.application.form.other.StudentForm;
 
@@ -38,9 +41,8 @@ public class DesktopSchoolStore {
         
         //MainJFrame and Forms
         Application app = Application.getInstance();
-        
+        LoginForm loginForm = app.getLoginForm();
         StudentForm studentForm = app.getMainForm().getStudentForm();
-        
         PurchaseForm purchaseForm = app.getMainForm().getPurcharseForm();
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -51,6 +53,13 @@ public class DesktopSchoolStore {
         serialLector.startConnectionArduino();
         ArduinoController arduinoController = new ArduinoController(serialLector);
 
+        
+        //Login
+        UserDao userDao = new UserDao(connectionFactory.getConnection());
+        AuthController authController = new AuthController(userDao, loginForm);
+        loginForm.setActionListener(authController);
+        
+        
         //Student
         View vista = new View();
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
