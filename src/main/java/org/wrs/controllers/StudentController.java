@@ -1,107 +1,77 @@
 package org.wrs.controllers;
 
-import org.wrs.dao.PurchaseDao;
-import org.wrs.dao.StudentDao;
-import org.wrs.models.Student;
-import org.wrs.view.LogView;
-import org.wrs.view.InfoSellView;
-import org.wrs.view.View;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import org.wrs.dao.StudentDao;
+import org.wrs.models.Student;
+import raven.application.form.other.StudentForm;
 import org.wrs.configArduino.ISerialComunication;
 
+/**
+ *
+ * @author C.Mateo
+ */
 public class StudentController implements ActionListener, ISerialComunication {
 
-    private final LogView logView;
+    private final StudentForm studentForm;
     private final StudentDao studentDao;
-    private final InfoSellView infoSellView;
-    private final LogController logController;
-    private final InfoSellViewController infoSellViewController;
-    private  UpdateInfoController updateInfoController;
 
-    private final View view;
-
-
-    public StudentController (StudentDao studentDAO,PurchaseDao sellDao, View view){
+    public StudentController(StudentDao studentDAO, StudentForm studentForm) {
         this.studentDao = studentDAO;
-        this.view = view;
-        this.infoSellView = new InfoSellView();
-        this.logView = new LogView();
-        this.logController = new LogController(this.studentDao, logView, this);
-        this.infoSellViewController = new InfoSellViewController(this.studentDao, sellDao,infoSellView);
+        this.studentForm = studentForm;
+        init();
     }
 
-    public void initView() {
-        this.listsStudentInTable();
-        view.setActionListener(this);
+    private void init() {
+        refreshStudentTable();
+        studentForm.setActionListener(this);
     }
 
-    public void setUpdateInfoController( UpdateInfoController updateInfoController){
-        this.updateInfoController = updateInfoController;
+    /**
+     * Updates the student table in the graphical interface. Retrieves the
+     * updated list of students from the database by means of the object
+     * {@code studentDao} and updates the table model in the student form
+     * ({@code studentForm}). student form ({@code studentForm}).
+     */
+    public void refreshStudentTable() {
+        List<Student> students = studentDao.listar();
+        studentForm.setListStudentTableModel(students);
     }
 
+    public void registerStudent() {
+        studentDao.registerNewStudent(null);
+    }
 
-    public void verificarEstudiante(String uid) {
+    /**
+     * Implementation of the SerialCommunicationInterface interface method that
+     * receives data from the serial port.
+     * @param data The data received from the serial port. In this context,
+     * it is expected uuid read by the Arduino.
+     */
+    @Override
+    public void receiveDataSerialPort(String data) {
 
-        boolean thereIsStudent = studentDao.thereIsStudent(uid);
-
-        if(thereIsStudent && !updateInfoController.isWindowActive()){
-            infoSellViewController.getStudent(uid);
-            infoSellViewController.setTableSell();
-            infoSellView.setVisible(true);
-        } else if (!thereIsStudent && !updateInfoController.isWindowActive()){
-            logView.setVisible(true);
-            logController.setTextUid(uid);
+        boolean studentExists = studentDao.thereIsStudent(data);
+        
+        if (!studentExists) {
+            studentForm.showRegisterStudentView(data);
         }
-
-    }
-
-    public Student getStudent(String uid) {
-        return studentDao.getStudent(uid);
-    }
-
-    public void registerStudent(Student student) {
-        studentDao.registerNewStudent(student);
-    }
-
-    public void selectStudent() {
-        Student student = view.getOneStudenOfList();
-        System.out.println("Selecionaste al estudiante: " + student.getFirst_name());
-        updateInfoController.setDataStudenUpdateView(student);
-    }
-
-    public void listsStudentInTable() {
-        List<Student> studentList = studentDao.listar();
-        view.listStudents(studentList);
-    }
-
-    //TODO: search student by name or identification
-    public void searchStudentByNameOrIdentification() {
-        String key = view.getTextSearch();
-        List<Student> studentList = studentDao.searchStudent(key);
-        view.listStudents(studentList);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String commad = e.getActionCommand();
 
-        if (commad.equals("Actualizar")) {
-            System.out.println("presionando el boton actualizar");
-            this.selectStudent();
-            updateInfoController.initUpdateInfoController();
-            updateInfoController.initView();
-        } else if (commad.equals("buscar")){
-            searchStudentByNameOrIdentification();
-        } else if (commad.equals("reset")) {
-            listsStudentInTable();
+        refreshStudentTable();
+        switch (commad) {
+            case "refreshStudentTableCmd" ->
+                refreshStudentTable();
+            case "registerStudentCmd" ->
+                registerStudent();
+            default -> {
+            }
         }
     }
 
-    @Override
-    public void receiveDataSerialPort(String data) {
-        verificarEstudiante(data);
-    }
 }
