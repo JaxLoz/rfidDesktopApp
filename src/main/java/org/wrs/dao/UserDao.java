@@ -20,22 +20,20 @@ public class UserDao {
     }
 
     public User getUserByUsername(String username, String password) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
         User user = null;
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
-            statement.setString(2, password);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-
                     user = new User();
                     user.setId(resultSet.getLong("id"));
                     user.setFirstName(resultSet.getString("first_name"));
                     user.setLastName(resultSet.getString("last_name"));
                     user.setUsername(resultSet.getString("username"));
-
+                    user.setPassword(resultSet.getString("password"));
                 } else {
                     throw new RuntimeException("¡credenciales incorrectas!");
                 }
