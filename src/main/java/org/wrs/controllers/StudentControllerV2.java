@@ -25,7 +25,7 @@ public class StudentControllerV2 implements ActionListener, ISerialComunication 
 
     private void init() {
         refreshStudentTable();
-
+        studentForm.setActionListener(this);
     }
 
     /**
