@@ -1,5 +1,5 @@
 src/application.properties
-
+src/email.properties
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
