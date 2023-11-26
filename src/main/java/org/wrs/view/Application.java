@@ -46,6 +46,10 @@ public class Application extends javax.swing.JFrame {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public LoginForm getLoginForm() {
         return loginForm;
     }

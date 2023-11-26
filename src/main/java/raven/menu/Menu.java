@@ -42,12 +42,14 @@ public class Menu extends JPanel {
         {"Logout"}
     };
      */
-    private final String menuItems[][] = {
+    private final String menuItemTitles[][] = {
         {"~PRINCIPAL~"},
         {"Estudiantes"},
         {"Ventas"},
         {"Recargas"},
+        {"~CONFIGURACIONES~"},
         {"Perfil"},
+        {"Modo (Venta)"},
         {"Logout"}
     };
 
@@ -75,6 +77,7 @@ public class Menu extends JPanel {
         toolBarAccentColor.setMenuFull(menuFull);
     }
 
+    private final List<MenuItem> menuItems = new ArrayList<>();
     private final List<MenuEvent> events = new ArrayList<>();
     private boolean menuFull = true;
     private final String headerName = "";
@@ -131,16 +134,48 @@ public class Menu extends JPanel {
     }
 
     private void createMenu() {
-        int index = 0;
+
+        panelMenu.add(createTitle(menuItemTitles[0][0]));
+
+        MenuItem studentsItem = new MenuItem(this, menuItemTitles[1], 0, "" + 0, events);
+        panelMenu.add(studentsItem);
+        menuItems.add(studentsItem);
+
+        MenuItem purchaseItem = new MenuItem(this, menuItemTitles[2], 1, "" + 1, events);
+        panelMenu.add(purchaseItem);
+        menuItems.add(purchaseItem);
+
+        MenuItem rechargeItem = new MenuItem(this, menuItemTitles[3], 2, "" + 2, events);
+        panelMenu.add(rechargeItem);
+        menuItems.add(rechargeItem);
+
+        panelMenu.add(createTitle(menuItemTitles[4][0]));
+
+        MenuItem userProfileItem = new MenuItem(this, menuItemTitles[5], 3, "" + 3, events);
+        panelMenu.add(userProfileItem);
+        menuItems.add(userProfileItem);
+
+        MenuItem rfidSensorModeItem = new MenuItem(this, menuItemTitles[6], 4, "purchaseModeActive", events);
+        panelMenu.add(rfidSensorModeItem);
+        menuItems.add(rfidSensorModeItem);
+
+        MenuItem logoutItem = new MenuItem(this, menuItemTitles[7], 5, "" + 4, events);
+        panelMenu.add(logoutItem);
+        menuItems.add(logoutItem);
+
+        // int index = 0;
+        /*
         for (int i = 0; i < menuItems.length; i++) {
             String menuName = menuItems[i][0];
             if (menuName.startsWith("~") && menuName.endsWith("~")) {
                 panelMenu.add(createTitle(menuName));
             } else {
-                MenuItem menuItem = new MenuItem(this, menuItems[i], index++, events);
+                MenuItem menuItem = new MenuItem(this, menuItems[i], index, ""+index, events);
                 panelMenu.add(menuItem);
+                index++;
             }
         }
+         */
     }
 
     private JLabel createTitle(String title) {
@@ -174,7 +209,7 @@ public class Menu extends JPanel {
     protected void runEvent(int index, int subIndex) {
         MenuAction menuAction = new MenuAction();
         for (MenuEvent event : events) {
-            event.menuSelected(index, subIndex, menuAction);
+            event.menuSelected(index, subIndex, menuAction, menuItems.get(index));
         }
         if (!menuAction.isCancel()) {
             setSelected(index, subIndex);

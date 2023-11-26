@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import org.wrs.configArduino.IToggleRfidMode;
 import org.wrs.view.Application;
 import raven.application.form.other.RechargeForm;
 import raven.application.form.other.StudentForm;
@@ -22,6 +23,7 @@ import raven.application.form.other.PurchaseForm;
 import raven.application.form.other.UserProfileForm;
 import raven.menu.Menu;
 import raven.menu.MenuAction;
+import raven.menu.MenuItem;
 
 /**
  *
@@ -34,6 +36,13 @@ public class MainForm extends JLayeredPane {
     private final PurchaseForm purchaseForm;
     private final RechargeForm rechargeForm;
     private final UserProfileForm userProfileForm;
+    
+    private IToggleRfidMode iToggleRfidMode;
+
+    public void setiToggleRfidMode(IToggleRfidMode iToggleRfidMode) {
+        this.iToggleRfidMode = iToggleRfidMode;
+    }
+
 
     public MainForm() {
         init();
@@ -95,14 +104,15 @@ public class MainForm extends JLayeredPane {
     }
 
     private void initMenuEvent() {
-        menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
+        menu.addMenuEvent((int index, int subIndex, MenuAction action, MenuItem menuItem) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             switch (index) {
                 case 0 -> Application.showForm(studentForm);
                 case 1 -> Application.showForm(purchaseForm);
                 case 2 -> Application.showForm(rechargeForm);
                 case 3 -> Application.showForm(userProfileForm);
-                case 4 -> Application.logout();
+                case 4 -> {menuItem.toggleIcon();iToggleRfidMode.changeRfiMode();}
+                case 5 -> Application.logout();
                 default -> action.cancel();
             }
         });

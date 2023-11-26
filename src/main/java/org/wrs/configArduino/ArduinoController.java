@@ -4,7 +4,7 @@ package org.wrs.configArduino;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ArduinoController implements ActionListener {
+public class ArduinoController implements ActionListener, IToggleRfidMode {
 
     private final SerialLector serialLector;
 
@@ -18,5 +18,11 @@ public class ArduinoController implements ActionListener {
         if(command.equals("toggleArduinoMode")){
             serialLector.toggleMode();
         }
+    }
+
+    @Override
+    public void changeRfiMode() {
+        serialLector.toggleMode();
+        System.out.println("cambio el modo del arduino");
     }
 }

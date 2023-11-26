@@ -15,10 +15,12 @@ import org.wrs.dao.StudentDao;
 import javax.swing.*;
 import org.wrs.controllers.AuthController;
 import org.wrs.controllers.PurchaseController;
+import org.wrs.controllers.RechargeController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentController;
 import org.wrs.controllers.UserController;
 import org.wrs.dao.UserDao;
+import org.wrs.service.AuthService;
 import org.wrs.service.PurchaseService;
 import org.wrs.view.Application;
 import raven.application.form.LoginForm;
@@ -49,6 +51,7 @@ public class DesktopSchoolStore {
         SerialLector serialLector = new SerialLector(new PanamaHitek_Arduino());
         serialLector.startConnectionArduino();
         ArduinoController arduinoController = new ArduinoController(serialLector);
+        app.getMainForm().setiToggleRfidMode(arduinoController);
 
         
         //User
@@ -56,18 +59,15 @@ public class DesktopSchoolStore {
         UserController userController = new UserController( userProfileForm, userDao);
         
         
-        
         //Login
-        AuthController authController = new AuthController(userDao, loginForm);
-        
-        
-
-        
+        AuthService authService = new AuthService(userDao, serialLector);
+        AuthController authController = new AuthController(authService, loginForm);
+    
         
         //Student
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());
-        StudentController studentControllerV2 = new StudentController(studentDao, studentForm);
-        studentForm.setActionListener(studentControllerV2);
+        StudentController studentController = new StudentController(studentDao, studentForm);
+        studentForm.setActionListener(studentController);
         
         //Student search controller 
         SearchStudentController searchStudentController = new SearchStudentController(studentDao, studentForm);
@@ -75,6 +75,7 @@ public class DesktopSchoolStore {
 
         //Recharge view and controller
         RechargeDao rechargeDao = new RechargeDao(connectionFactory.getConnection());
+        RechargeController rechargeController = new RechargeController();
 
         
         //Purchase controller
@@ -84,7 +85,9 @@ public class DesktopSchoolStore {
         
         
         //Set Arduino interface
-        serialLector.setPurchaseInterface(studentControllerV2);
+        serialLector.setAuthInterface(authController);
+        serialLector.setRegisterInterface(rechargeController);
+        serialLector.setPurchaseInterface(studentController);
         serialLector.setRechargeInterface(purchaseController);
         
         java.awt.EventQueue.invokeLater(() -> {

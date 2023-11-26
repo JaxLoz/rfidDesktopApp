@@ -18,6 +18,7 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -64,21 +65,36 @@ public class MenuItem extends JPanel {
     private final int bottomGap = 5;
     private boolean menuShow;
     private float animate;
+    private String iconName;
+    private List<JButton> menuItems = new ArrayList<>();
+    private String text;
+    private boolean full;
 
     private PopupSubmenu popup;
 
-    public MenuItem(Menu menu, String menus[], int menuIndex, List<MenuEvent> events) {
+    public MenuItem(Menu menu, String menus[], int menuIndex, String iconName, List<MenuEvent> events) {
         this.menu = menu;
         this.menus = menus;
         this.menuIndex = menuIndex;
         this.events = events;
+        this.iconName = iconName;
         init();
     }
 
-    private Icon getIcon() {
+    public void toggleIcon() {
+        iconName = iconName.equals("rechargeModeActive") ? "purchaseModeActive" : "rechargeModeActive";
+        text = text.equals("Modo (Recarga)") ? "Modo (Venta)" : "Modo (Recarga)";
+        if (full) {
+            menuItems.get(0).setText(text);
+        }
+        menuItems.get(0).setIcon(getIcon(iconName));
+        revalidate();
+    }
+
+    private Icon getIcon(String iconSvg) {
         Color lightColor = FlatUIUtils.getUIColor("Menu.icon.lightColor", Color.red);
         Color darkColor = FlatUIUtils.getUIColor("Menu.icon.darkColor", Color.red);
-        FlatSVGIcon icon = new FlatSVGIcon(getClass().getResource("/icon/svg/" + menuIndex + ".svg"));
+        FlatSVGIcon icon = new FlatSVGIcon(getClass().getResource("/icon/svg/" + iconSvg + ".svg"));
         FlatSVGIcon.ColorFilter f = new FlatSVGIcon.ColorFilter();
         f.add(Color.decode("#969696"), lightColor, darkColor);
         icon.setColorFilter(f);
@@ -91,10 +107,11 @@ public class MenuItem extends JPanel {
                 + "background:$Menu.background;"
                 + "foreground:$Menu.lineColor");
         for (int i = 0; i < menus.length; i++) {
+            text = menus[i];
             JButton menuItem = createButtonItem(menus[i]);
             menuItem.setHorizontalAlignment(menuItem.getComponentOrientation().isLeftToRight() ? JButton.LEADING : JButton.TRAILING);
             if (i == 0) {
-                menuItem.setIcon(getIcon());
+                menuItem.setIcon(getIcon(iconName));
                 menuItem.addActionListener((ActionEvent e) -> {
                     if (menus.length > 1) {
                         if (menu.isMenuFull()) {
@@ -113,6 +130,7 @@ public class MenuItem extends JPanel {
                 });
             }
             add(menuItem);
+            menuItems.add(menuItem);
         }
         popup = new PopupSubmenu(getComponentOrientation(), menu, menuIndex, menus);
     }
@@ -155,13 +173,14 @@ public class MenuItem extends JPanel {
     }
 
     public void setFull(boolean full) {
+        this.full = full;
         if (full) {
             int size = getComponentCount();
             for (int i = 0; i < size; i++) {
                 Component com = getComponent(i);
                 if (com instanceof JButton) {
                     JButton button = (JButton) com;
-                    button.setText(menus[i]);
+                    button.setText(text);
                     button.setHorizontalAlignment(getComponentOrientation().isLeftToRight() ? JButton.LEFT : JButton.RIGHT);
                 }
             }

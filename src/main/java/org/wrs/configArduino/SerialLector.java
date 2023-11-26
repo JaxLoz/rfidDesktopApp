@@ -18,10 +18,12 @@ public class SerialLector implements SerialPortEventListener {
      * recharge is active
      */
     private boolean mode;
+    private boolean isAuthenticated = false;
 
+    private ISerialComunication auth;
+    private ISerialComunication register;
     private ISerialComunication purchase;
     private ISerialComunication recharge;
-    private ISerialComunication updateStudent;
 
     public SerialLector(PanamaHitek_Arduino pha) {
         this.pha = pha;
@@ -32,16 +34,28 @@ public class SerialLector implements SerialPortEventListener {
         this.mode = !this.mode;
     }
 
-    public void setRechargeInterface(ISerialComunication iRecharge) {
-        this.recharge = iRecharge;
+    public void setAuthInterface(ISerialComunication auth) {
+        this.auth = auth;
+    }
+    
+    public void authenticated(boolean isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 
-    public void setPurchaseInterface(ISerialComunication iPurchase) {
-        this.purchase = iPurchase;
+    public boolean isAuthenticated() {
+        return isAuthenticated;
     }
 
-    public void setUpdateStudent(ISerialComunication updateStudent) {
-        this.updateStudent = updateStudent;
+    public void setRegisterInterface(ISerialComunication register) {
+        this.register = register;
+    }
+
+    public void setRechargeInterface(ISerialComunication recharge) {
+        this.recharge = recharge;
+    }
+
+    public void setPurchaseInterface(ISerialComunication purchase) {
+        this.purchase = purchase;
     }
 
     public void startConnectionArduino() {
@@ -54,16 +68,25 @@ public class SerialLector implements SerialPortEventListener {
 
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
+
         try {
             if (serialPortEvent.isRXCHAR() && serialPortEvent.getEventValue() > 0) {
                 if (pha.isMessageAvailable()) {
+                    
                     String data = pha.printMessage();
 
-                    purchase.receiveDataSerialPort(data);
+                    if(!isAuthenticated){
+                        auth.receiveDataSerialPort(data);
+                        return;
+                    }
+                    
+                    register.receiveDataSerialPort(data);
 
-                    recharge.receiveDataSerialPort(data);
-
-                    //updateStudent.receiveDataSerialPort(data);
+                    if (mode) {
+                        purchase.receiveDataSerialPort(data);
+                    } else {
+                        recharge.receiveDataSerialPort(data);
+                    }
                 }
             }
         } catch (SerialPortException | ArduinoException ex) {
