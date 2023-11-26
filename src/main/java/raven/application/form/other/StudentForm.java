@@ -107,6 +107,10 @@ public class StudentForm extends javax.swing.JPanel {
         updateStudentDialog.setVisible(true);
     }
     
+    public void closeUpdateStudentView (){
+        updateStudentDialog.dispose();
+    }
+    
     public void setNewUuid (String uuid){
         updateStudentDialog.updateUuid(uuid);
     }

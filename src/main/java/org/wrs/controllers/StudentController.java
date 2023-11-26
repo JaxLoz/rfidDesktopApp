@@ -28,7 +28,6 @@ public class StudentController implements ActionListener, ISerialComunication {
 
     private void init() {
         refreshStudentTable();
-        studentForm.setActionListener(this);
     }
 
     /**
@@ -63,6 +62,7 @@ public class StudentController implements ActionListener, ISerialComunication {
     public void updateInfoStudent (){
         Student updateStudent = studentForm.getUpdateStudent();
         studentDao.updataStudent(updateStudent);
+        studentForm.closeUpdateStudentView();
     }
 
     /**
@@ -109,6 +109,7 @@ public class StudentController implements ActionListener, ISerialComunication {
             case "ActualizarBtnUpdate" ->{
                 System.out.println("Presionando el boton de actualizar");
                 this.updateInfoStudent();
+                refreshStudentTable();
             }
                 
             case "CancelarStudentCmd" ->
