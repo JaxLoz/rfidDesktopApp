@@ -5,6 +5,7 @@ import org.wrs.models.Purchase;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.wrs.util.Formatter;
 
 public class SellTableModel extends AbstractTableModel {
 
@@ -51,7 +52,7 @@ public class SellTableModel extends AbstractTableModel {
            case 1:
                return sell.getDate();
            case 2:
-               return sell.getTotal();
+               return Formatter.formatCurrency(sell.getTotal());
        }
 
         return sell;
