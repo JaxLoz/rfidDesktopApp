@@ -16,9 +16,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.wrs.view.Application;
-import raven.application.form.other.FormDashboard;
+import raven.application.form.other.RechargeForm;
 import raven.application.form.other.StudentForm;
-import raven.application.form.other.FormRead;
 import raven.application.form.other.PurchaseForm;
 import raven.application.form.other.UserProfileForm;
 import raven.menu.Menu;
@@ -31,35 +30,29 @@ import raven.menu.MenuAction;
 public class MainForm extends JLayeredPane {
 
     //FORMS
-    private final FormRead formRead;
     private final StudentForm studentForm;
-    private final PurchaseForm purcharseForm;
-    private final FormDashboard formDashboard;
+    private final PurchaseForm purchaseForm;
+    private final RechargeForm rechargeForm;
     private final UserProfileForm userProfileForm;
 
     public MainForm() {
         init();
-        formRead = new FormRead();
         studentForm = new StudentForm();
-        purcharseForm = new PurchaseForm();
-        formDashboard = new FormDashboard();
+        purchaseForm = new PurchaseForm();
+        rechargeForm = new RechargeForm();
         userProfileForm = new UserProfileForm();
     }
 
-    public FormDashboard getFormDashboard() {
-        return formDashboard;
+    public RechargeForm getRechargeForm() {
+        return rechargeForm;
     }
 
     public StudentForm getStudentForm() {
         return studentForm;
     }
 
-    public FormRead getFormRead() {
-        return formRead;
-    }
-
-    public PurchaseForm getPurcharseForm() {
-        return purcharseForm;
+    public PurchaseForm getPurchaseForm() {
+        return purchaseForm;
     }
 
     public UserProfileForm getUserProfileForm() {
@@ -106,8 +99,9 @@ public class MainForm extends JLayeredPane {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             switch (index) {
                 case 0 -> Application.showForm(studentForm);
-                case 1 -> Application.showForm(formDashboard);
-                case 2 -> Application.showForm(userProfileForm);
+                case 1 -> Application.showForm(purchaseForm);
+                case 2 -> Application.showForm(rechargeForm);
+                case 3 -> Application.showForm(userProfileForm);
                 case 4 -> Application.logout();
                 default -> action.cancel();
             }

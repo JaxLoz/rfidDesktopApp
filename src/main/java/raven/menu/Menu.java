@@ -47,7 +47,7 @@ public class Menu extends JPanel {
         {"Estudiantes"},
         {"Ventas"},
         {"Recargas"},
-        {"Reportes"},
+        {"Perfil"},
         {"Logout"}
     };
 

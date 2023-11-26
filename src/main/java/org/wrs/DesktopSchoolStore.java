@@ -39,7 +39,7 @@ public class DesktopSchoolStore {
         Application app = Application.getInstance();
         LoginForm loginForm = app.getLoginForm();
         StudentForm studentForm = app.getMainForm().getStudentForm();
-        PurchaseForm purchaseForm = app.getMainForm().getPurcharseForm();
+        PurchaseForm purchaseForm = app.getMainForm().getPurchaseForm();
         UserProfileForm userProfileForm = app.getMainForm().getUserProfileForm();
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
