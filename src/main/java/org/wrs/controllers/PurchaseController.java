@@ -3,9 +3,11 @@ package org.wrs.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import org.wrs.configArduino.ISerialComunication;
 import org.wrs.dao.PurchaseDao;
 import org.wrs.models.Purchase;
+import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
 import org.wrs.view.model.table.SellTableModel;
@@ -25,10 +27,25 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     public PurchaseController(PurchaseForm purchaseForm, PurchaseService purchaseService) {
         this.purchaseForm = purchaseForm;
         this.purchaseService = purchaseService;
+        init();
+    }
+    
+    public void init (){
+        refreshPurchaseTable();
     }
     
     public void refreshPurchaseTable(){
-        //logic to get purchace and present and view
+        
+        PurchaseInfo purchaseCurrentMonth = getPurchaseInfoCurrentMonth();
+        purchaseForm.loadTableSellInfo(purchaseCurrentMonth.getListPurchase());
+    }
+    
+    public PurchaseInfo getPurchaseInfoCurrentMonth (){
+        PurchaseInfo purchaseInforCurrentMonth = null;   
+        String currentDate = String.valueOf(LocalDate.now());
+        purchaseInforCurrentMonth = purchaseService.getPurchaseInfoTo(currentDate);
+         
+        return purchaseInforCurrentMonth;
     }
     
     public void registerPurchase(){
@@ -44,7 +61,6 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         if(studentExists){
             Student student = purchaseService.getStudent(data);
             purchaseForm.loadStudentInRegisterPurchaseView(student);
-            purchaseForm.loadStudentInPurchageForm(student);
             purchaseForm.loadTableSellInfo(purchaseService.getPurchaseList(student));
         }
     }

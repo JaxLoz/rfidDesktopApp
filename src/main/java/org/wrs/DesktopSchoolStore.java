@@ -19,6 +19,7 @@ import org.wrs.controllers.SearchRechargeController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentController;
 import org.wrs.controllers.UserController;
+import org.wrs.dao.PurchaseInfoDao;
 import org.wrs.dao.UserDao;
 import org.wrs.service.AuthService;
 import org.wrs.service.PurchaseService;
@@ -48,8 +49,10 @@ public class DesktopSchoolStore {
 
         UserProfileForm userProfileForm = app.getMainForm().getUserProfileForm();
 
+        //Purchase
         ConnectionFactory connectionFactory = new ConnectionFactory();
         PurchaseDao purchaseDao = new PurchaseDao(connectionFactory.getConnection());
+        PurchaseInfoDao purchaseInfoDao = new PurchaseInfoDao(connectionFactory.getConnection());
 
         //create serial lector and init arduino connection
         SerialLector serialLector = new SerialLector(new PanamaHitek_Arduino());
@@ -82,7 +85,7 @@ public class DesktopSchoolStore {
         rechargeForm.setiSearch(searchRechargeController);
 
         //Purchase controller
-        PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao);
+        PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao, purchaseInfoDao);
         PurchaseController purchaseController = new PurchaseController(purchaseForm, purchaseService);
         purchaseForm.setActionListener(purchaseController);
 
