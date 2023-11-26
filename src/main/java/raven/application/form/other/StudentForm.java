@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import org.wrs.controllers.ISearchStudent;
 import org.wrs.models.Student;
 import org.wrs.view.dialog.RegisterStudentDialog;
+import org.wrs.view.dialog.UpdateStudentDialog;
 import org.wrs.view.model.table.StudentTableModel;
 import raven.toast.Notifications;
 
@@ -21,20 +22,20 @@ public class StudentForm extends javax.swing.JPanel {
     private ISearchStudent iSearchStudent;
     private final StudentTableModel studentTableModel;
     private final RegisterStudentDialog registerStudentDialog;
+    private final UpdateStudentDialog updateStudentDialog;
 
     public StudentForm() {
         initComponents();
         studentTableModel = new StudentTableModel();
         registerStudentDialog = new RegisterStudentDialog(null);
+        updateStudentDialog = new UpdateStudentDialog(null);
         init();
     }
 
     private void init() {
         studentTable.setModel(studentTableModel);
 
-        updateBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
+        updateBtn.putClientProperty(FlatClientProperties.STYLE, "");
 
         Timer timer = new Timer(500, (ActionEvent e) -> {
             String searchText = searchTxt.getText();
@@ -65,8 +66,12 @@ public class StudentForm extends javax.swing.JPanel {
 
     public void setActionListener(ActionListener actionListener) {
         updateBtn.addActionListener(actionListener);
+        refreshbtn.addActionListener(actionListener);
         registerStudentDialog.setActionListener(actionListener);
+        updateStudentDialog.setActinListener(actionListener);
     }
+    
+    
 
     public void setISearchStudent(ISearchStudent iSearchStudent) {
         this.iSearchStudent = iSearchStudent;
@@ -82,10 +87,34 @@ public class StudentForm extends javax.swing.JPanel {
     }
 
     public void showRegisterStudentView(String uuid) {
+        registerStudentDialog.cleanField();
         registerStudentDialog.setUuid(uuid);
         registerStudentDialog.setVisible(true);
     }
-
+    
+    public void closeRegisterStudentView (){
+        registerStudentDialog.dispose();
+    }
+    
+    public Student getNewStudentRegister () throws RuntimeException{
+        return registerStudentDialog.getNewStudent();
+    }
+    
+    public void showUpdateStudenView (){
+        Student studentSelect = this.getStudentFromTable();
+        System.out.println("id del estudiante seleccionado : "+studentSelect.getId());
+        updateStudentDialog.setInfoStudent(studentSelect);
+        updateStudentDialog.setVisible(true);
+    }
+    
+    public void setNewUuid (String uuid){
+        updateStudentDialog.updateUuid(uuid);
+    }
+    
+    public Student getUpdateStudent (){
+        return updateStudentDialog.getInfoUpdateStudent();
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -95,6 +124,7 @@ public class StudentForm extends javax.swing.JPanel {
         updateBtn = new javax.swing.JButton();
         searchTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        refreshbtn = new javax.swing.JButton();
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -137,13 +167,21 @@ public class StudentForm extends javax.swing.JPanel {
         jScrollPane1.setViewportView(studentTable);
 
         updateBtn.setText("Actualizar");
-        updateBtn.setActionCommand("refreshStudentTableCmd");
+        updateBtn.setActionCommand("updateStudentRfidCmd");
 
         jButton1.setText("Nuevo");
-        jButton1.setActionCommand("");
+        jButton1.setActionCommand("newButtonStudent");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        refreshbtn.setText("Refresh");
+        refreshbtn.setActionCommand("RefreshTableStudent");
+        refreshbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshbtnActionPerformed(evt);
             }
         });
 
@@ -157,7 +195,9 @@ public class StudentForm extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                        .addComponent(refreshbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(updateBtn)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -170,7 +210,8 @@ public class StudentForm extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateBtn)
                     .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(refreshbtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addContainerGap())
@@ -182,9 +223,14 @@ public class StudentForm extends javax.swing.JPanel {
         Notifications.getInstance().show(Notifications.Type.WARNING, Notifications.Location.TOP_CENTER, "Antes de registrar un estudiante, por favor pase el llavero por el lector");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void refreshbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshbtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_refreshbtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton refreshbtn;
     private javax.swing.JTextField searchTxt;
     private javax.swing.JTable studentTable;
     private javax.swing.JButton updateBtn;

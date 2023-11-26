@@ -51,7 +51,8 @@ public class RechargeDao {
                         resultSetSelect.getString(3),
                         resultSetSelect.getString(4),
                         resultSetSelect.getString(5),
-                        resultSetSelect.getString(6)
+                        resultSetSelect.getString(6),
+                        resultSetSelect.getString(7)
                 );
             }
 
