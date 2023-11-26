@@ -46,14 +46,18 @@ public class StudentTableModel extends AbstractTableModel {
         Student student = studentList.get(rowIndex);
 
         switch (columnIndex){
-            case 0:
+            case 0 -> {
                 return student.getIdentification();
-            case 1:
+            }
+            case 1 -> {
                 return student.getFirtsName();
-            case 2:
+            }
+            case 2 -> {
                 return student.getLastName();
-            case 3:
+            }
+            case 3 -> {
                 return student.getBalance();
+            }
         }
 
         return student;

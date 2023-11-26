@@ -12,8 +12,8 @@ public class Recharge {
     private String status;
     private String transactionId;
     private String phone;
-
     private Student student;
+    
 
     public Recharge() {
         status = "REALIZADO";
