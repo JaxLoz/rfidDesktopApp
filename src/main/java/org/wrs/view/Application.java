@@ -69,6 +69,7 @@ public class Application extends javax.swing.JFrame {
     public static void login(User user) {
         getInstance().setUser(user);
         getInstance().setTitle();
+        getInstance().getMainForm().getUserProfileForm().setUser(user);
         FlatAnimatedLafChange.showSnapshot();
         getInstance().setContentPane(getInstance().mainForm);
         getInstance().mainForm.applyComponentOrientation(getInstance().getComponentOrientation());

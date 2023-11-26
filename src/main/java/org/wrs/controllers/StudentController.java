@@ -62,8 +62,6 @@ public class StudentController implements ActionListener, ISerialComunication {
     @Override
     public void actionPerformed(ActionEvent e) {
         String commad = e.getActionCommand();
-
-        refreshStudentTable();
         switch (commad) {
             case "refreshStudentTableCmd" ->
                 refreshStudentTable();

@@ -2,9 +2,9 @@ package org.wrs.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.mindrot.jbcrypt.BCrypt;
 import org.wrs.dao.UserDao;
 import org.wrs.models.User;
+import org.wrs.util.PasswordUtil;
 import org.wrs.view.Application;
 import raven.application.form.LoginForm;
 import raven.toast.Notifications;
@@ -17,17 +17,19 @@ public class AuthController implements ActionListener{
     public AuthController(UserDao userDao, LoginForm loginForm) {
         this.userDao = userDao;
         this.loginForm = loginForm;
+        init();
     }
     
-    private boolean verifyPassword(String plainTextPassword, String hashedPassword) {
-        return BCrypt.checkpw(plainTextPassword, hashedPassword);
+    private void init(){
+        loginForm.setActionListener(this);
     }
 
     private void login(){
         try {
             User user = loginForm.getUserDataFromForm();
-            User userLogged = userDao.getUserByUsername(user.getUsername(), user.getPassword());
-            boolean isLoginSuccessful = verifyPassword(user.getPassword(), userLogged.getPassword());
+            User userLogged = userDao.getUserByUsername(user.getUsername());
+            boolean isLoginSuccessful = PasswordUtil.verifyPassword(user.getPassword(), userLogged.getPassword());
+            System.out.println("password login: " + user.getPassword());
             if(!isLoginSuccessful){
                 throw new RuntimeException("¡credenciales incorrectas!");
             }

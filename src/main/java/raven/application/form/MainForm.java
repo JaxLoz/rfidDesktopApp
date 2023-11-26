@@ -20,6 +20,7 @@ import raven.application.form.other.FormDashboard;
 import raven.application.form.other.StudentForm;
 import raven.application.form.other.FormRead;
 import raven.application.form.other.PurchaseForm;
+import raven.application.form.other.UserProfileForm;
 import raven.menu.Menu;
 import raven.menu.MenuAction;
 
@@ -34,6 +35,7 @@ public class MainForm extends JLayeredPane {
     private final StudentForm studentForm;
     private final PurchaseForm purcharseForm;
     private final FormDashboard formDashboard;
+    private final UserProfileForm userProfileForm;
 
     public MainForm() {
         init();
@@ -41,6 +43,7 @@ public class MainForm extends JLayeredPane {
         studentForm = new StudentForm();
         purcharseForm = new PurchaseForm();
         formDashboard = new FormDashboard();
+        userProfileForm = new UserProfileForm();
     }
 
     public FormDashboard getFormDashboard() {
@@ -57,6 +60,10 @@ public class MainForm extends JLayeredPane {
 
     public PurchaseForm getPurcharseForm() {
         return purcharseForm;
+    }
+
+    public UserProfileForm getUserProfileForm() {
+        return userProfileForm;
     }
     
     private void init() {
@@ -100,7 +107,7 @@ public class MainForm extends JLayeredPane {
             switch (index) {
                 case 0 -> Application.showForm(studentForm);
                 case 1 -> Application.showForm(formDashboard);
-                case 2 -> Application.showForm(formRead);
+                case 2 -> Application.showForm(userProfileForm);
                 case 4 -> Application.logout();
                 default -> action.cancel();
             }

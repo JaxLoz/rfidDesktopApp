@@ -73,8 +73,8 @@ public class StudentForm extends javax.swing.JPanel {
     }
 
     public Student getStudentFromTable() {
-        int selectRow = studentTable.getSelectedRow();
-        return studentTableModel.getStudentOfList(selectRow);
+        int selectedRow = studentTable.getSelectedRow();
+        return studentTableModel.getStudentOfList(selectedRow);
     }
 
     public void setListStudentTableModel(List<Student> students) {
