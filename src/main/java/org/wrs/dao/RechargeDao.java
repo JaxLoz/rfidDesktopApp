@@ -5,6 +5,7 @@ import org.wrs.models.Student;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,22 +64,60 @@ public class RechargeDao {
         return recharges;
     }
 
-    public List<Recharge> filterBetweenDate(String dateFrom, String dateTo) {
+    public List<Recharge> filterRecharge(String startDate, String endDate, String specificDate, String paymentType, String studentName, boolean confirmed) {
 
         List<Recharge> recharges = new ArrayList<>();
 
-        String sql = "SELECT r.id, r.amount, r.date, r.is_confirmed, r.payment_type, "
-                + "r.status, r.transaction_id, r.phone, s.id as student_id, "
-                + "s.first_name, s.last_name "
-                + "FROM recharge r "
-                + "INNER JOIN student s ON r.student_id = s.id "
-                + "WHERE r.date BETWEEN ? AND ?::timestamp + interval '1 day' "
-                + "ORDER BY r.date DESC;";
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append("SELECT r.id, r.amount, r.date, r.is_confirmed, r.payment_type, ")
+                .append("r.status, r.transaction_id, r.phone, s.id as student_id, ")
+                .append("s.first_name, s.last_name ")
+                .append("FROM recharge r ")
+                .append("INNER JOIN student s ON r.student_id = s.id ")
+                .append("WHERE 1 = 1 ");
 
-        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql);) {
+        if (startDate != null && endDate != null) {
+            sqlBuilder.append("AND r.date BETWEEN ? AND ? ");
+        }
 
-            statement.setString(1, dateFrom);
-            statement.setString(2, dateTo);
+        if (specificDate != null) {
+            sqlBuilder.append("AND DATE(r.date) = ? ");
+        }
+
+        if (paymentType != null) {
+            sqlBuilder.append("AND r.payment_type = ? ");
+        }
+
+        if (studentName != null) {
+            sqlBuilder.append("AND CONCAT(s.first_name, ' ', s.last_name) LIKE ? ");
+        }
+
+        if (confirmed) {
+            sqlBuilder.append("AND r.is_confirmed = true ");
+        }
+
+        sqlBuilder.append("ORDER BY r.date DESC");
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sqlBuilder.toString());) {
+
+            int parameterIndex = 1;
+
+            if (startDate != null && endDate != null) {
+                statement.setDate(parameterIndex++, Date.valueOf(startDate));
+                statement.setDate(parameterIndex++, Date.valueOf(endDate));
+            }
+
+            if (specificDate != null) {
+                statement.setDate(parameterIndex++, Date.valueOf(specificDate));
+            }
+
+            if (paymentType != null) {
+                statement.setString(parameterIndex++, paymentType);
+            }
+
+            if (studentName != null) {
+                statement.setString(parameterIndex++, "%" + studentName + "%");
+            }
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

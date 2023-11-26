@@ -9,7 +9,7 @@ import raven.application.form.other.StudentForm;
  *
  * @author C.Mateo
  */
-public class SearchStudentController implements ISearchStudent{
+public class SearchStudentController implements ISearch{
     
     private final StudentForm studentForm;
     private final StudentDao studentDao;
@@ -25,7 +25,8 @@ public class SearchStudentController implements ISearchStudent{
     }
 
     @Override
-    public void searchStudent(String key) {
+    public void search(String key) {
+        System.out.println(key);
         List<Student> students = studentDao.searchStudent(key);
         studentForm.setListStudentTableModel(students);
     }

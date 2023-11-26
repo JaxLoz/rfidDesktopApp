@@ -27,6 +27,10 @@ public class RechargeService {
     public Student getStudent(String uuid) {
         return studentDao.getStudent(uuid);
     }
+    
+    public List<Recharge> filterRecharge(String starDate, String endDate, String specificDate, String paymentType, String studentName, boolean isConfirmed){
+        return rechargeDao.filterRecharge(starDate, endDate, specificDate, paymentType, studentName, isConfirmed);
+    }
 
     public void registerPurchase(Recharge recharge) {
         rechargeDao.save(recharge);

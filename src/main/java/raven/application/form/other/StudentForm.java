@@ -5,12 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.Timer;
-import org.wrs.controllers.ISearchStudent;
 import org.wrs.models.Student;
 import org.wrs.view.dialog.RegisterStudentDialog;
 import org.wrs.view.dialog.UpdateStudentDialog;
 import org.wrs.view.model.table.StudentTableModel;
 import raven.toast.Notifications;
+import org.wrs.controllers.ISearch;
 
 /**
  *
@@ -19,7 +19,7 @@ import raven.toast.Notifications;
 public class StudentForm extends javax.swing.JPanel {
 
     private String uuid = null;
-    private ISearchStudent iSearchStudent;
+    private ISearch iSearchStudent;
     private final StudentTableModel studentTableModel;
     private final RegisterStudentDialog registerStudentDialog;
     private final UpdateStudentDialog updateStudentDialog;
@@ -39,7 +39,7 @@ public class StudentForm extends javax.swing.JPanel {
 
         Timer timer = new Timer(500, (ActionEvent e) -> {
             String searchText = searchTxt.getText();
-            iSearchStudent.searchStudent(searchText);
+            iSearchStudent.search(searchText);
         });
 
         timer.setRepeats(false);
@@ -73,7 +73,7 @@ public class StudentForm extends javax.swing.JPanel {
     
     
 
-    public void setISearchStudent(ISearchStudent iSearchStudent) {
+    public void setISearchStudent(ISearch iSearchStudent) {
         this.iSearchStudent = iSearchStudent;
     }
 

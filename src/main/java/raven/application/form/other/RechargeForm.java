@@ -6,8 +6,10 @@ import com.raven.datechooser.DateChooser;
 import com.raven.datechooser.listener.DateChooserAction;
 import com.raven.datechooser.listener.DateChooserAdapter;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import org.wrs.controllers.ISearch;
 import org.wrs.models.Recharge;
 import org.wrs.models.Student;
 import org.wrs.view.model.table.RechargeStatusTableCellRenderer;
@@ -19,6 +21,7 @@ import org.wrs.view.model.table.RechargeTableModel;
  */
 public class RechargeForm extends javax.swing.JPanel {
 
+    private ISearch iSearch;
     private final DateChooser dateChooser;
     private final RechargeTableModel rechargeTableModel;
 
@@ -29,17 +32,26 @@ public class RechargeForm extends javax.swing.JPanel {
         rechargeTable.setModel(rechargeTableModel);
         init();
     }
+    
+    public void setiSearch(ISearch iSearch) {
+        this.iSearch = iSearch;
+    }
 
     private void init() {
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
         searchRechargeTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "buscar por nombre del estudiante");
+        
+        //DATE CHOOSER 
         dateChooser.setTextField(dateFilterTxt);
         rechargeTable.getColumn("Estado").setCellRenderer(new RechargeStatusTableCellRenderer());
         dateChooser.addActionDateChooserListener(new DateChooserAdapter() {
             @Override
             public void dateChanged(Date date, DateChooserAction action) {
-                System.out.println(date);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String selectedDate = df.format(date);
+                iSearch.search(selectedDate);
+                System.out.println("fecha: "+date+", fecha seleccionada: " + selectedDate);
             }
             
             @Override
