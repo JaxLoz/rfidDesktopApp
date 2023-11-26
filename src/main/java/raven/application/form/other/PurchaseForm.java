@@ -20,11 +20,12 @@ public class PurchaseForm extends javax.swing.JPanel {
     
     private final RegisterPurchaseDialog registerPurchaseDialog;
     private SellTableModel selltableModel;
-    private DateChooser chDate = new DateChooser();
+    private DateChooser chDate;
 
     
     public PurchaseForm() {
         initComponents();
+        chDate = new DateChooser();
         selltableModel = new SellTableModel();
         registerPurchaseDialog = new RegisterPurchaseDialog(null);
        
@@ -34,10 +35,27 @@ public class PurchaseForm extends javax.swing.JPanel {
     public void init(){
         purchaseTable.setModel(selltableModel);
         chDate.setTextField(txtCalendar);
-        chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
+        //chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
         chDate.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         
+        
+        
         txtCalendar.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Establesca el rango de fechas");
+        
+    }
+    
+    public void SetModeDateChoose (){
+        
+        if (checkModeRange.isSelected()){
+           chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
+            System.out.println("Rango");
+        }else{
+            chDate.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
+            System.out.println("Single");
+        }
+        
+        chDate.revalidate();
+        chDate.repaint();
         
     }
     
@@ -90,6 +108,7 @@ public class PurchaseForm extends javax.swing.JPanel {
         lblNumberPurchase = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
+        checkModeRange = new javax.swing.JCheckBox();
 
         purchaseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,6 +134,13 @@ public class PurchaseForm extends javax.swing.JPanel {
         lblTotal.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
         lblTotal.setText("jLabel2");
 
+        checkModeRange.setText("Modo de rangos");
+        checkModeRange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkModeRangeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,14 +148,13 @@ public class PurchaseForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 978, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
+                        .addGap(32, 32, 32)
                         .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSearchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(135, 135, 135)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkModeRange)
+                        .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -138,36 +163,46 @@ public class PurchaseForm extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblNumberPurchase)))))
+                                .addComponent(lblNumberPurchase))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 978, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lblNumberPurchase))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblNumberPurchase))
                         .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(lblTotal))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchDate))))
+                            .addComponent(btnSearchDate)
+                            .addComponent(checkModeRange))
+                        .addGap(42, 42, 42)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkModeRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkModeRangeActionPerformed
+        // TODO add your handling code here:
+        SetModeDateChoose ();
+    }//GEN-LAST:event_checkModeRangeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearchDate;
+    private javax.swing.JCheckBox checkModeRange;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
