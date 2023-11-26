@@ -11,8 +11,7 @@ public class ConnectionFactory {
 
     public ConnectionFactory(){
         ComboPooledDataSource poolDataSource = new ComboPooledDataSource();
-        //holasasasdfasldfjlaskdjfklasdf
-
+       
         String url = PropertiesUtil.getProperty("db.url");
         String user = PropertiesUtil.getProperty("db.username");
         String password = PropertiesUtil.getProperty("db.password");

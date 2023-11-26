@@ -1,5 +1,9 @@
 package org.wrs.service;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import org.wrs.dao.PurchaseDao;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Purchase;
@@ -30,6 +34,12 @@ public class PurchaseService {
     public void registerPurchase(Student student, Purchase purchase){
         //body method to register purchase
         purchaseDao.createPurchase(student, purchase);
+    }
+    
+    public List<Purchase> getPurchaseList (Student student){
+        List<Purchase> purchaseList = new ArrayList<>();
+        purchaseList = purchaseDao.sellList(student);
+        return purchaseList;
     }
   
 }
