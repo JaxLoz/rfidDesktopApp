@@ -5,6 +5,7 @@ import org.wrs.models.Student;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.wrs.util.Formatter;
 
 public class StudentTableModel extends AbstractTableModel {
 
@@ -56,7 +57,7 @@ public class StudentTableModel extends AbstractTableModel {
                 return student.getLastName();
             }
             case 3 -> {
-                return student.getBalance();
+                return Formatter.formatCurrency(student.getBalance());
             }
         }
 

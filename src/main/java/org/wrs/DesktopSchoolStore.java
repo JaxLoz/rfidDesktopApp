@@ -25,6 +25,7 @@ import org.wrs.dao.UserDao;
 import org.wrs.service.AuthService;
 import org.wrs.service.PurchaseService;
 import org.wrs.service.RechargeService;
+import org.wrs.util.Formatter;
 import org.wrs.view.Application;
 import raven.application.form.LoginForm;
 import raven.application.form.other.PurchaseForm;
@@ -35,7 +36,7 @@ import raven.application.form.other.UserProfileForm;
 public class DesktopSchoolStore {
 
     public static void main(String[] args) {
-
+        
         FlatRobotoFont.install();
         FlatLaf.registerCustomDefaultsSource("raven.theme");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
