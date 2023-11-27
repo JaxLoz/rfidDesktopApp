@@ -4,6 +4,7 @@ import java.util.List;
 import org.wrs.dao.RechargeDao;
 import org.wrs.dao.StudentDao;
 import org.wrs.models.Recharge;
+import org.wrs.models.RechargeFilter;
 import org.wrs.models.Student;
 
 public class RechargeService {
@@ -28,11 +29,11 @@ public class RechargeService {
         return studentDao.getStudent(uuid);
     }
     
-    public List<Recharge> filterRecharge(String starDate, String endDate, String specificDate, String paymentType, String studentName, boolean isConfirmed){
-        return rechargeDao.filterRecharge(starDate, endDate, specificDate, paymentType, studentName, isConfirmed);
+    public List<Recharge> filterRecharge(RechargeFilter filterRecharge){
+        return rechargeDao.filterRecharge(filterRecharge);
     }
 
-    public void registerPurchase(Recharge recharge) {
+    public void registerRecharge(Recharge recharge) {
         rechargeDao.save(recharge);
     }
 

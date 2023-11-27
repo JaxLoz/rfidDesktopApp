@@ -1,6 +1,7 @@
 package org.wrs.util;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -21,5 +22,11 @@ public class Formatter {
     public static String formatDate(String date) {
         LocalDateTime fecha = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS"));
         return fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", locale));
+    }
+    
+    public static String currentDate(){
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return currentDate.format(formatter);
     }
 }

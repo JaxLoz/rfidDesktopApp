@@ -15,7 +15,6 @@ import javax.swing.*;
 import org.wrs.controllers.AuthController;
 import org.wrs.controllers.PurchaseController;
 import org.wrs.controllers.RechargeController;
-import org.wrs.controllers.SearchRechargeController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentController;
 import org.wrs.controllers.UserController;
@@ -39,7 +38,7 @@ public class DesktopSchoolStore {
         FlatLaf.registerCustomDefaultsSource("raven.theme");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatMacLightLaf.setup();
-
+        
         //MainJFrame and Forms
         Application app = Application.getInstance();
         LoginForm loginForm = app.getLoginForm();
@@ -81,8 +80,7 @@ public class DesktopSchoolStore {
         RechargeDao rechargeDao = new RechargeDao(connectionFactory.getConnection());
         RechargeService rechargeService = new RechargeService(studentDao, rechargeDao);
         RechargeController rechargeController = new RechargeController(rechargeService, rechargeForm);
-        SearchRechargeController searchRechargeController = new SearchRechargeController(rechargeForm, rechargeService);
-        rechargeForm.setiSearch(searchRechargeController);
+        
 
         //Purchase controller
         PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao, purchaseInfoDao);

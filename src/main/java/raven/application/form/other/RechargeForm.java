@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import org.wrs.controllers.ISearch;
 import org.wrs.models.Recharge;
+import org.wrs.models.RechargeFilter;
 import org.wrs.models.Student;
+import org.wrs.util.Formatter;
+import org.wrs.view.dialog.RegisterRechargeDialog;
 import org.wrs.view.model.table.RechargeStatusTableCellRenderer;
 import org.wrs.view.model.table.RechargeTableModel;
 
@@ -21,52 +23,116 @@ import org.wrs.view.model.table.RechargeTableModel;
  */
 public class RechargeForm extends javax.swing.JPanel {
 
-    private ISearch iSearch;
+    private boolean filterByName = false;
+    private boolean filterByPaymentType = false;
+    private boolean filterByStatus = false;
+    private boolean filterByDate = true;
+
+    private String specificDate = Formatter.currentDate();
+    private String fromDate;
+    private String toDate;
+
     private final DateChooser dateChooser;
     private final RechargeTableModel rechargeTableModel;
+
+    private final RegisterRechargeDialog registerRechargeDialog;
 
     public RechargeForm() {
         initComponents();
         dateChooser = new DateChooser();
         rechargeTableModel = new RechargeTableModel();
         rechargeTable.setModel(rechargeTableModel);
+        registerRechargeDialog = new RegisterRechargeDialog(null);
         init();
-    }
-    
-    public void setiSearch(ISearch iSearch) {
-        this.iSearch = iSearch;
     }
 
     private void init() {
         lb.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
-        searchRechargeTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "buscar por nombre del estudiante");
-        
-        //DATE CHOOSER 
+        searchRechargeByStudentTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "buscar por nombre del estudiante");
+
         dateChooser.setTextField(dateFilterTxt);
         rechargeTable.getColumn("Estado").setCellRenderer(new RechargeStatusTableCellRenderer());
+
+        //DATE CHOOSER 
         dateChooser.addActionDateChooserListener(new DateChooserAdapter() {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
             @Override
             public void dateChanged(Date date, DateChooserAction action) {
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                String selectedDate = df.format(date);
-                iSearch.search(selectedDate);
-                System.out.println("fecha: "+date+", fecha seleccionada: " + selectedDate);
+                specificDate = df.format(date);
+                fromDate = null;
+                toDate = null;
             }
-            
+
             @Override
             public void dateBetweenChanged(DateBetween date, DateChooserAction action) {
-                System.out.println(date.getFromDate() + " " + date.getToDate());
+                fromDate = df.format(date.getFromDate());
+                toDate = df.format(date.getToDate());
+                specificDate = null;
             }
         });
+
     }
 
     public void setActionListener(ActionListener actionListener) {
         updataRechargeTableBtn.addActionListener(actionListener);
+        filterRechargeTableBtn.addActionListener(actionListener);
+        registerRechargeDialog.setActionListener(actionListener);
+
+    }
+    
+    public Recharge getRechargeFromForm(){
+        return registerRechargeDialog.getRechargeFromForm();
+    }
+
+    public RechargeFilter getDataFromFilter() {
+
+        RechargeFilter rechargeFilter = new RechargeFilter();
+
+        if (!filterByName && !filterByPaymentType && !filterByStatus && !filterByDate && !paymentConfirmedCheckBox.isSelected()) {
+            throw new RuntimeException("¡No hay filtro activo!");
+        }
+
+        if (filterByName) {
+            String student = searchRechargeByStudentTxt.getText();
+            if (student.isEmpty()) {
+                throw new RuntimeException("¡El filtro por nombre de estudiante esta activo y vacio!");
+            }
+            rechargeFilter.setStudentName(student);
+        }
+
+        if (filterByPaymentType) {
+            String paymentType = (String) paymentTypeComboBox.getSelectedItem();
+            rechargeFilter.setPaymentType(paymentType);
+        }
+
+        if (filterByStatus) {
+            String status = (String) statusComboBox.getSelectedItem();
+            rechargeFilter.setStatus(status);
+        }
+
+        if (filterByDate) {
+            if (specificDate != null) {
+                rechargeFilter.setSpecificDate(specificDate);
+            } else if (fromDate == null && toDate == null) {
+                throw new RuntimeException("¡La busqueda por rango de fecha esta activa y no se a registrado!");
+            } else if (!fromDate.isEmpty() && !toDate.isEmpty()) {
+                rechargeFilter.setFromDate(fromDate);
+                rechargeFilter.setToDate(toDate);
+            } else {
+                throw new RuntimeException("¡Por favor, marque la fecha a buscar!");
+            }
+        }
+
+        rechargeFilter.setIsConfirmed(paymentConfirmedCheckBox.isSelected());
+
+        return rechargeFilter;
     }
 
     public void showRegisterRechargetDialog(Student student) {
-
+        registerRechargeDialog.setStudent(student);
+        registerRechargeDialog.setVisible(true);
     }
 
     public void setListRechargeTableModel(List<Recharge> recharges) {
@@ -83,8 +149,17 @@ public class RechargeForm extends javax.swing.JPanel {
         updataRechargeTableBtn = new javax.swing.JButton();
         dateFilterTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        searchRechargeTxt = new javax.swing.JTextField();
+        searchRechargeByStudentTxt = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
+        paymentTypeComboBox = new javax.swing.JComboBox<>();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        statusComboBox = new javax.swing.JComboBox<>();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        filterRechargeTableBtn = new javax.swing.JButton();
+        paymentConfirmedCheckBox = new javax.swing.JCheckBox();
+        jCheckBox6 = new javax.swing.JCheckBox();
+        jSeparator1 = new javax.swing.JSeparator();
 
         lb.setText("Recargas");
 
@@ -101,56 +176,146 @@ public class RechargeForm extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(rechargeTable);
 
-        updataRechargeTableBtn.setText("Actualizar");
+        updataRechargeTableBtn.setText("Mostrar Todo");
         updataRechargeTableBtn.setActionCommand("updateRechargeTableCmd");
+        updataRechargeTableBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updataRechargeTableBtnActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Cambiar Modo Seleccion de Fecha");
+        jButton1.setText("Modo");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jCheckBox1.setText("Filtrar por Fecha");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        paymentTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "NEQUI", "EFECTIVO" }));
+
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox3.setSelected(true);
+        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox3ActionPerformed(evt);
+            }
+        });
+
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PENDIENTE", "CADUCADA", "REALIZADO" }));
+
+        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox4ActionPerformed(evt);
+            }
+        });
+
+        filterRechargeTableBtn.setText("Filtrar");
+        filterRechargeTableBtn.setActionCommand("filterRechargeTableCmd");
+        filterRechargeTableBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterRechargeTableBtnActionPerformed(evt);
+            }
+        });
+
+        paymentConfirmedCheckBox.setText("PAGO CONFIRMADO");
+        paymentConfirmedCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        paymentConfirmedCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        paymentConfirmedCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paymentConfirmedCheckBoxActionPerformed(evt);
+            }
+        });
+
+        jCheckBox6.setSelected(true);
+        jCheckBox6.setText("Active los checkboxes para aplicar los filtros de búsqueda.");
+        jCheckBox6.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchRechargeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(dateFilterTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(updataRechargeTableBtn))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
-                        .addGap(253, 253, 253))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(20, 20, 20))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(668, 668, 668))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(filterRechargeTableBtn)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jCheckBox6))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(searchRechargeByStudentTxt)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jCheckBox1)
+                                        .addGap(30, 30, 30)
+                                        .addComponent(paymentTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jCheckBox2)
+                                        .addGap(30, 30, 30)
+                                        .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jCheckBox4)
+                                        .addGap(30, 30, 30)
+                                        .addComponent(dateFilterTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jCheckBox3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(paymentConfirmedCheckBox))
+                                    .addComponent(updataRechargeTableBtn))
+                                .addContainerGap(10, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(8, 8, 8)
                 .addComponent(lb)
-                .addGap(20, 20, 20)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchRechargeByStudentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(paymentTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dateFilterTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox2)
+                    .addComponent(jCheckBox3)
+                    .addComponent(jCheckBox4)
+                    .addComponent(jCheckBox1)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(paymentConfirmedCheckBox))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(updataRechargeTableBtn)
-                    .addComponent(dateFilterTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(searchRechargeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
+                    .addComponent(updataRechargeTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox6)
+                    .addComponent(filterRechargeTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -165,14 +330,56 @@ public class RechargeForm extends javax.swing.JPanel {
         dateChooser.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void filterRechargeTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterRechargeTableBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filterRechargeTableBtnActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+        filterByName = !filterByName;
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void updataRechargeTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updataRechargeTableBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updataRechargeTableBtnActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+        filterByPaymentType = !filterByPaymentType;
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
+        // TODO add your handling code here:
+        filterByStatus = !filterByStatus;
+    }//GEN-LAST:event_jCheckBox4ActionPerformed
+
+    private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
+        // TODO add your handling code here:
+        filterByDate = !filterByDate;
+    }//GEN-LAST:event_jCheckBox3ActionPerformed
+
+    private void paymentConfirmedCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentConfirmedCheckBoxActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_paymentConfirmedCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField dateFilterTxt;
+    private javax.swing.JButton filterRechargeTableBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lb;
+    private javax.swing.JCheckBox paymentConfirmedCheckBox;
+    private javax.swing.JComboBox<String> paymentTypeComboBox;
     private javax.swing.JTable rechargeTable;
-    private javax.swing.JTextField searchRechargeTxt;
+    private javax.swing.JTextField searchRechargeByStudentTxt;
+    private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JButton updataRechargeTableBtn;
     // End of variables declaration//GEN-END:variables
 

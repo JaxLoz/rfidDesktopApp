@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.wrs.models.RechargeFilter;
 
 public class RechargeDao {
 
@@ -64,7 +65,7 @@ public class RechargeDao {
         return recharges;
     }
 
-    public List<Recharge> filterRecharge(String startDate, String endDate, String specificDate, String paymentType, String studentName, boolean confirmed) {
+    public List<Recharge> filterRecharge(RechargeFilter filterRecharge) {
 
         List<Recharge> recharges = new ArrayList<>();
 
@@ -76,24 +77,28 @@ public class RechargeDao {
                 .append("INNER JOIN student s ON r.student_id = s.id ")
                 .append("WHERE 1 = 1 ");
 
-        if (startDate != null && endDate != null) {
-            sqlBuilder.append("AND r.date BETWEEN ? AND ? ");
+        if (filterRecharge.getFromDate() != null && filterRecharge.getToDate() != null) {
+            sqlBuilder.append("AND (r.date >= ? AND r.date <= ?::timestamp + interval '1 day') ");
         }
 
-        if (specificDate != null) {
+        if (filterRecharge.getSpecificDate() != null) {
             sqlBuilder.append("AND DATE(r.date) = ? ");
         }
 
-        if (paymentType != null) {
+        if (filterRecharge.getPaymentType() != null) {
             sqlBuilder.append("AND r.payment_type = ? ");
         }
 
-        if (studentName != null) {
-            sqlBuilder.append("AND CONCAT(s.first_name, ' ', s.last_name) LIKE ? ");
+        if (filterRecharge.getStudentName() != null) {
+            sqlBuilder.append("AND CONCAT(s.first_name, ' ', s.last_name) ILIKE ? ");
         }
 
-        if (confirmed) {
+        if (filterRecharge.isIsConfirmed()) {
             sqlBuilder.append("AND r.is_confirmed = true ");
+        }
+        
+        if (filterRecharge.getStatus() != null) {
+            sqlBuilder.append("AND r.status = ? ");
         }
 
         sqlBuilder.append("ORDER BY r.date DESC");
@@ -102,23 +107,28 @@ public class RechargeDao {
 
             int parameterIndex = 1;
 
-            if (startDate != null && endDate != null) {
-                statement.setDate(parameterIndex++, Date.valueOf(startDate));
-                statement.setDate(parameterIndex++, Date.valueOf(endDate));
+            if (filterRecharge.getFromDate() != null && filterRecharge.getToDate() != null) {
+                statement.setDate(parameterIndex++, Date.valueOf(filterRecharge.getFromDate()));
+                statement.setDate(parameterIndex++, Date.valueOf(filterRecharge.getToDate()));
             }
 
-            if (specificDate != null) {
-                statement.setDate(parameterIndex++, Date.valueOf(specificDate));
+            if (filterRecharge.getSpecificDate() != null) {
+                statement.setDate(parameterIndex++, Date.valueOf(filterRecharge.getSpecificDate()));
             }
 
-            if (paymentType != null) {
-                statement.setString(parameterIndex++, paymentType);
+            if (filterRecharge.getPaymentType() != null) {
+                statement.setString(parameterIndex++, filterRecharge.getPaymentType());
             }
 
-            if (studentName != null) {
-                statement.setString(parameterIndex++, "%" + studentName + "%");
+            if (filterRecharge.getStudentName() != null) {
+                statement.setString(parameterIndex++, "%" + filterRecharge.getStudentName() + "%");
             }
 
+            if (filterRecharge.getStatus() != null) {
+                System.out.println(filterRecharge.getStatus());
+                statement.setString(parameterIndex++, filterRecharge.getStatus());
+            }
+            
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Student student = new Student(
@@ -157,7 +167,7 @@ public class RechargeDao {
     public Student save(Recharge recharge) {
 
         Student student = null;
-        String sqlRecharge = "insert into recharge (amount, date, is_confirmed, payment_type, status, student_id, transaction_id) values (?, CURRENT_TIMESTAMP, TRUE, 'EFECTIVO', 'REALIZADO', ?, 'N/A')";
+        String sqlRecharge = "insert into recharge (amount, date, is_confirmed, payment_type, status, student_id, transaction_id, phone) values (?, CURRENT_TIMESTAMP, TRUE, 'EFECTIVO', 'REALIZADO', ?, 'N/A', 'N/A')";
         String sqlUpdateStudentBalance = "update student set balance = balance + ? where id = ?";
         String sqlSelectStudent = "select * from student where id = ?";
         try (Connection connection = dataSource.getConnection(); PreparedStatement rechargeStatement = connection.prepareStatement(sqlRecharge); PreparedStatement updateBalanceStatement = connection.prepareStatement(sqlUpdateStudentBalance)) {

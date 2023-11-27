@@ -13,12 +13,13 @@ public class SerialLector implements SerialPortEventListener {
 
     private final PanamaHitek_Arduino pha;
 
+    //TODO: verified and correct 
     /**
      * read mode Arduino mode = true: mode purchase is active mode = false: mode
      * recharge is active
      */
     private boolean mode;
-    private boolean isAuthenticated = false;
+    private boolean isAuthenticated;
 
     private ISerialComunication auth;
     private ISerialComunication register;
@@ -28,6 +29,7 @@ public class SerialLector implements SerialPortEventListener {
     public SerialLector(PanamaHitek_Arduino pha) {
         this.pha = pha;
         mode = true;
+        isAuthenticated = false;
     }
 
     public void toggleMode() {
