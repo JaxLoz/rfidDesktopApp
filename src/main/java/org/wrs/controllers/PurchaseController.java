@@ -35,17 +35,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     }
     
     public void refreshPurchaseTable(){
-        
-        PurchaseInfo purchaseCurrentMonth = getPurchaseInfoCurrentMonth();
-        purchaseForm.loadTableSellInfo(purchaseCurrentMonth.getListPurchase());
-    }
-    
-    public PurchaseInfo getPurchaseInfoCurrentMonth (){
-        PurchaseInfo purchaseInforCurrentMonth = null;   
-        String currentDate = String.valueOf(LocalDate.now());
-        purchaseInforCurrentMonth = purchaseService.getPurchaseInfoTo(currentDate);
-         
-        return purchaseInforCurrentMonth;
+        // aqui va toda la logica para la actualizacion de la tabla
     }
     
     public void registerPurchase(){
@@ -74,6 +64,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
             case "BuscarStudentbtn" ->{
                 System.out.println("Presionando el boton buscar");
             }
+           
             default -> {}
         }
     }

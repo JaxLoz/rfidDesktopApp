@@ -11,6 +11,8 @@ import org.wrs.view.dialog.UpdateStudentDialog;
 import org.wrs.view.model.table.StudentTableModel;
 import raven.toast.Notifications;
 import org.wrs.controllers.ISearch;
+import org.wrs.view.model.table.RechargeStatusTableCellRenderer;
+import org.wrs.view.model.table.StudentValueBalanceCellRender;
 
 /**
  *
@@ -34,6 +36,8 @@ public class StudentForm extends javax.swing.JPanel {
 
     private void init() {
         studentTable.setModel(studentTableModel);
+        
+        studentTable.getColumn("Saldo").setCellRenderer(new StudentValueBalanceCellRender());
 
         updateBtn.putClientProperty(FlatClientProperties.STYLE, "");
 

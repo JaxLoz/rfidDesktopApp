@@ -15,6 +15,7 @@ import javax.swing.*;
 import org.wrs.controllers.AuthController;
 import org.wrs.controllers.PurchaseController;
 import org.wrs.controllers.RechargeController;
+import org.wrs.controllers.SearchDateController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentController;
 import org.wrs.controllers.UserController;
@@ -33,7 +34,7 @@ import raven.application.form.other.UserProfileForm;
 public class DesktopSchoolStore {
 
     public static void main(String[] args) {
-
+        
         FlatRobotoFont.install();
         FlatLaf.registerCustomDefaultsSource("raven.theme");
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -52,6 +53,7 @@ public class DesktopSchoolStore {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         PurchaseDao purchaseDao = new PurchaseDao(connectionFactory.getConnection());
         PurchaseInfoDao purchaseInfoDao = new PurchaseInfoDao(connectionFactory.getConnection());
+        
 
         //create serial lector and init arduino connection
         SerialLector serialLector = new SerialLector(new PanamaHitek_Arduino());
@@ -85,6 +87,8 @@ public class DesktopSchoolStore {
         //Purchase controller
         PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao, purchaseInfoDao);
         PurchaseController purchaseController = new PurchaseController(purchaseForm, purchaseService);
+        SearchDateController searchDateController = new SearchDateController(purchaseForm, purchaseService);
+        purchaseForm.setISearchDatePurchase(searchDateController);
         purchaseForm.setActionListener(purchaseController);
 
         //Set Arduino interface
