@@ -8,19 +8,26 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
+import org.wrs.controllers.IAuth;
 import org.wrs.models.User;
 
 /**
  *
  * @author Raven
  */
-public class LoginForm extends javax.swing.JPanel {
+public class LoginForm extends javax.swing.JPanel implements IAuthData {
+    
+    private IAuth iAuth;
 
     public LoginForm() {
         initComponents();
         init();
     }
 
+    public void setiAuth(IAuth iAuth) {
+        this.iAuth = iAuth;
+    }
+    
     private void init() {
         setLayout(new LoginFormLayout());
         login.setLayout(new LoginLayout());
@@ -41,7 +48,8 @@ public class LoginForm extends javax.swing.JPanel {
         txtPass.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Password");
     }
 
-    public User getUserDataFromForm() {
+    @Override
+    public User getDataFromForm() {
         User user = new User();
 
         /*
@@ -62,6 +70,8 @@ public class LoginForm extends javax.swing.JPanel {
         user.setUsername(username);
         user.setPassword(password);
 
+        clearInputs();
+        
         return user;
     }
 
@@ -168,7 +178,7 @@ public class LoginForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginBtnActionPerformed
-
+        iAuth.login();
     }//GEN-LAST:event_loginBtnActionPerformed
 
     private class LoginFormLayout implements LayoutManager {

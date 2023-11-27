@@ -67,7 +67,11 @@ public class DesktopSchoolStore {
 
         //Login
         AuthService authService = new AuthService(userDao, serialLector);
-        AuthController authController = new AuthController(authService, loginForm);
+        AuthController authController = new AuthController(authService);
+        loginForm.setiAuth(authController);
+        authController.setIAuthData(loginForm);
+        app.getMainForm().setiAuth(authController);
+        
 
         //Student
         StudentDao studentDao = new StudentDao(connectionFactory.getConnection());

@@ -18,6 +18,10 @@ public class AuthService {
         this.userDao = userDao;
         this.serialLector = serialLector;
     }
+    
+    public void logout(){
+        serialLector.authenticated(false);
+    }
 
     public User login(User user) {
         User userLogged = userDao.getUserByUsername(user.getUsername());

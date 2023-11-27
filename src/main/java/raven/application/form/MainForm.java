@@ -16,6 +16,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import org.wrs.configArduino.IToggleRfidMode;
+import org.wrs.controllers.IAuth;
 import org.wrs.view.Application;
 import raven.application.form.other.RechargeForm;
 import raven.application.form.other.StudentForm;
@@ -38,9 +39,14 @@ public class MainForm extends JLayeredPane {
     private final UserProfileForm userProfileForm;
     
     private IToggleRfidMode iToggleRfidMode;
+    private IAuth iAuth;
 
     public void setiToggleRfidMode(IToggleRfidMode iToggleRfidMode) {
         this.iToggleRfidMode = iToggleRfidMode;
+    }
+
+    public void setiAuth(IAuth iAuth) {
+        this.iAuth = iAuth;
     }
 
 
@@ -112,7 +118,7 @@ public class MainForm extends JLayeredPane {
                 case 2 -> Application.showForm(rechargeForm);
                 case 3 -> Application.showForm(userProfileForm);
                 case 4 -> {menuItem.toggleIcon();iToggleRfidMode.changeRfiMode();}
-                case 5 -> {Application.logout(); iToggleRfidMode.changeRfiMode();}
+                case 5 -> {Application.logout();iAuth.logout();}
                 default -> action.cancel();
             }
         });
