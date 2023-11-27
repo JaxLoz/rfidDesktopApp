@@ -15,6 +15,7 @@ import javax.swing.*;
 import org.wrs.controllers.AuthController;
 import org.wrs.controllers.PurchaseController;
 import org.wrs.controllers.RechargeController;
+import org.wrs.controllers.SearchDateController;
 import org.wrs.controllers.SearchRechargeController;
 import org.wrs.controllers.SearchStudentController;
 import org.wrs.controllers.StudentController;
@@ -53,6 +54,7 @@ public class DesktopSchoolStore {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         PurchaseDao purchaseDao = new PurchaseDao(connectionFactory.getConnection());
         PurchaseInfoDao purchaseInfoDao = new PurchaseInfoDao(connectionFactory.getConnection());
+        
 
         //create serial lector and init arduino connection
         SerialLector serialLector = new SerialLector(new PanamaHitek_Arduino());
@@ -87,6 +89,8 @@ public class DesktopSchoolStore {
         //Purchase controller
         PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao, purchaseInfoDao);
         PurchaseController purchaseController = new PurchaseController(purchaseForm, purchaseService);
+        SearchDateController searchDateController = new SearchDateController(purchaseForm, purchaseService);
+        purchaseForm.setISearchDatePurchase(searchDateController);
         purchaseForm.setActionListener(purchaseController);
 
         //Set Arduino interface

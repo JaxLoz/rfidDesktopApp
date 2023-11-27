@@ -21,11 +21,11 @@ public class PurchaseInfoDao {
     }
     
     public PurchaseInfo getInfoPurchaseRange (String since, String to){
-        PurchaseInfo purchaseInfoRange = null;
+        PurchaseInfo purchaseInfoRange = new PurchaseInfo();
         List<Purchase> listPurchase = new ArrayList<>();
         
         try(Connection con = dataSource.getConnection()){
-            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where date_time  between ? and ?");
+            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where date_time  between CAST(? AS TIMESTAMP) and CAST(? AS TIMESTAMP)");
             prestatementPurchase.setString(1, since);
             prestatementPurchase.setString(2, to);
             prestatementPurchase.executeQuery();
@@ -50,41 +50,14 @@ public class PurchaseInfoDao {
         return purchaseInfoRange;
     }
     
-    public PurchaseInfo getInfoPurchaseSince (String since){
-        PurchaseInfo purchaseInfoSince = null;
-        List<Purchase> listPurchase = new ArrayList<>();
-        
-        try(Connection con = dataSource.getConnection()){
-            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where date_time  > ?");
-            prestatementPurchase.setString(1, since);
-            prestatementPurchase.executeQuery();
-            ResultSet resultset = prestatementPurchase.getResultSet();
-            
-            try (resultset){
-                while(resultset.next()){
-                    Purchase purchase = new Purchase(resultset.getInt(1),
-                                                    resultset.getString(2),
-                                                   resultset.getDouble(3));
-                    
-                    listPurchase.add(purchase);
-                    purchaseInfoSince = new PurchaseInfo(listPurchase);
-                }
-            }
-            
-            
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-        
-        return purchaseInfoSince;
-    }
+    
     
     public PurchaseInfo getInfoPurchaseTo (String to){
-        PurchaseInfo purchaseInfoTo = null;
+        PurchaseInfo purchaseInfoTo = new PurchaseInfo();
         List<Purchase> listPurchase = new ArrayList<>();
         
         try(Connection con = dataSource.getConnection()){
-            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where date_time < CAST(? AS TIMESTAMP)");
+            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where DATE(date_time) = CAST(? AS TIMESTAMP)");
             prestatementPurchase.setString(1, to);
             prestatementPurchase.executeQuery();
             ResultSet resultset = prestatementPurchase.getResultSet();

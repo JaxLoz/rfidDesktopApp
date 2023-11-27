@@ -1,13 +1,19 @@
 package raven.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.raven.datechooser.DateBetween;
 import com.raven.datechooser.DateChooser;
+import com.raven.datechooser.listener.DateChooserAction;
+import com.raven.datechooser.listener.DateChooserAdapter;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import org.wrs.controllers.ISearchDatePurchase;
 import org.wrs.models.Purchase;
 import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
+import org.wrs.util.Formatter;
 import org.wrs.view.dialog.RegisterPurchaseDialog;
 import org.wrs.view.model.table.SellTableModel;
 
@@ -20,7 +26,10 @@ public class PurchaseForm extends javax.swing.JPanel {
     
     private final RegisterPurchaseDialog registerPurchaseDialog;
     private SellTableModel selltableModel;
+    private ISearchDatePurchase iSearchDatePurchase;
     private DateChooser chDate;
+    private boolean ckeckEnable;
+    private String singleDate;
 
     
     public PurchaseForm() {
@@ -28,8 +37,14 @@ public class PurchaseForm extends javax.swing.JPanel {
         chDate = new DateChooser();
         selltableModel = new SellTableModel();
         registerPurchaseDialog = new RegisterPurchaseDialog(null);
+        this.ckeckEnable = false;
+        this.singleDate = null;
        
         init();
+    }
+    
+    public void setISearchDatePurchase(ISearchDatePurchase isdp){
+        iSearchDatePurchase = isdp;
     }
     
     public void init(){
@@ -38,26 +53,55 @@ public class PurchaseForm extends javax.swing.JPanel {
         //chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
         chDate.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         
+        chDate.addActionDateChooserListener(new DateChooserAdapter() {
+            @Override
+            public void dateChanged(Date date, DateChooserAction action) {
+                
+                if(!ckeckEnable){
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String selectedDate = df.format(date);
+                    singleDate = selectedDate;
+                    iSearchDatePurchase.getSingleDate(singleDate);
+                }
+                
+            }
+            
+            @Override
+            public void dateBetweenChanged(DateBetween date, DateChooserAction action) {
+                
+                if(ckeckEnable){
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateFromDate = df.format(date.getFromDate());
+                    String dateToDate = df.format(date.getToDate());
+                    iSearchDatePurchase.getBetween(dateFromDate, dateToDate);
+                }
+                
+            }
+        });
         
+    }
+    
+    public void SetModeDateChoose (){
+       
+        if (checkModeRange.isSelected()){
+           chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
+            this.ckeckEnable = true;
+            System.out.println("Rango "+ckeckEnable);
+        }else{
+            chDate.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
+            this.ckeckEnable = false;
+            System.out.println("Single "+ckeckEnable);
+        }
         
         txtCalendar.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Establesca el rango de fechas");
         
     }
     
-    public void SetModeDateChoose (){
-        
-        if (checkModeRange.isSelected()){
-           chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
-            System.out.println("Rango");
-        }else{
-            chDate.setDateSelectionMode(DateChooser.DateSelectionMode.SINGLE_DATE_SELECTED);
-            System.out.println("Single");
-        }
-        
-        chDate.revalidate();
-        chDate.repaint();
-        
+    public String getSingleDate (){
+        return this.singleDate;
     }
+    
+    
     
     public void setInfoPurchaseInit(PurchaseInfo purchaseInfo){
         PurchaseInfo purchaseInfoInit = purchaseInfo;
@@ -90,6 +134,12 @@ public class PurchaseForm extends javax.swing.JPanel {
     public void showRegisterPurchaseView(boolean show){
         registerPurchaseDialog.setVisible(show);
     }
+    
+    public void setInfoPurchaseInForm (PurchaseInfo purchaseInfo){
+        Double totalPurchase = purchaseInfo.sumPurchaseValue();
+        lblNumberPurchase.setText(String.valueOf(purchaseInfo.getListPurchase().size()));
+        lblTotal.setText(Formatter.formatCurrency(totalPurchase));
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,7 +153,6 @@ public class PurchaseForm extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         purchaseTable = new javax.swing.JTable();
         txtCalendar = new javax.swing.JTextField();
-        btnSearchDate = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblNumberPurchase = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -119,8 +168,6 @@ public class PurchaseForm extends javax.swing.JPanel {
             }
         ));
         jScrollPane2.setViewportView(purchaseTable);
-
-        btnSearchDate.setText("Filtrar");
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
         jLabel1.setText("Total ventas:");
@@ -150,11 +197,9 @@ public class PurchaseForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(26, 26, 26)
                         .addComponent(checkModeRange)
-                        .addGap(39, 39, 39)
+                        .addGap(98, 98, 98)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -186,7 +231,6 @@ public class PurchaseForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchDate)
                             .addComponent(checkModeRange))
                         .addGap(42, 42, 42)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,7 +245,6 @@ public class PurchaseForm extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSearchDate;
     private javax.swing.JCheckBox checkModeRange;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

@@ -112,7 +112,7 @@ public class MainForm extends JLayeredPane {
                 case 2 -> Application.showForm(rechargeForm);
                 case 3 -> Application.showForm(userProfileForm);
                 case 4 -> {menuItem.toggleIcon();iToggleRfidMode.changeRfiMode();}
-                case 5 -> Application.logout();
+                case 5 -> {Application.logout(); iToggleRfidMode.changeRfiMode();}
                 default -> action.cancel();
             }
         });

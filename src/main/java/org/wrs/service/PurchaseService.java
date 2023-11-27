@@ -52,11 +52,6 @@ public class PurchaseService {
         return purchaseInfoTo;
     }
     
-    public PurchaseInfo getPurchaseInfoSince (String since){
-        PurchaseInfo purchaseInfoSince = purchaseInfoDao.getInfoPurchaseSince(since);
-        return purchaseInfoSince;
-    }
-    
     public PurchaseInfo getPurchaseInfoRange (String since, String to){
         PurchaseInfo purchaseInfoRange = purchaseInfoDao.getInfoPurchaseRange(since, to);
         return purchaseInfoRange;
