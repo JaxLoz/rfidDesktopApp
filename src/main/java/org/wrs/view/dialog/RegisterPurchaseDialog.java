@@ -1,9 +1,13 @@
 package org.wrs.view.dialog;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import org.wrs.models.Purchase;
 import org.wrs.models.Student;
+import org.wrs.util.Formatter;
+import org.wrs.view.model.input.CurrencyTextField;
 
 /**
  *
@@ -13,36 +17,26 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
 
     private Student student;
     private Double balanceCurrentStudent;
+    private final CurrencyTextField totalTxt;
+    private final DecimalFormat format;
 
     public RegisterPurchaseDialog(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        format = new DecimalFormat("###,##0.00");
+        totalTxt = new CurrencyTextField();
+        totalTxt.setFormat(format);
+        totalPanel.add(totalTxt, BorderLayout.CENTER);
     }
 
     public Student getStudent() {
         return student;
     }
-    
-    public Purchase getPurchaseFromForm(){
+
+    public Purchase getPurchaseFromForm() {
         double total = Double.parseDouble(totalTxt.getText());
         Purchase purchase = new Purchase(total);
         return purchase;
-    }
-    
-
-    private void loadInfo() {
-        nameLb.setText(student.getFirtsName() + " " + student.getLastName());
-        identificationLb.setText(student.getIdentification());
-        balanceLb.setText("" + student.getBalance());
-        
-        if(student.getBalance() < 0.0){
-            lblEmail.setForeground(Color.red);
-            lblEmail.setText("El estudiante esta en mora. Desea enviar un correo de aviso?");
-            btnSendEmail.setVisible(true);
-        }else{
-            lblEmail.setText("");
-            btnSendEmail.setVisible(false);
-        }
     }
 
     public void setStudent(Student student) {
@@ -50,9 +44,21 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
         this.balanceCurrentStudent = student.getBalance();
         loadInfo();
     }
-    
-    
-    
+
+    private void loadInfo() {
+        nameLb.setText(student.getFirtsName() + " " + student.getLastName());
+        identificationLb.setText(student.getIdentification());
+        balanceLb.setText(Formatter.formatCurrency(student.getBalance()));
+
+        if (student.getBalance() < 0.0) {
+            lblEmail.setForeground(Color.red);
+            lblEmail.setText("El estudiante esta en mora. Desea enviar un correo de aviso?");
+            btnSendEmail.setVisible(true);
+        } else {
+            lblEmail.setText("");
+            btnSendEmail.setVisible(false);
+        }
+    }
 
     public void setActionListener(ActionListener actionListener) {
         registerBtn.addActionListener(actionListener);
@@ -76,10 +82,10 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
         identificationLb = new javax.swing.JLabel();
         balanceLb = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        totalTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         lblEmail = new javax.swing.JLabel();
         btnSendEmail = new javax.swing.JButton();
+        totalPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("REGISTRAR NUEVA VENTA");
@@ -113,10 +119,6 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setText("Saldo Disponible:");
 
-        totalTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        totalTxt.setText("1");
-        totalTxt.setToolTipText("");
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setText("Total:");
 
@@ -127,6 +129,8 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
                 btnSendEmailActionPerformed(evt);
             }
         });
+
+        totalPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,8 +145,8 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addComponent(totalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(registerBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -180,11 +184,11 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(balanceLb, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(totalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registerBtn)
                     .addComponent(jButton2))
@@ -220,6 +224,6 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel nameLb;
     private javax.swing.JButton registerBtn;
-    private javax.swing.JTextField totalTxt;
+    private javax.swing.JPanel totalPanel;
     // End of variables declaration//GEN-END:variables
 }
