@@ -137,6 +137,16 @@ public class RechargeForm extends javax.swing.JPanel {
 
     public void setListRechargeTableModel(List<Recharge> recharges) {
         rechargeTableModel.setStudentList(recharges);
+        showTotalRechargesConfirmed(recharges);
+    }
+    
+    public void showTotalRechargesConfirmed(List<Recharge> recharges){
+        double totalConfirmedAmount = recharges.stream()
+                .filter(Recharge::isConfirmed)
+                .mapToDouble(Recharge::getAmount)
+                .sum();
+        
+        totalRechargeLb.setText(Formatter.formatCurrency(totalConfirmedAmount));
     }
 
     @SuppressWarnings("unchecked")
@@ -160,6 +170,8 @@ public class RechargeForm extends javax.swing.JPanel {
         paymentConfirmedCheckBox = new javax.swing.JCheckBox();
         jCheckBox6 = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
+        totalTitleLb = new javax.swing.JLabel();
+        totalRechargeLb = new javax.swing.JLabel();
 
         lb.setText("Recargas");
 
@@ -241,6 +253,11 @@ public class RechargeForm extends javax.swing.JPanel {
         jCheckBox6.setText("Active los checkboxes para aplicar los filtros de búsqueda.");
         jCheckBox6.setEnabled(false);
 
+        totalTitleLb.setText("Total Recargado: ");
+
+        totalRechargeLb.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        totalRechargeLb.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -288,6 +305,12 @@ public class RechargeForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(totalTitleLb, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(totalRechargeLb, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,8 +337,12 @@ public class RechargeForm extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(totalTitleLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(totalRechargeLb, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -380,6 +407,8 @@ public class RechargeForm extends javax.swing.JPanel {
     private javax.swing.JTable rechargeTable;
     private javax.swing.JTextField searchRechargeByStudentTxt;
     private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JLabel totalRechargeLb;
+    private javax.swing.JLabel totalTitleLb;
     private javax.swing.JButton updataRechargeTableBtn;
     // End of variables declaration//GEN-END:variables
 
