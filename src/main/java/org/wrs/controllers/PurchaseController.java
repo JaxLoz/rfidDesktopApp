@@ -10,6 +10,7 @@ import org.wrs.models.Purchase;
 import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
+import org.wrs.util.EmailSend;
 import org.wrs.view.model.table.SellTableModel;
 import raven.application.form.other.PurchaseForm;
 
@@ -45,11 +46,19 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         purchaseForm.showRegisterPurchaseView(false);
     }
     
+    public void sendEmail (){
+        
+        Student student = purchaseForm.getStudentFromForm();
+        EmailSend emailSend = new EmailSend();
+        emailSend.sendEmail(student.getMail(), "El pelao esta debiendo en la cooperativa", "Ey vale mia el pelaito esta debiendo aca en la cooperativa oiste. Ven a pagar rapido");
+        System.out.println("se envio un correo");
+    }
     @Override
     public void receiveDataSerialPort(String data) {
         boolean studentExists = purchaseService.studentExists(data);
         if(studentExists){
             Student student = purchaseService.getStudent(data);
+            purchaseForm.setStudentCurrent(student);
             purchaseForm.loadStudentInRegisterPurchaseView(student);
             purchaseForm.loadTableSellInfo(purchaseService.getPurchaseList(student));
         }
@@ -65,6 +74,8 @@ public class PurchaseController implements ActionListener, ISerialComunication{
                 System.out.println("Presionando el boton buscar");
             }
            
+            case "btnSendEmail" -> sendEmail();
+            
             default -> {}
         }
     }

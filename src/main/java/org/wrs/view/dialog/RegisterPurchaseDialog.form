@@ -25,10 +25,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
+              <Component id="btnSendEmail" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="jLabel7" pref="83" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="totalTxt" min="-2" pref="257" max="-2" attributes="0"/>
@@ -59,6 +64,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="balanceLb" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="lblEmail" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
           </Group>
@@ -92,7 +98,11 @@
                   <Component id="registerBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lblEmail" min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnSendEmail" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -168,6 +178,17 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Total:"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblEmail">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnSendEmail">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Enviar Correo de aviso"/>
+        <Property name="actionCommand" type="java.lang.String" value="btnSendEmail"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendEmailActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
