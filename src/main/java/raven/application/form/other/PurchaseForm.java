@@ -30,6 +30,7 @@ public class PurchaseForm extends javax.swing.JPanel {
     private DateChooser chDate;
     private boolean ckeckEnable;
     private String singleDate;
+    private Student studentCurrent;
 
     
     public PurchaseForm() {
@@ -79,6 +80,14 @@ public class PurchaseForm extends javax.swing.JPanel {
             }
         });
         
+    }
+    
+    public void  setStudentCurrent (Student student){
+        this.studentCurrent = student;
+    }
+    
+    public Student getStudentCurrent (){
+        return studentCurrent;
     }
     
     public void SetModeDateChoose (){
