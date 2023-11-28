@@ -28,7 +28,7 @@ public class SerialLector implements SerialPortEventListener {
 
     public SerialLector(PanamaHitek_Arduino pha) {
         this.pha = pha;
-        mode = true;
+        mode = false;
         isAuthenticated = false;
     }
 

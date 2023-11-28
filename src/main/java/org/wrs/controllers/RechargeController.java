@@ -58,6 +58,7 @@ public class RechargeController implements ActionListener, ISerialComunication {
             RechargeFilter filterRecharge = rechargeForm.getDataFromFilter();
             List<Recharge> recharges = rechargeService.filterRecharge(filterRecharge);
             rechargeForm.setListRechargeTableModel(recharges);
+            NotificationUtil.show(Notifications.Type.SUCCESS, "¡Filtro aplicado correctamente!");
         } catch (RuntimeException e) {
             NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());
         }
@@ -75,7 +76,7 @@ public class RechargeController implements ActionListener, ISerialComunication {
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        
+
         switch (command) {
             case "registerRechargeCmd" ->
                 registerRecharge();

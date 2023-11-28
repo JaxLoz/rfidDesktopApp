@@ -84,9 +84,7 @@ public class MenuItem extends JPanel {
     public void toggleIcon() {
         iconName = iconName.equals("rechargeModeActive") ? "purchaseModeActive" : "rechargeModeActive";
         text = text.equals("Modo (Recarga)") ? "Modo (Venta)" : "Modo (Recarga)";
-        if (full) {
-            menuItems.get(0).setText(text);
-        }
+        menuItems.get(0).setText(text);
         menuItems.get(0).setIcon(getIcon(iconName));
         revalidate();
     }
