@@ -34,7 +34,7 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
     }
 
     public Purchase getPurchaseFromForm() {
-        double total = Double.parseDouble(totalTxt.getText());
+        double total = totalTxt.getNumericValue();
         Purchase purchase = new Purchase(total);
         return purchase;
     }
