@@ -15,7 +15,7 @@ public class StudentTableModel extends AbstractTableModel {
     public StudentTableModel (){
         super();
         this.studentList = new ArrayList<>();
-        this.COLUMN_NAME = new String[]{"Identificacion", "Nombres", "Apellidos", "Saldo"};
+        this.COLUMN_NAME = new String[]{"Identificacion", "Nombres", "Apellidos", "Correo", "Saldo"};
     }
 
     public void setStudentList (List<Student> studentList){
@@ -57,8 +57,10 @@ public class StudentTableModel extends AbstractTableModel {
                 return student.getLastName();
             }
             case 3 -> {
-                return Formatter.formatCurrency(student.getBalance());
+                return student.getMail();
             }
+            
+            case 4 -> {return Formatter.formatCurrency(student.getBalance());}
         }
 
         return student;

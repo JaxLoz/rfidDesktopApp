@@ -5,6 +5,15 @@ import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Font;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.wrs.configArduino.ArduinoController;
 import org.wrs.configArduino.SerialLector;
 import org.wrs.connectionFactory.ConnectionFactory;
@@ -24,6 +33,7 @@ import org.wrs.dao.UserDao;
 import org.wrs.service.AuthService;
 import org.wrs.service.PurchaseService;
 import org.wrs.service.RechargeService;
+import org.wrs.util.PropertiesEmailUtil;
 import org.wrs.view.Application;
 import raven.application.form.LoginForm;
 import raven.application.form.other.PurchaseForm;
@@ -104,6 +114,5 @@ public class DesktopSchoolStore {
         java.awt.EventQueue.invokeLater(() -> {
             app.setVisible(true);
         });
-
-    }
+    }    
 }
