@@ -32,11 +32,6 @@ public class UserProfileForm extends javax.swing.JPanel {
 
     private void init() {
 
-        this.putClientProperty(FlatClientProperties.STYLE, ""
-                + "background:$Login.background;"
-                + "arc:20;"
-                + "border:30,40,50,30");
-
         lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
                 + "font:$h1.font");
 

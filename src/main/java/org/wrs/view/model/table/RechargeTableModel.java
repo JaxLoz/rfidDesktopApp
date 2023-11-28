@@ -20,7 +20,7 @@ public class RechargeTableModel extends AbstractTableModel {
 
     public RechargeTableModel() {
         rechargeList = new ArrayList<>();
-        this.COLUMN_NAME = new String[]{"Valor", "Fecha", "Confirmado", "Tipo Pago", "Estado", "Telefono", "Estudiante"};
+        this.COLUMN_NAME = new String[]{"Estudiante", "Telefono", "Tipo Pago", "Fecha", "Confirmado", "Valor", "Estado"};
     }
 
     public void setStudentList(List<Recharge> rechargeList) {
@@ -53,25 +53,25 @@ public class RechargeTableModel extends AbstractTableModel {
         Student student = recharge.getStudent();
         switch (columnIndex) {
             case 0 -> {
-                return Formatter.formatCurrency(recharge.getAmount());
+                return student.getFirtsName() + " " + student.getLastName();
             }
             case 1 -> {
-                return Formatter.formatDate(""+recharge.getDate());
-            }
-            case 2 -> {
-                return recharge.isConfirmed() ? "CONFIRMADA": "NO CONFIRMADA" ;
-            }
-            case 3 -> {
-                return recharge.getPaymentType();
-            }
-            case 4 -> {
-                return recharge.getStatus();
-            }
-            case 5 -> {
                 return recharge.getPhone();
             }
+            case 2 -> {
+                return recharge.getPaymentType();
+            }
+            case 3 -> {
+                return Formatter.formatDate(""+recharge.getDate());
+            }
+            case 4 -> {
+                return recharge.isConfirmed() ? "CONFIRMADA": "NO CONFIRMADA" ;
+            }
+            case 5 -> {
+                return Formatter.formatCurrency(recharge.getAmount());
+            }
             case 6 -> {
-                return student.getFirtsName() + " " + student.getLastName();
+                return recharge.getStatus();
             }
         }
 

@@ -11,7 +11,6 @@ import org.wrs.view.dialog.UpdateStudentDialog;
 import org.wrs.view.model.table.StudentTableModel;
 import raven.toast.Notifications;
 import org.wrs.controllers.ISearch;
-import org.wrs.view.model.table.RechargeStatusTableCellRenderer;
 import org.wrs.view.model.table.StudentValueBalanceCellRender;
 
 /**
@@ -35,6 +34,10 @@ public class StudentForm extends javax.swing.JPanel {
     }
 
     private void init() {
+        
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$h1.font");
+        
         studentTable.setModel(studentTableModel);
         
         studentTable.getColumn("Saldo").setCellRenderer(new StudentValueBalanceCellRender());
@@ -133,6 +136,8 @@ public class StudentForm extends javax.swing.JPanel {
         searchTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         refreshbtn = new javax.swing.JButton();
+        lbTitle = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -193,6 +198,8 @@ public class StudentForm extends javax.swing.JPanel {
             }
         });
 
+        lbTitle.setText("Estudiantes");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,24 +210,32 @@ public class StudentForm extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
                         .addComponent(refreshbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(updateBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbTitle)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jSeparator1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(10, 10, 10)
+                .addComponent(lbTitle)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updateBtn)
                     .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(refreshbtn))
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -238,6 +253,8 @@ public class StudentForm extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbTitle;
     private javax.swing.JButton refreshbtn;
     private javax.swing.JTextField searchTxt;
     private javax.swing.JTable studentTable;

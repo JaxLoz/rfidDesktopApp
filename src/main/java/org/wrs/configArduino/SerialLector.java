@@ -15,8 +15,9 @@ public class SerialLector implements SerialPortEventListener {
 
     //TODO: verified and correct 
     /**
-     * read mode Arduino mode = true: mode purchase is active mode = false: mode
-     * recharge is active
+     * read mode Arduino 
+     * mode = false: mode purchase is active 
+     * mode = true: mode recharge is active
      */
     private boolean mode;
     private boolean isAuthenticated;
@@ -34,6 +35,10 @@ public class SerialLector implements SerialPortEventListener {
 
     public void toggleMode() {
         this.mode = !this.mode;
+    }
+    
+    public String getMode(){
+        return mode ? "RECARGA" : "VENTA";
     }
 
     public void setAuthInterface(ISerialComunication auth) {
