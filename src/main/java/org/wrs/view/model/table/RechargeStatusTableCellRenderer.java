@@ -21,6 +21,8 @@ public class RechargeStatusTableCellRenderer extends DefaultTableCellRenderer {
                 jLabel.setForeground(Color.GREEN);
             case "CADUCADA" ->
                 jLabel.setForeground(Color.RED);
+            case "CANCELADO_RECHAZADO" -> 
+                jLabel.setForeground(Color.ORANGE);
         }
         return jLabel;
     }

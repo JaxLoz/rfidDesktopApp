@@ -65,6 +65,22 @@ public class RechargeDao {
         return recharges;
     }
 
+    public void cancelRecharge(Long rechargeId) {
+        String sqlCancelRecharge = "update recharge set status = 'CANCELADO_RECHAZADO', is_confirmed = FALSE where id = ?";
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement cancelRechargeStatement = connection.prepareStatement(sqlCancelRecharge)) {
+            connection.setAutoCommit(false);
+
+            cancelRechargeStatement.setLong(1, rechargeId);
+
+            cancelRechargeStatement.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public List<Recharge> filterRecharge(RechargeFilter filterRecharge) {
 
         List<Recharge> recharges = new ArrayList<>();
@@ -96,7 +112,7 @@ public class RechargeDao {
         if (filterRecharge.isIsConfirmed()) {
             sqlBuilder.append("AND r.is_confirmed = true ");
         }
-        
+
         if (filterRecharge.getStatus() != null) {
             sqlBuilder.append("AND r.status = ? ");
         }
@@ -128,7 +144,7 @@ public class RechargeDao {
                 System.out.println(filterRecharge.getStatus());
                 statement.setString(parameterIndex++, filterRecharge.getStatus());
             }
-            
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Student student = new Student(

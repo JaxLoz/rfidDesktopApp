@@ -51,12 +51,17 @@
                               <Component id="dateFilterTxt" min="-2" pref="142" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButton1" min="-2" pref="63" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="cancelRechargeBtn" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="paymentConfirmedCheckBox" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="updataRechargeTableBtn" min="-2" max="-2" attributes="0"/>
+                          <Component id="updataRechargeTableBtn" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="10" max="32767" attributes="0"/>
                   </Group>
@@ -98,6 +103,7 @@
                   <Component id="updataRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="jCheckBox6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="filterRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="cancelRechargeBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -249,6 +255,12 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="18" style="0"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="cancelRechargeBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cancelar Recarga"/>
+        <Property name="actionCommand" type="java.lang.String" value="cancelRechargeCmd"/>
       </Properties>
     </Component>
   </SubComponents>

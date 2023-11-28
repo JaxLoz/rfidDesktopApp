@@ -70,6 +70,18 @@ public class RechargeController implements ActionListener, ISerialComunication {
         thread.start();
     }
 
+    private void cancelRecharge() {
+        try {
+            Long id = rechargeForm.getRechargeDataToCancel();
+            System.out.println(id);
+            rechargeService.cancelRecharge(id);
+            init();
+            NotificationUtil.show(Notifications.Type.SUCCESS, "¡Recarga cancelada!");
+        } catch (RuntimeException e) {
+            NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());
+        }
+    }
+
     @Override
     public void receiveDataSerialPort(String data) {
         boolean studentExists = rechargeService.studentExists(data);
@@ -90,6 +102,8 @@ public class RechargeController implements ActionListener, ISerialComunication {
                 refreshRechargeTable();
             case "filterRechargeTableCmd" ->
                 filterRechargeTable();
+            case "cancelRechargeCmd" ->
+                cancelRecharge();
             default -> {
             }
         }

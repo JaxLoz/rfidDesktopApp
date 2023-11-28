@@ -13,9 +13,11 @@ import org.wrs.models.Recharge;
 import org.wrs.models.RechargeFilter;
 import org.wrs.models.Student;
 import org.wrs.util.Formatter;
+import org.wrs.util.NotificationUtil;
 import org.wrs.view.dialog.RegisterRechargeDialog;
 import org.wrs.view.model.table.RechargeStatusTableCellRenderer;
 import org.wrs.view.model.table.RechargeTableModel;
+import raven.toast.Notifications;
 
 /**
  *
@@ -72,17 +74,26 @@ public class RechargeForm extends javax.swing.JPanel {
                 specificDate = null;
             }
         });
+    }
 
+    public Long getRechargeDataToCancel() {
+        int index = rechargeTable.getSelectedRow();
+        
+        if(index == -1) {
+            throw new RuntimeException("¡Seleccione un recarga de la tabla!");
+        }
+        
+        return rechargeTableModel.getStudentList().get(index).getId();
     }
 
     public void setActionListener(ActionListener actionListener) {
+        cancelRechargeBtn.addActionListener(actionListener);
         updataRechargeTableBtn.addActionListener(actionListener);
         filterRechargeTableBtn.addActionListener(actionListener);
         registerRechargeDialog.setActionListener(actionListener);
-
     }
-    
-    public Recharge getRechargeFromForm(){
+
+    public Recharge getRechargeFromForm() {
         return registerRechargeDialog.getRechargeFromForm();
     }
 
@@ -139,13 +150,13 @@ public class RechargeForm extends javax.swing.JPanel {
         rechargeTableModel.setStudentList(recharges);
         showTotalRechargesConfirmed(recharges);
     }
-    
-    public void showTotalRechargesConfirmed(List<Recharge> recharges){
+
+    public void showTotalRechargesConfirmed(List<Recharge> recharges) {
         double totalConfirmedAmount = recharges.stream()
                 .filter(Recharge::isConfirmed)
                 .mapToDouble(Recharge::getAmount)
                 .sum();
-        
+
         totalRechargeLb.setText(Formatter.formatCurrency(totalConfirmedAmount));
     }
 
@@ -172,6 +183,7 @@ public class RechargeForm extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         totalTitleLb = new javax.swing.JLabel();
         totalRechargeLb = new javax.swing.JLabel();
+        cancelRechargeBtn = new javax.swing.JButton();
 
         lb.setText("Recargas");
 
@@ -257,6 +269,9 @@ public class RechargeForm extends javax.swing.JPanel {
 
         totalRechargeLb.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
+        cancelRechargeBtn.setText("Cancelar Recarga");
+        cancelRechargeBtn.setActionCommand("cancelRechargeCmd");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -291,12 +306,15 @@ public class RechargeForm extends javax.swing.JPanel {
                                 .addGap(30, 30, 30)
                                 .addComponent(dateFilterTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cancelRechargeBtn))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jCheckBox3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(paymentConfirmedCheckBox))
-                            .addComponent(updataRechargeTableBtn))
+                            .addComponent(updataRechargeTableBtn, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap(10, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
@@ -329,7 +347,8 @@ public class RechargeForm extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(updataRechargeTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBox6)
-                    .addComponent(filterRechargeTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(filterRechargeTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelRechargeBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -387,6 +406,7 @@ public class RechargeForm extends javax.swing.JPanel {
     }//GEN-LAST:event_paymentConfirmedCheckBoxActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelRechargeBtn;
     private javax.swing.JTextField dateFilterTxt;
     private javax.swing.JButton filterRechargeTableBtn;
     private javax.swing.JButton jButton1;

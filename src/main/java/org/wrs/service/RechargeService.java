@@ -20,6 +20,10 @@ public class RechargeService {
     public List<Recharge> getAll() {
         return rechargeDao.all();
     }
+    
+    public void cancelRecharge(Long id){
+        rechargeDao.cancelRecharge(id);
+    }
 
     public boolean studentExists(String uuid) {
         return studentDao.thereIsStudent(uuid);

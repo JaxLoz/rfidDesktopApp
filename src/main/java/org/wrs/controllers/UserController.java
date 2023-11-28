@@ -35,11 +35,11 @@ public class UserController implements ActionListener {
             User userOld = userProfileForm.getUser();
             User userUpdated = userProfileForm.getUserDataFromForm();
 
-            if (!userOld.getEmail().equals(userUpdated.getEmail()) && !userDao.emailExistsForUpdate(userUpdated.getId(), userUpdated.getEmail())) {
+            if (!userOld.getEmail().equals(userUpdated.getEmail()) && userDao.emailExistsForUpdate(userUpdated.getId(), userUpdated.getEmail())) {
                 throw new RuntimeException("¡Email no disponible!");
             }
 
-            if (!userOld.getUsername().equals(userUpdated.getUsername()) && !userDao.usernameExistsForUpdate(userUpdated.getId(), userUpdated.getUsername())) {
+            if (!userOld.getUsername().equals(userUpdated.getUsername()) && userDao.usernameExistsForUpdate(userUpdated.getId(), userUpdated.getUsername())) {
                 throw new RuntimeException("¡Username no disponible!");
 
             }
