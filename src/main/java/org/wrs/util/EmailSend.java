@@ -51,7 +51,7 @@ public class EmailSend {
                     Message msg = new MimeMessage(session);
                     msg.setFrom(new InternetAddress(prop.getProperty("mail.smtp.user"), "Javier Eduardo Mmontes Delgado"));
                     msg.addRecipient(Message.RecipientType.TO,
-                            new InternetAddress(addresse));
+                            new InternetAddress(addresse, "*"));
                     msg.setSubject(subject);
                     msg.setText(message);
 
@@ -63,6 +63,7 @@ public class EmailSend {
                 } catch (AddressException e) {
                     e.getMessage();
                     NotificationUtil.show(Notifications.Type.ERROR, "No se pudo enviar el correo");
+                    
                 } catch (MessagingException e) {
                     e.getMessage();
                     NotificationUtil.show(Notifications.Type.ERROR, "No se pudo enviar el correo");
