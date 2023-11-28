@@ -144,7 +144,6 @@ public class StudentForm extends javax.swing.JPanel {
         refreshbtn = new javax.swing.JButton();
         lbTitle = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        Recargar = new javax.swing.JButton();
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -186,7 +185,7 @@ public class StudentForm extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(studentTable);
 
-        updateBtn.setText("Actualizar");
+        updateBtn.setText("Actualizar Estudiante");
         updateBtn.setActionCommand("updateStudentRfidCmd");
 
         jButton1.setText("Nuevo");
@@ -197,7 +196,8 @@ public class StudentForm extends javax.swing.JPanel {
             }
         });
 
-        refreshbtn.setText("Refresh");
+        refreshbtn.setText("Actualizar Tabla");
+        refreshbtn.setToolTipText("");
         refreshbtn.setActionCommand("RefreshTableStudent");
         refreshbtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,13 +206,6 @@ public class StudentForm extends javax.swing.JPanel {
         });
 
         lbTitle.setText("Estudiantes");
-
-        Recargar.setText("Recargar");
-        Recargar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RecargarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -225,9 +218,7 @@ public class StudentForm extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-                        .addComponent(refreshbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Recargar)
+                        .addComponent(refreshbtn)
                         .addGap(18, 18, 18)
                         .addComponent(updateBtn)
                         .addGap(18, 18, 18)
@@ -248,8 +239,7 @@ public class StudentForm extends javax.swing.JPanel {
                     .addComponent(updateBtn)
                     .addComponent(searchTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(refreshbtn)
-                    .addComponent(Recargar))
+                    .addComponent(refreshbtn))
                 .addGap(12, 12, 12)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
@@ -267,12 +257,7 @@ public class StudentForm extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshbtnActionPerformed
 
-    private void RecargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecargarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RecargarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Recargar;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;

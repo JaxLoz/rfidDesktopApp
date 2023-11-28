@@ -49,6 +49,8 @@ public class PurchaseForm extends javax.swing.JPanel {
     }
     
     public void init(){
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$h1.font");
         purchaseTable.setModel(selltableModel);
         chDate.setTextField(txtCalendar);
         //chDate.setDateSelectionMode(DateChooser.DateSelectionMode.BETWEEN_DATE_SELECTED);
@@ -162,11 +164,13 @@ public class PurchaseForm extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         purchaseTable = new javax.swing.JTable();
         txtCalendar = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         lblNumberPurchase = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
         checkModeRange = new javax.swing.JCheckBox();
+        lbTitle = new javax.swing.JLabel();
+        totalTitleLb = new javax.swing.JLabel();
+        totalTitleLb1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         purchaseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -178,16 +182,10 @@ public class PurchaseForm extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(purchaseTable);
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel1.setText("Total ventas:");
-
-        lblNumberPurchase.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
+        lblNumberPurchase.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
         lblNumberPurchase.setText("jLabel2");
 
-        jLabel3.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
-        jLabel3.setText("Valor de ventas:");
-
-        lblTotal.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
+        lblTotal.setFont(new java.awt.Font("Dialog", 0, 20)); // NOI18N
         lblTotal.setText("jLabel2");
 
         checkModeRange.setText("Modo de rangos");
@@ -197,53 +195,59 @@ public class PurchaseForm extends javax.swing.JPanel {
             }
         });
 
+        lbTitle.setText("Ventas");
+
+        totalTitleLb.setText("Total Vendido:");
+
+        totalTitleLb1.setText("Total Ventas:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(checkModeRange)
-                        .addGap(98, 98, 98)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(lblTotal))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblNumberPurchase))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 978, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(checkModeRange))
+                            .addComponent(lbTitle))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(totalTitleLb1)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblNumberPurchase, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 270, Short.MAX_VALUE)
+                        .addComponent(totalTitleLb)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(lblNumberPurchase))
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(lblTotal))
-                        .addGap(18, 18, 18))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(checkModeRange))
-                        .addGap(42, 42, 42)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(10, 10, 10)
+                .addComponent(lbTitle)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCalendar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(checkModeRange))
+                .addGap(12, 12, 12)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotal)
+                    .addComponent(lblNumberPurchase)
+                    .addComponent(totalTitleLb)
+                    .addComponent(totalTitleLb1))
+                .addGap(10, 10, 10))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -255,12 +259,14 @@ public class PurchaseForm extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox checkModeRange;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbTitle;
     private javax.swing.JLabel lblNumberPurchase;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JTable purchaseTable;
+    private javax.swing.JLabel totalTitleLb;
+    private javax.swing.JLabel totalTitleLb1;
     private javax.swing.JTextField txtCalendar;
     // End of variables declaration//GEN-END:variables
 }

@@ -23,9 +23,7 @@
                   <Group type="102" attributes="0">
                       <Component id="searchTxt" min="-2" pref="395" max="-2" attributes="0"/>
                       <EmptySpace pref="142" max="32767" attributes="0"/>
-                      <Component id="refreshbtn" min="-2" pref="77" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="Recargar" min="-2" max="-2" attributes="0"/>
+                      <Component id="refreshbtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="updateBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -52,7 +50,6 @@
                   <Component id="searchTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="refreshbtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Recargar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -114,7 +111,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="updateBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Actualizar"/>
+        <Property name="text" type="java.lang.String" value="Actualizar Estudiante"/>
         <Property name="actionCommand" type="java.lang.String" value="updateStudentRfidCmd"/>
       </Properties>
     </Component>
@@ -131,7 +128,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="refreshbtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Refresh"/>
+        <Property name="text" type="java.lang.String" value="Actualizar Tabla"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="actionCommand" type="java.lang.String" value="RefreshTableStudent"/>
       </Properties>
       <Events>
@@ -144,14 +142,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
-    </Component>
-    <Component class="javax.swing.JButton" name="Recargar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Recargar"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecargarActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>
