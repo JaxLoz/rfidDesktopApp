@@ -23,8 +23,6 @@ public class PropertiesEmailUtil {
             e.getMessage();
         }
         
-        
-        
         return emailProperties;
     }
     

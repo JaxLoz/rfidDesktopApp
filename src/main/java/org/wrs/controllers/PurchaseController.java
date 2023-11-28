@@ -4,6 +4,7 @@ package org.wrs.controllers;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.Properties;
 import org.wrs.configArduino.ISerialComunication;
 import org.wrs.dao.PurchaseDao;
 import org.wrs.models.Purchase;
@@ -11,6 +12,7 @@ import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
 import org.wrs.util.EmailSend;
+import org.wrs.util.PropertiesEmailUtil;
 import org.wrs.view.model.table.SellTableModel;
 import raven.application.form.other.PurchaseForm;
 
@@ -49,9 +51,14 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     public void sendEmail (){
         
         Student student = purchaseForm.getStudentFromForm();
+        Properties prop = PropertiesEmailUtil.emailProperties;
+        String balanceString = String.valueOf(student.getBalance());
+        
         EmailSend emailSend = new EmailSend();
-        emailSend.sendEmail(student.getMail(), "El pelao esta debiendo en la cooperativa", "Ey vale mia el pelaito esta debiendo aca en la cooperativa oiste. Ven a pagar rapido");
-        System.out.println("se envio un correo");
+        emailSend.confMessage(student.getFirtsName()+" "+student.getLastName(), balanceString);
+        String msg = emailSend.getMessageSend();
+        
+        emailSend.sendEmail(student.getMail(), prop.getProperty("mail.subject"), msg, PropertiesEmailUtil.emailProperties);
     }
     @Override
     public void receiveDataSerialPort(String data) {
