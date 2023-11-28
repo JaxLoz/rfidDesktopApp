@@ -51,14 +51,10 @@ public class LoginForm extends javax.swing.JPanel implements IAuthData {
     @Override
     public User getDataFromForm() {
         User user = new User();
-
-        /*
+        
         String username = txtUser.getText();
         String password = new String(txtPass.getPassword());
-         */
-        String username = "mateo092";
-        String password = "mateo";
-
+       
         if (username.isEmpty()) {
             throw new RuntimeException("¡Username no puede estar vacio!");
         }

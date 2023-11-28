@@ -2,10 +2,13 @@ package raven.application.form.other;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import org.wrs.models.User;
 import org.wrs.util.FormValidator;
+import org.wrs.util.NotificationUtil;
 import org.wrs.util.PasswordUtil;
 import org.wrs.view.dialog.ConfirmUserPasswordDialog;
+import raven.toast.Notifications;
 
 /**
  *
@@ -13,7 +16,9 @@ import org.wrs.view.dialog.ConfirmUserPasswordDialog;
  */
 public class UserProfileForm extends javax.swing.JPanel {
 
+    private int pin;
     private User user;
+    private int intentos = 0;
     private final ConfirmUserPasswordDialog confirmUserPasswordDialog;
 
     /**
@@ -24,11 +29,12 @@ public class UserProfileForm extends javax.swing.JPanel {
         confirmUserPasswordDialog = new ConfirmUserPasswordDialog(null);
         init();
     }
-    
+
     public void setActionListener(ActionListener actionListener) {
         confirmUserPasswordDialog.setActionListener(actionListener);
+        sendPinBtn.addActionListener(actionListener);
+        resetPasswordBtn.addActionListener(actionListener);
     }
-
 
     private void init() {
 
@@ -54,28 +60,22 @@ public class UserProfileForm extends javax.swing.JPanel {
                 + "showCapsLock:true");
 
         confirmNewPasswordTxt.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "confirme la nueva contraseña");
-
-        updateUserBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
-
-        sendPinBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
-
-        confirmBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
-
-        resetValuesBtn.putClientProperty(FlatClientProperties.STYLE, ""
-                + "borderWidth:0;"
-                + "focusWidth:0");
     }
 
     public User getUser() {
         return user;
     }
-    
+
+    public int generatePin() {
+        Random random = new Random();
+        pin = 1000 + random.nextInt(9000);
+        return pin;
+    }
+
+    public int getPin() {
+        return pin;
+    }
+
     public void setUser(User user) {
         this.user = user;
         loadInfo();
@@ -89,13 +89,23 @@ public class UserProfileForm extends javax.swing.JPanel {
     }
 
     public User getUserDataFromForm() {
-        
+
         confirmUserPasswordDialog.setVisible(false);
-        
+
         String password = confirmUserPasswordDialog.getPassword();
-        
-        System.out.println(password);
-        
+
+        intentos++;
+
+        if (intentos == 2) {
+            NotificationUtil.show(Notifications.Type.INFO, "¡Te queda el último intento!");
+
+        }
+
+        if (intentos == 3) {
+            generatePin();
+            NotificationUtil.show(Notifications.Type.ERROR, "¡Numero de intentos superados, vuelva a generar el pin!");
+        }
+
         if (!PasswordUtil.verifyPassword(password, user.getPassword())) {
             throw new RuntimeException("¡Credenciales Incorrectas!");
         }
@@ -108,7 +118,7 @@ public class UserProfileForm extends javax.swing.JPanel {
         String firstName = firstNameTxt.getText();
         String lastName = lastNameTxt.getText();
         String email = emailTxt.getText();
-        
+
         User updateUser = new User(user.getId(), firstName, lastName, username, user.getPassword(), email);
 
         if (user.equals(updateUser)) {
@@ -116,6 +126,42 @@ public class UserProfileForm extends javax.swing.JPanel {
         }
 
         return updateUser;
+    }
+
+    public String getPasswordFromForm() {
+        try {
+
+            if (pinTxt.getText().isEmpty()) {
+                throw new RuntimeException("¡Ingrese el pin!");
+            }
+
+            String newPassword = new String(newPasswordTxt.getPassword());
+            String confirmNewPassword = new String(confirmNewPasswordTxt.getPassword());
+
+            if (newPassword.isEmpty() || confirmNewPassword.isEmpty()) {
+                throw new RuntimeException("¡llene todos los campos!");
+            }
+
+            int userPin = Integer.parseInt(pinTxt.getText());
+
+            if (userPin != this.pin) {
+                throw new RuntimeException("¡El pin ingresado es incorrecto!");
+            }
+
+            if (!newPassword.equals(confirmNewPassword)) {
+                throw new RuntimeException("¡Las contraseñas no coinciden!");
+
+            }
+            
+            pinTxt.setText("");
+            newPasswordTxt.setText("");
+            confirmNewPasswordTxt.setText("");
+
+            return newPassword;
+
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("¡Ingrese un pin valido!");
+        }
     }
 
     /**
@@ -136,7 +182,7 @@ public class UserProfileForm extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        confirmBtn = new javax.swing.JButton();
+        resetPasswordBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         userInfoLb = new javax.swing.JLabel();
@@ -155,6 +201,7 @@ public class UserProfileForm extends javax.swing.JPanel {
         resetPasswordLb.setText("Restablecer Contraseña");
 
         sendPinBtn.setText("Enviar pin al correo");
+        sendPinBtn.setActionCommand("sendPinToEmailCmd");
 
         jLabel4.setText("Nueva Contraseña");
 
@@ -162,7 +209,8 @@ public class UserProfileForm extends javax.swing.JPanel {
 
         jLabel6.setText("Ingrese el pin: ");
 
-        confirmBtn.setText("Confirmar");
+        resetPasswordBtn.setText("Cambiar Contraseña");
+        resetPasswordBtn.setActionCommand("updatePasswordCmd");
 
         jLabel1.setText("Nombre:");
 
@@ -245,7 +293,7 @@ public class UserProfileForm extends javax.swing.JPanel {
                                     .addComponent(confirmNewPasswordTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                                     .addComponent(pinTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                                     .addComponent(sendPinBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)))
-                            .addComponent(confirmBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(resetPasswordBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(resetPasswordLb, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
@@ -277,7 +325,7 @@ public class UserProfileForm extends javax.swing.JPanel {
                                 .addGap(10, 10, 10)
                                 .addComponent(confirmNewPasswordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)
-                                .addComponent(confirmBtn))
+                                .addComponent(resetPasswordBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -318,7 +366,6 @@ public class UserProfileForm extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton confirmBtn;
     private javax.swing.JPasswordField confirmNewPasswordTxt;
     private javax.swing.JTextField emailTxt;
     private javax.swing.JTextField firstNameTxt;
@@ -334,6 +381,7 @@ public class UserProfileForm extends javax.swing.JPanel {
     private javax.swing.JLabel lbTitle;
     private javax.swing.JPasswordField newPasswordTxt;
     private javax.swing.JTextField pinTxt;
+    private javax.swing.JButton resetPasswordBtn;
     private javax.swing.JLabel resetPasswordLb;
     private javax.swing.JButton resetValuesBtn;
     private javax.swing.JButton sendPinBtn;

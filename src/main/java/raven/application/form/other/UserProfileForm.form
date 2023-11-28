@@ -68,7 +68,7 @@
                                   <Component id="sendPinBtn" alignment="0" pref="250" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <Component id="confirmBtn" max="32767" attributes="0"/>
+                          <Component id="resetPasswordBtn" max="32767" attributes="0"/>
                           <Component id="resetPasswordLb" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -106,7 +106,7 @@
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Component id="confirmNewPasswordTxt" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                              <Component id="confirmBtn" min="-2" max="-2" attributes="0"/>
+                              <Component id="resetPasswordBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
@@ -161,6 +161,7 @@
     <Component class="javax.swing.JButton" name="sendPinBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Enviar pin al correo"/>
+        <Property name="actionCommand" type="java.lang.String" value="sendPinToEmailCmd"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="pinTxt">
@@ -184,9 +185,10 @@
         <Property name="text" type="java.lang.String" value="Ingrese el pin: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="confirmBtn">
+    <Component class="javax.swing.JButton" name="resetPasswordBtn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Confirmar"/>
+        <Property name="text" type="java.lang.String" value="Cambiar Contrase&#xf1;a"/>
+        <Property name="actionCommand" type="java.lang.String" value="updatePasswordCmd"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">

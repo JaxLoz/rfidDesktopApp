@@ -97,4 +97,22 @@ public class UserDao {
         }
     }
 
+    public void updateUserPassword(User user, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE id = ?";
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, newPassword);
+            statement.setLong(2, user.getId());
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                throw new RuntimeException("No se pudo encontrar el usuario con ID: " + user.getId());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Considera manejar la excepción de una manera más robusta en tu aplicación
+        }
+    }
+
 }
