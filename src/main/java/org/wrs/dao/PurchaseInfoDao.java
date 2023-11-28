@@ -25,7 +25,7 @@ public class PurchaseInfoDao {
         List<Purchase> listPurchase = new ArrayList<>();
         
         try(Connection con = dataSource.getConnection()){
-            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where date_time  between CAST(? AS TIMESTAMP) and CAST(? AS TIMESTAMP)");
+            PreparedStatement prestatementPurchase = con.prepareStatement("select id, TO_CHAR(date_time, 'DD-MM-YYYY HH24:MI:SS'), total from purchase where date_time  between CAST(? AS TIMESTAMP) and CAST(? AS TIMESTAMP)");
             prestatementPurchase.setString(1, since);
             prestatementPurchase.setString(2, to);
             prestatementPurchase.executeQuery();
@@ -57,7 +57,7 @@ public class PurchaseInfoDao {
         List<Purchase> listPurchase = new ArrayList<>();
         
         try(Connection con = dataSource.getConnection()){
-            PreparedStatement prestatementPurchase = con.prepareStatement("select id, date_time, total from purchase where DATE(date_time) = CAST(? AS TIMESTAMP)");
+            PreparedStatement prestatementPurchase = con.prepareStatement("select id, TO_CHAR(date_time, 'DD-MM-YYYY HH24:MI:SS'), total from purchase where DATE(date_time) = CAST(? AS TIMESTAMP)");
             prestatementPurchase.setString(1, to);
             prestatementPurchase.executeQuery();
             ResultSet resultset = prestatementPurchase.getResultSet();
