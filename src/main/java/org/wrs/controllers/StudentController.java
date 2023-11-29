@@ -95,6 +95,7 @@ public class StudentController implements ActionListener, ISerialComunication {
             case "registerStudentCmd" ->{
                 registerStudent();
                 refreshStudentTable();
+                this.closeRegisterStudentView();
             }
            
             case "RefreshTableStudent" ->{

@@ -1,11 +1,13 @@
 package org.wrs.controllers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import org.wrs.models.PurchaseInfo;
 import org.wrs.service.PurchaseService;
 import raven.application.form.other.PurchaseForm;
 
-public class SearchDateController implements ISearchDatePurchase {
+public class SearchDateController implements ActionListener, ISearchDatePurchase {
 
     private final PurchaseForm purchaseForm;
     private final PurchaseService purchaseService;
@@ -60,6 +62,18 @@ public class SearchDateController implements ISearchDatePurchase {
             }
         };
         thread.start();
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        
+        switch(command){
+            case "registerPurchaseBtn" -> System.out.println("clase SearchData");
+            
+            
+            default -> {}
+        }
     }
 
 }

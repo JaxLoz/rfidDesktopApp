@@ -49,6 +49,30 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         
     }
     
+    public void refreshPurchaseTablePurchaseForm() {
+
+        PurchaseInfo purchaseCurrentDate = getPurchaseInfoCurrentDate();
+        purchaseForm.loadTableSellInfo(purchaseCurrentDate.getListPurchase());
+    }
+
+    public void refreshDataPurchasePurchaseForm() {
+        PurchaseInfo purchaseCurrentDate = getPurchaseInfoCurrentDate();
+        purchaseForm.setInfoPurchaseInForm(purchaseCurrentDate);
+    }
+
+    public PurchaseInfo getPurchaseInfoCurrentDate() {
+        PurchaseInfo purchaseInforCurrentDate = null;
+        String currentDate = String.valueOf(LocalDate.now());
+        purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
+
+        return purchaseInforCurrentDate;
+    }
+    
+    public void updatePurchaseForm(){
+        refreshDataPurchasePurchaseForm();
+        refreshPurchaseTablePurchaseForm();  
+    }
+    
     public void sendEmail (){
         
         Student student = purchaseForm.getStudentFromForm();
@@ -77,7 +101,8 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         String command = e.getActionCommand();
         
         switch(command){
-            case "registerPurchaseBtn" -> registerPurchase();
+            case "registerPurchaseBtn" ->{ registerPurchase(); updatePurchaseForm();}
+            
             case "BuscarStudentbtn" ->{
                 System.out.println("Presionando el boton buscar");
             }
