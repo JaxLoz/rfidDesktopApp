@@ -3,6 +3,7 @@ package org.wrs.controllers;
 import java.time.LocalDate;
 import org.wrs.models.PurchaseInfo;
 import org.wrs.service.PurchaseService;
+import org.wrs.util.Formatter;
 import raven.application.form.other.PurchaseForm;
 
 public class SearchDateController implements ISearchDatePurchase {
@@ -34,7 +35,7 @@ public class SearchDateController implements ISearchDatePurchase {
 
     public PurchaseInfo getPurchaseInfoCurrentDate() {
         PurchaseInfo purchaseInforCurrentDate = null;
-        String currentDate = String.valueOf(LocalDate.now());
+        String currentDate = Formatter.currentDate();
         purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
 
         return purchaseInforCurrentDate;

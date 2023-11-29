@@ -1,6 +1,5 @@
 package org.wrs.dao;
 
-import org.apache.commons.math3.stat.descriptive.summary.Product;
 import org.wrs.models.Purchase;
 import org.wrs.models.Student;
 
@@ -84,7 +83,7 @@ public class PurchaseDao {
         Purchase sell;
 
         try(Connection con = dataSource.getConnection()){
-            PreparedStatement preparedStatement = con.prepareStatement("select * from purchase where student_id = ?");
+            PreparedStatement preparedStatement = con.prepareStatement("select id, TO_CHAR(date_time, 'DD-MM-YYYY HH24:MI:SS'), total from purchase where student_id = ?");
             preparedStatement.setInt(1,student.getId());
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
