@@ -38,6 +38,7 @@ public class SearchDateController implements ActionListener, ISearchDatePurchase
     public PurchaseInfo getPurchaseInfoCurrentDate() {
         PurchaseInfo purchaseInforCurrentDate = null;
         String currentDate = Formatter.currentDate();
+        System.out.println("Fecha consultada: "+currentDate);
         purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
 
         return purchaseInforCurrentDate;

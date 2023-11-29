@@ -12,6 +12,7 @@ import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
 import org.wrs.util.EmailSend;
+import org.wrs.util.Formatter;
 import org.wrs.util.PropertiesEmailUtil;
 import org.wrs.view.model.table.SellTableModel;
 import raven.application.form.other.PurchaseForm;
@@ -62,7 +63,8 @@ public class PurchaseController implements ActionListener, ISerialComunication{
 
     public PurchaseInfo getPurchaseInfoCurrentDate() {
         PurchaseInfo purchaseInforCurrentDate = null;
-        String currentDate = String.valueOf(LocalDate.now());
+        String currentDate = Formatter.currentDate();
+        System.out.println("Fecha con sultada: "+currentDate);
         purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
 
         return purchaseInforCurrentDate;
