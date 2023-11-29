@@ -34,7 +34,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     }
     
     public void init (){
-        refreshPurchaseTable();
+        
     }
     
     public void refreshPurchaseTable(){
@@ -69,8 +69,8 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     }
     
     public void updatePurchaseForm(){
-        refreshDataPurchasePurchaseForm();
         refreshPurchaseTablePurchaseForm();  
+        refreshDataPurchasePurchaseForm();
     }
     
     public void sendEmail (){
@@ -102,11 +102,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         
         switch(command){
             case "registerPurchaseBtn" ->{ registerPurchase(); updatePurchaseForm();}
-            
-            case "BuscarStudentbtn" ->{
-                System.out.println("Presionando el boton buscar");
-            }
-           
+                   
             case "btnSendEmail" -> sendEmail();
             
             default -> {}
