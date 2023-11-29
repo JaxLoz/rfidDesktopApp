@@ -101,7 +101,7 @@ public class StudentForm extends javax.swing.JPanel {
     }
     
     public void closeRegisterStudentView (){
-        registerStudentDialog.dispose();
+        registerStudentDialog.setVisible(false);
     }
     
     public Student getNewStudentRegister () throws RuntimeException{
