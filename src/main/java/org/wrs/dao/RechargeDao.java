@@ -183,7 +183,7 @@ public class RechargeDao {
     public Student save(Recharge recharge) {
 
         Student student = null;
-        String sqlRecharge = "insert into recharge (amount, date, is_confirmed, payment_type, status, student_id, transaction_id, phone) values (?, CURRENT_TIMESTAMP, TRUE, 'EFECTIVO', 'REALIZADO', ?, 'N/A', 'N/A')";
+        String sqlRecharge = "insert into recharge (amount, date, is_confirmed, payment_type, status, student_id, transaction_id, phone) values (?, ?, TRUE, 'EFECTIVO', 'REALIZADO', ?, 'N/A', 'N/A')";
         String sqlUpdateStudentBalance = "update student set balance = balance + ? where id = ?";
         String sqlSelectStudent = "select * from student where id = ?";
         try (Connection connection = dataSource.getConnection(); PreparedStatement rechargeStatement = connection.prepareStatement(sqlRecharge); PreparedStatement updateBalanceStatement = connection.prepareStatement(sqlUpdateStudentBalance)) {
@@ -192,7 +192,8 @@ public class RechargeDao {
             connection.setAutoCommit(false);
 
             rechargeStatement.setDouble(1, recharge.getAmount());
-            rechargeStatement.setInt(2, recharge.getStudent().getId());
+            //rechargeStatement.setDouble(2, );//Fecha
+            rechargeStatement.setInt(3, recharge.getStudent().getId());
 
             updateBalanceStatement.setDouble(1, recharge.getAmount());
             updateBalanceStatement.setLong(2, recharge.getStudent().getId());

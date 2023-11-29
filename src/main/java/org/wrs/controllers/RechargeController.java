@@ -27,16 +27,20 @@ public class RechargeController implements ActionListener, ISerialComunication {
         this.rechargeForm = rechargeForm;
         init();
     }
+    
+    private void init(){
+        rechargeForm.setActionListener(this);
+        showRechargesCurrentDate();
+    }
 
-    private void init() {
+    private void showRechargesCurrentDate() {
         RechargeFilter filterRecharge = new RechargeFilter();
         filterRecharge.setSpecificDate(Formatter.currentDate());
         List<Recharge> recharges = rechargeService.filterRecharge(filterRecharge);
         rechargeForm.setListRechargeTableModel(recharges);
-        rechargeForm.setActionListener(this);
     }
 
-    public void refreshRechargeTable() {
+    private void refreshRechargeTable() {
         List<Recharge> recharges = rechargeService.getAll();
         rechargeForm.setListRechargeTableModel(recharges);
     }
@@ -45,7 +49,7 @@ public class RechargeController implements ActionListener, ISerialComunication {
         try {
             Recharge recharge = rechargeForm.getRechargeFromForm();
             rechargeService.registerRecharge(recharge);
-            refreshRechargeTable();
+            showRechargesCurrentDate();
             NotificationUtil.show(Notifications.Type.SUCCESS, "¡Recarga realizada exitosamente!");
         } catch (RuntimeException e) {
             NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());
@@ -75,7 +79,7 @@ public class RechargeController implements ActionListener, ISerialComunication {
             Long id = rechargeForm.getRechargeDataToCancel();
             System.out.println(id);
             rechargeService.cancelRecharge(id);
-            init();
+            showRechargesCurrentDate();
             NotificationUtil.show(Notifications.Type.SUCCESS, "¡Recarga cancelada!");
         } catch (RuntimeException e) {
             NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());

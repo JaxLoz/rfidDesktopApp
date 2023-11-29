@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 
 public class ConnectionFactory {
 
-    private DataSource poolConnection;
+    private final DataSource poolConnection;
 
 
     public ConnectionFactory(){
@@ -20,7 +20,7 @@ public class ConnectionFactory {
         poolDataSource.setUser(user);
         poolDataSource.setPassword(password);
         poolDataSource.setMinPoolSize(3);
-        poolDataSource.setMaxPoolSize(3);
+        poolDataSource.setMaxPoolSize(5);
         this.poolConnection = poolDataSource;
 
     }
