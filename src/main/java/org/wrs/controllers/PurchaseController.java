@@ -46,6 +46,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
         Purchase purchase = purchaseForm.getPurchaseDataFromForm();
         purchaseService.registerPurchase(student, purchase);
         purchaseForm.showRegisterPurchaseView(false);
+        
     }
     
     public void sendEmail (){
