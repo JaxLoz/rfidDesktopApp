@@ -53,7 +53,7 @@ public class PurchaseInfoDao {
     public PurchaseInfo getInfoPurchaseTo (String to){
         PurchaseInfo purchaseInfoTo = new PurchaseInfo();
         List<Purchase> listPurchase = new ArrayList<>();
-        
+        System.out.println(to);
         try(Connection con = dataSource.getConnection()){
             PreparedStatement prestatementPurchase = con.prepareStatement("select id, TO_CHAR(date_time, 'DD-MM-YYYY HH24:MI:SS'), total from purchase where DATE(date_time) = CAST(? AS TIMESTAMP) order by date_time  DESC");
             prestatementPurchase.setString(1, to);
@@ -73,7 +73,7 @@ public class PurchaseInfoDao {
             
             
         }catch (SQLException e){
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         
         return purchaseInfoTo;

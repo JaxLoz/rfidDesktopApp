@@ -9,9 +9,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.wrs.models.RechargeFilter;
+import org.wrs.util.Formatter;
 
 public class RechargeDao {
 
@@ -192,7 +195,7 @@ public class RechargeDao {
             connection.setAutoCommit(false);
 
             rechargeStatement.setDouble(1, recharge.getAmount());
-            //rechargeStatement.setDouble(2, );//Fecha
+            rechargeStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             rechargeStatement.setInt(3, recharge.getStudent().getId());
 
             updateBalanceStatement.setDouble(1, recharge.getAmount());

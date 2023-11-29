@@ -63,6 +63,7 @@ public class PurchaseController implements ActionListener, ISerialComunication{
     public PurchaseInfo getPurchaseInfoCurrentDate() {
         PurchaseInfo purchaseInforCurrentDate = null;
         String currentDate = String.valueOf(LocalDate.now());
+        System.out.println("purchase infor date: " + currentDate);
         purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
 
         return purchaseInforCurrentDate;

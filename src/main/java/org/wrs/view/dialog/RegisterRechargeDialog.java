@@ -12,7 +12,7 @@ import org.wrs.view.model.input.CurrencyTextField;
 public class RegisterRechargeDialog extends javax.swing.JDialog {
 
     private Student student;
-    private final CurrencyTextField totalTxt;
+    private CurrencyTextField totalTxt;
     private final DecimalFormat format;
 
     /**
@@ -22,9 +22,6 @@ public class RegisterRechargeDialog extends javax.swing.JDialog {
         super(parent, true);
         initComponents();
         format = new DecimalFormat("###,##0.00");
-        totalTxt = new CurrencyTextField();
-        totalTxt.setFormat(format);
-        totalPanel.add(totalTxt, BorderLayout.CENTER);
     }
 
     public Student getStudent() {
@@ -33,7 +30,7 @@ public class RegisterRechargeDialog extends javax.swing.JDialog {
 
     public Recharge getRechargeFromForm() {
         double amount = totalTxt.getNumericValue();
-        if(amount < 1000){
+        if (amount < 1000) {
             throw new RuntimeException("¡El monto minimo a recargar debe ser superar 1.000!");
         }
         Recharge recharge = new Recharge();
@@ -56,6 +53,17 @@ public class RegisterRechargeDialog extends javax.swing.JDialog {
 
     public void setActionListener(ActionListener actionListener) {
         registerRechargeBtn.addActionListener(actionListener);
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        if (b == true) {
+            totalPanel.removeAll();
+            totalTxt = new CurrencyTextField();
+            totalTxt.setFormat(format);
+            totalPanel.add(totalTxt, BorderLayout.CENTER);
+        }
+        super.setVisible(b);
     }
 
     /**

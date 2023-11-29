@@ -14,6 +14,7 @@ public class Formatter {
 
     private static final Locale colombiaLocale = new Locale("es", "CO");
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", colombiaLocale);
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", colombiaLocale);
 
 
     public static String formatCurrency(double value) {
@@ -26,14 +27,9 @@ public class Formatter {
         return fecha.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", colombiaLocale));
     }
 
-    public static String formatDateV2(String data) {
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", colombiaLocale);
-
-        LocalDateTime dateTime = LocalDateTime.parse(data, inputFormatter);
-        String formattedDateTime = dateTime.format(outputFormatter);
-
-        return formattedDateTime;
+    public static String currentDateTime() {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return dateTimeFormatter.format(currentDateTime);
     }
 
     public static String currentDate() {
