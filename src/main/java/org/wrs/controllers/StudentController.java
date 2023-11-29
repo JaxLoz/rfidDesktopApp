@@ -44,6 +44,7 @@ public class StudentController implements ActionListener, ISerialComunication {
     public void registerStudent() {
         try{
         studentDao.registerNewStudent(studentForm.getNewStudentRegister());
+        this.closeRegisterStudentView();
         }catch (RuntimeException e){
             Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, e.getMessage());
         }
@@ -95,7 +96,6 @@ public class StudentController implements ActionListener, ISerialComunication {
             case "registerStudentCmd" ->{
                 registerStudent();
                 refreshStudentTable();
-                this.closeRegisterStudentView();
             }
            
             case "RefreshTableStudent" ->{
