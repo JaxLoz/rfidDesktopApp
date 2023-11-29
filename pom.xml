@@ -121,7 +121,7 @@
         <plugins>
             <!-- ... Otros plugins ... -->
 
-            <!-- Plugin para generar un JAR con dependencias
+            <!-- Plugin para generar un JAR con dependencias -->
                        <plugin>
                            <groupId>org.apache.maven.plugins</groupId>
                            <artifactId>maven-assembly-plugin</artifactId>
@@ -146,7 +146,7 @@
                                </execution>
                            </executions>
                        </plugin>
-            -->
+            
         </plugins>
     </build>
 

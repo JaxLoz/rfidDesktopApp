@@ -80,7 +80,6 @@ public class UserController implements ActionListener {
         try {
             User user = userProfileForm.getUser();
             String newPassword = PasswordUtil.hashPassword(userProfileForm.getPasswordFromForm());
-            System.out.println(newPassword);
             userDao.updateUserPassword(user, newPassword);
             NotificationUtil.show(Notifications.Type.SUCCESS, "¡Contraseña Actualizada!");
         } catch (RuntimeException e) {

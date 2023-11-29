@@ -111,7 +111,7 @@
     <Component class="javax.swing.JButton" name="registerBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Registrar"/>
-        <Property name="actionCommand" type="java.lang.String" value="registerPurchaseBtn"/>
+        <Property name="actionCommand" type="java.lang.String" value="registerPurchaseCmd"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">

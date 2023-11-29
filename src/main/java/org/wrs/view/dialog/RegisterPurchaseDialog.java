@@ -16,17 +16,13 @@ import org.wrs.view.model.input.CurrencyTextField;
 public class RegisterPurchaseDialog extends javax.swing.JDialog {
 
     private Student student;
-    private Double balanceCurrentStudent;
-    private final CurrencyTextField totalTxt;
+    private CurrencyTextField totalTxt;
     private final DecimalFormat format;
 
     public RegisterPurchaseDialog(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
         format = new DecimalFormat("###,##0.00");
-        totalTxt = new CurrencyTextField();
-        totalTxt.setFormat(format);
-        totalPanel.add(totalTxt, BorderLayout.CENTER);
     }
 
     public Student getStudent() {
@@ -36,12 +32,12 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
     public Purchase getPurchaseFromForm() {
         double total = totalTxt.getNumericValue();
         Purchase purchase = new Purchase(total);
+        setVisible(false);
         return purchase;
     }
 
     public void setStudent(Student student) {
         this.student = student;
-        this.balanceCurrentStudent = student.getBalance();
         loadInfo();
     }
 
@@ -63,6 +59,17 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
     public void setActionListener(ActionListener actionListener) {
         registerBtn.addActionListener(actionListener);
         btnSendEmail.addActionListener(actionListener);
+    }
+    
+    @Override
+    public void setVisible(boolean b) {
+        if (b == true) {
+            totalPanel.removeAll();
+            totalTxt = new CurrencyTextField();
+            totalTxt.setFormat(format);
+            totalPanel.add(totalTxt, BorderLayout.CENTER);
+        }
+        super.setVisible(b);
     }
 
     /**
@@ -92,7 +99,7 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
         setResizable(false);
 
         registerBtn.setText("Registrar");
-        registerBtn.setActionCommand("registerPurchaseBtn");
+        registerBtn.setActionCommand("registerPurchaseCmd");
 
         jButton2.setText("Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -205,7 +212,7 @@ public class RegisterPurchaseDialog extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+        setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnSendEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendEmailActionPerformed

@@ -3,6 +3,7 @@ package org.wrs.view;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import java.awt.Component;
 import java.awt.Dimension;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import org.wrs.models.User;
 import raven.application.form.LoginForm;
@@ -23,6 +24,7 @@ public class Application extends javax.swing.JFrame {
     private Application() {
         initComponents();
         setTitle();
+        setIconImage(new ImageIcon(getClass().getResource("/icon/png/logo1.png")).getImage());
         setSize(new Dimension(1366, 768));
         setLocationRelativeTo(null);
         mainForm = new MainForm();

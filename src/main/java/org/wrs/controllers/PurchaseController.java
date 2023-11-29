@@ -1,115 +1,115 @@
-
 package org.wrs.controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Properties;
 import org.wrs.configArduino.ISerialComunication;
-import org.wrs.dao.PurchaseDao;
 import org.wrs.models.Purchase;
+import org.wrs.models.PurchaseFilter;
 import org.wrs.models.PurchaseInfo;
 import org.wrs.models.Student;
 import org.wrs.service.PurchaseService;
 import org.wrs.util.EmailSend;
-import org.wrs.util.Formatter;
+import org.wrs.util.NotificationUtil;
 import org.wrs.util.PropertiesEmailUtil;
-import org.wrs.view.model.table.SellTableModel;
 import raven.application.form.other.PurchaseForm;
+import raven.toast.Notifications;
 
 /**
  *
  * @author C.Mateo
  */
-public class PurchaseController implements ActionListener, ISerialComunication{
-    
+public class PurchaseController implements ActionListener, ISerialComunication {
+
     private final PurchaseForm purchaseForm;
     private final PurchaseService purchaseService;
-    private PurchaseDao purchaseDao;
-    
-    
+
     public PurchaseController(PurchaseForm purchaseForm, PurchaseService purchaseService) {
         this.purchaseForm = purchaseForm;
         this.purchaseService = purchaseService;
         init();
     }
-    
-    public void init (){
-        
-    }
-    
-    public void refreshPurchaseTable(){
-        // aqui va toda la logica para la actualizacion de la tabla
-    }
-    
-    public void registerPurchase(){
-        Student student = purchaseForm.getStudentFromForm();
-        Purchase purchase = purchaseForm.getPurchaseDataFromForm();
-        purchaseService.registerPurchase(student, purchase);
-        purchaseForm.showRegisterPurchaseView(false);
-        
-    }
-    
-    public void refreshPurchaseTablePurchaseForm() {
 
-        PurchaseInfo purchaseCurrentDate = getPurchaseInfoCurrentDate();
-        purchaseForm.loadTableSellInfo(purchaseCurrentDate.getListPurchase());
+    private void init() {
+        purchaseForm.setActionListener(this);
     }
 
-    public void refreshDataPurchasePurchaseForm() {
-        PurchaseInfo purchaseCurrentDate = getPurchaseInfoCurrentDate();
-        purchaseForm.setInfoPurchaseInForm(purchaseCurrentDate);
+    public void registerPurchase() {
+        try {
+            Student student = purchaseForm.getStudentFromForm();
+            Purchase purchase = purchaseForm.getPurchaseDataFromForm();
+            purchaseService.registerPurchase(student, purchase);
+            purchaseForm.updataPurchaseCurrentDate();
+            NotificationUtil.show(Notifications.Type.SUCCESS, "¡Venta registrada!");
+        } catch (Exception e) {
+            NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());
+        }
     }
 
-    public PurchaseInfo getPurchaseInfoCurrentDate() {
-        PurchaseInfo purchaseInforCurrentDate = null;
-        String currentDate = Formatter.currentDate();
-        System.out.println("Fecha con sultada: "+currentDate);
-
-        purchaseInforCurrentDate = purchaseService.getPurchaseInfoTo(currentDate);
-
-        return purchaseInforCurrentDate;
-    }
-    
-    public void updatePurchaseForm(){
-        refreshPurchaseTablePurchaseForm();  
-        refreshDataPurchasePurchaseForm();
-    }
-    
-    public void sendEmail (){
-        
+    public void sendEmail() {
         Student student = purchaseForm.getStudentFromForm();
         Properties prop = PropertiesEmailUtil.emailProperties;
         String balanceString = String.valueOf(student.getBalance());
-        
+
         EmailSend emailSend = new EmailSend();
-        emailSend.confMessage(student.getFirtsName()+" "+student.getLastName(), balanceString);
+        emailSend.confMessage(student.getFirtsName() + " " + student.getLastName(), balanceString);
         String msg = emailSend.getMessageSend();
-        
+
         emailSend.sendEmail(student.getMail(), prop.getProperty("mail.subject"), msg, PropertiesEmailUtil.emailProperties);
     }
+
     @Override
     public void receiveDataSerialPort(String data) {
         boolean studentExists = purchaseService.studentExists(data);
-        if(studentExists){
+        if (studentExists) {
             Student student = purchaseService.getStudent(data);
             purchaseForm.setStudentCurrent(student);
             purchaseForm.loadStudentInRegisterPurchaseView(student);
-            purchaseForm.loadTableSellInfo(purchaseService.getPurchaseList(student));
+            //purchaseForm.loadTableSellInfo(purchaseService.getPurchaseList(student)); ERROR CARGABA LAS VENTAS DEL ESTUDIANTE AL REGISTRAR UNA NUEVA VENTA
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        
-        switch(command){
-            case "registerPurchaseBtn" ->{ registerPurchase(); updatePurchaseForm();}
-                   
-            case "btnSendEmail" -> sendEmail();
-            
-            default -> {}
+
+        switch (command) {
+            case "registerPurchaseCmd" ->
+                registerPurchase();
+            case "btnSendEmail" ->
+                sendEmail();
+            case "searchPurchaseByStudentBtn" ->
+                filterPurchase();
+            default -> {
+            }
         }
     }
-    
+
+    private void filterPurchase() {
+        Thread thread = new Thread() {
+
+            @Override
+            public void run() {
+
+                try {
+                    PurchaseFilter purchaseFilter = purchaseForm.getDataFromFilter();
+                    List<Purchase> purchases = purchaseService.filterPurchase(purchaseFilter);
+                    purchaseForm.loadTableSellInfo(purchases);
+                    PurchaseInfo purchaseInfo = new PurchaseInfo(purchases);
+                    purchaseForm.setInfoPurchaseInForm(purchaseInfo);
+                    NotificationUtil.show(Notifications.Type.SUCCESS, "¡Filtro aplicado!");
+                } catch (Exception e) {
+                    NotificationUtil.show(Notifications.Type.ERROR, e.getMessage());
+
+                }
+
+            }
+
+        };
+        
+        thread.start();
+
+    }
+
 }

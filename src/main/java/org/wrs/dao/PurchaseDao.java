@@ -1,62 +1,69 @@
 package org.wrs.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import org.wrs.models.Purchase;
 import org.wrs.models.Student;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.time.LocalDateTime;
 
 public class PurchaseDao {
 
     private final DataSource dataSource;
 
-    public PurchaseDao (DataSource dataSource){
+    public PurchaseDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public Student createPurchase (Student student, Purchase sell){
+    public Student createPurchase(Student student, Purchase sell) {
         Student studentUpdate = null;
         int idSell = 0;
-        String insertSQL = "insert into purchase (date_time, total, student_id) values (CURRENT_TIMESTAMP, ?, ?)";
+        String insertSQL = "insert into purchase (date_time, total, student_id) values (?, ?, ?)";
         String updateSQL = "update student set balance = balance - ? where id = ?";
         String selectSQL = "select * from student where id = ?";
 
-        try(Connection con = this.dataSource.getConnection()){
+        try (Connection con = this.dataSource.getConnection()) {
             con.setAutoCommit(false);
 
             PreparedStatement preparedStatementInsert = con.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
             PreparedStatement preparedStatementUpdate = con.prepareStatement(updateSQL);
             PreparedStatement preparedStatementSelect = con.prepareStatement(selectSQL);
 
-            preparedStatementInsert.setDouble(1, sell.getTotal());
-            preparedStatementInsert.setInt(2, student.getId());
+            preparedStatementInsert.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatementInsert.setDouble(2, sell.getTotal());
+            preparedStatementInsert.setInt(3, student.getId());
             preparedStatementInsert.execute();
+
             ResultSet resultSetInsert = preparedStatementInsert.getGeneratedKeys();
 
-            preparedStatementUpdate.setDouble(1,sell.getTotal());
+            preparedStatementUpdate.setDouble(1, sell.getTotal());
             preparedStatementUpdate.setInt(2, student.getId());
             int updateRow = preparedStatementUpdate.executeUpdate();
 
-            preparedStatementSelect.setInt(1,student.getId());
+            preparedStatementSelect.setInt(1, student.getId());
             preparedStatementSelect.executeQuery();
             ResultSet resultSetSelect = preparedStatementSelect.getResultSet();
 
-            if(updateRow > 0){
+            if (updateRow > 0) {
                 System.out.println("Se actualizo el saldo del estudiante");
-            }else{
+            } else {
                 System.out.println("No se actualizo el saldo del estudiante");
             }
 
-            try(resultSetInsert){
-                while (resultSetInsert.next()){
+            try (resultSetInsert) {
+                while (resultSetInsert.next()) {
                     idSell = resultSetInsert.getInt(1);
                 }
             }
 
-            try(resultSetSelect){
-                while (resultSetSelect.next()){
+            try (resultSetSelect) {
+                while (resultSetSelect.next()) {
                     studentUpdate = new Student(
                             resultSetSelect.getInt(1),
                             resultSetSelect.getDouble(2),
@@ -71,40 +78,10 @@ public class PurchaseDao {
 
             con.commit();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Se registro la venta con el id: "+idSell);
+        System.out.println("Se registro la venta con el id: " + idSell);
         return studentUpdate;
     }
-
-    public List<Purchase> sellList (Student student){
-        List<Purchase> sellList = new ArrayList<>();
-        Purchase sell;
-
-        try(Connection con = dataSource.getConnection()){
-            PreparedStatement preparedStatement = con.prepareStatement("select id, TO_CHAR(date_time, 'DD-MM-YYYY HH24:MI:SS'), total from purchase where student_id = ?");
-            preparedStatement.setInt(1,student.getId());
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.getResultSet();
-
-            try(resultSet){
-                while (resultSet.next()){
-                    sell = new Purchase(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getDouble(3));
-
-                    sellList.add(sell);
-                }
-            }
-
-        }catch (SQLException e){
-            e.getMessage();
-        }
-
-        return sellList;
-
-    }
-
 }

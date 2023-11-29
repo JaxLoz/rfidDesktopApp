@@ -92,8 +92,8 @@ public class DesktopSchoolStore {
         PurchaseService purchaseService = new PurchaseService(purchaseDao, studentDao, purchaseInfoDao);
         PurchaseController purchaseController = new PurchaseController(purchaseForm, purchaseService);
         SearchDateController searchDateController = new SearchDateController(purchaseForm, purchaseService);
-        purchaseForm.setISearchDatePurchase(searchDateController);
-        purchaseForm.setActionListener(purchaseController);
+        
+        
 
         //Set Arduino interface
         serialLector.setAuthInterface(authController);

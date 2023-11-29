@@ -26,33 +26,37 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace pref="2" max="32767" attributes="0"/>
                               <Component id="filterRechargeTableBtn" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jCheckBox6" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="searchRechargeByStudentTxt" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="paymentTypeComboBox" min="-2" pref="115" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="paymentTypeComboBox" min="-2" pref="115" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="statusComboBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jCheckBox4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                               <Component id="dateFilterTxt" min="-2" pref="142" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButton1" min="-2" pref="63" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="cancelRechargeBtn" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="statusComboBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jCheckBox4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              <Component id="cancelRechargeBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -63,7 +67,7 @@
                           </Group>
                           <Component id="updataRechargeTableBtn" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="10" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
@@ -87,32 +91,41 @@
               <Component id="lb" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="statusComboBox" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="searchRechargeByStudentTxt" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="paymentTypeComboBox" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="dateFilterTxt" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="jCheckBox2" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jCheckBox3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jCheckBox4" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jCheckBox1" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="jButton1" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="paymentConfirmedCheckBox" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="updataRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="jCheckBox6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="filterRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="cancelRechargeBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="494" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="totalTitleLb" alignment="0" max="32767" attributes="0"/>
-                  <Component id="totalRechargeLb" alignment="0" pref="26" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="updataRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jCheckBox6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="filterRechargeTableBtn" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="cancelRechargeBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="494" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="totalTitleLb" alignment="0" max="32767" attributes="0"/>
+                          <Component id="totalRechargeLb" alignment="0" pref="26" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="statusComboBox" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="jCheckBox4" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -201,10 +214,11 @@
     <Component class="javax.swing.JComboBox" name="statusComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
+          <StringArray count="4">
             <StringItem index="0" value="PENDIENTE"/>
             <StringItem index="1" value="CADUCADA"/>
             <StringItem index="2" value="REALIZADO"/>
+            <StringItem index="3" value="CANCELADO_RECHAZADO"/>
           </StringArray>
         </Property>
       </Properties>

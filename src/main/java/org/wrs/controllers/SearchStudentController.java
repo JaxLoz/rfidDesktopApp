@@ -26,7 +26,6 @@ public class SearchStudentController implements ISearch{
 
     @Override
     public void search(String key) {
-        System.out.println(key);
         List<Student> students = studentDao.searchStudent(key);
         studentForm.setListStudentTableModel(students);
     }

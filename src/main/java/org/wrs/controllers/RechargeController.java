@@ -77,7 +77,7 @@ public class RechargeController implements ActionListener, ISerialComunication {
     private void cancelRecharge() {
         try {
             Long id = rechargeForm.getRechargeDataToCancel();
-            System.out.println(id);
+            
             rechargeService.cancelRecharge(id);
             showRechargesCurrentDate();
             NotificationUtil.show(Notifications.Type.SUCCESS, "¡Recarga cancelada!");

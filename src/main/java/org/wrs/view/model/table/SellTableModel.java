@@ -15,7 +15,7 @@ public class SellTableModel extends AbstractTableModel {
     public SellTableModel (){
         super();
         this.listSell = new ArrayList<>();
-        this.COLUMN_NAMES = new String[]{"Fecha de compra", "Total"};
+        this.COLUMN_NAMES = new String[]{"Estudiante", "Fecha de compra", "Total"};
     }
 
     public void setSellList (List<Purchase> listSell){
@@ -47,11 +47,15 @@ public class SellTableModel extends AbstractTableModel {
        Purchase sell = listSell.get(rowIndex);
 
        switch (columnIndex){
-           
-           case 0:
+           case 0 -> {
+               return sell.getStudent().getFirtsName() + " " + sell.getStudent().getLastName();
+            }
+           case 1 -> {
                return sell.getDate();
-           case 1:
+            } 
+           case 2 -> {
                return Formatter.formatCurrency(sell.getTotal());
+            }
        }
 
         return sell;

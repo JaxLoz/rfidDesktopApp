@@ -42,41 +42,42 @@ public class StudentController implements ActionListener, ISerialComunication {
     }
 
     public void registerStudent() {
-        try{
-        studentDao.registerNewStudent(studentForm.getNewStudentRegister());
-        this.closeRegisterStudentView();
-        }catch (RuntimeException e){
+        try {
+            studentDao.registerNewStudent(studentForm.getNewStudentRegister());
+            this.closeRegisterStudentView();
+        } catch (RuntimeException e) {
             Notifications.getInstance().show(Notifications.Type.ERROR, Notifications.Location.TOP_CENTER, e.getMessage());
         }
-        System.out.println("Registrando");
+
     }
-    
-    
-    public void closeRegisterStudentView (){
+
+    public void closeRegisterStudentView() {
         studentForm.closeRegisterStudentView();
     }
-    
-    public void setUuidUpdateView (){
+
+    public void setUuidUpdateView() {
         studentForm.setNewUuid(this.uuid);
     }
-    
-    public void updateInfoStudent (){
+
+    public void updateInfoStudent() {
         Student updateStudent = studentForm.getUpdateStudent();
         studentDao.updataStudent(updateStudent);
         studentForm.closeUpdateStudentView();
+        refreshStudentTable();
     }
 
     /**
      * Implementation of the SerialCommunicationInterface interface method that
      * receives data from the serial port.
-     * @param data The data received from the serial port. In this context,
-     * it is expected uuid read by the Arduino.
+     *
+     * @param data The data received from the serial port. In this context, it
+     * is expected uuid read by the Arduino.
      */
     @Override
     public void receiveDataSerialPort(String data) {
 
         boolean studentExists = studentDao.thereIsStudent(data);
-        
+
         if (!studentExists) {
             studentForm.showRegisterStudentView(data);
         }
@@ -86,35 +87,31 @@ public class StudentController implements ActionListener, ISerialComunication {
     @Override
     public void actionPerformed(ActionEvent e) {
         String commad = e.getActionCommand();
-        
+
         switch (commad) {
-            case "updateStudentRfidCmd" ->{
-                System.out.println("actualizar rfid");
+            case "updateStudentRfidCmd" -> {
                 studentForm.showUpdateStudenView();
             }
-                
-            case "registerStudentCmd" ->{
+
+            case "registerStudentCmd" -> {
                 registerStudent();
                 refreshStudentTable();
             }
-           
-            case "RefreshTableStudent" ->{
+
+            case "RefreshTableStudent" -> {
                 refreshStudentTable();
             }
-            
-            case "CambiarbtnUpdate" ->{
-                System.out.println("Presionando el boton de cambiar");
+
+            case "CambiarbtnUpdate" -> {
                 this.setUuidUpdateView();
             }
-            
-            case "ActualizarBtnUpdate" ->{
-                System.out.println("Presionando el boton de actualizar");
+
+            case "ActualizarBtnUpdate" -> {
                 this.updateInfoStudent();
-                refreshStudentTable();
             }
-                
+
             case "CancelarStudentCmd" ->
-                this.closeRegisterStudentView();  
+                this.closeRegisterStudentView();
             default -> {
             }
         }

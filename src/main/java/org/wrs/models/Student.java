@@ -4,20 +4,24 @@ public class Student {
 
     private int id;
     private double balance;
-    private String first_name;
-    private String identification;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String uuid;
     private String mail;
+    private String identification;
 
-
+    public Student(int id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public Student(String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = 0;
         this.balance = 0.0;
-        this.first_name = first_name;
+        this.firstName = first_name;
         this.identification = identification;
-        this.last_name = last_name;
+        this.lastName = last_name;
         this.uuid = uuid;
         this.mail = mail;
     }
@@ -25,9 +29,9 @@ public class Student {
     public Student(double balance, String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = 0;
         this.balance = balance;
-        this.first_name = first_name;
+        this.firstName = first_name;
         this.identification = identification;
-        this.last_name = last_name;
+        this.lastName = last_name;
         this.uuid = uuid;
         this.mail = mail;
     }
@@ -35,9 +39,9 @@ public class Student {
     public Student(int id, double balance, String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = id;
         this.balance = balance;
-        this.first_name = first_name;
+        this.firstName = first_name;
         this.identification = identification;
-        this.last_name = last_name;
+        this.lastName = last_name;
         this.uuid = uuid;
         this.mail = mail;
     }
@@ -45,9 +49,9 @@ public class Student {
     public Student(int id, String first_name, String identification, String last_name, String uuid, String mail) {
         this.id = id;
         this.balance = 0.0;
-        this.first_name = first_name;
+        this.firstName = first_name;
         this.identification = identification;
-        this.last_name = last_name;
+        this.lastName = last_name;
         this.uuid = uuid;
         this.mail = mail;
     }
@@ -55,9 +59,9 @@ public class Student {
     public Student(){
         this.id = 0;
         this.balance = 0.0;
-        this.first_name = "";
+        this.firstName = "";
         this.identification = "";
-        this.last_name = "";
+        this.lastName = "";
         this.uuid = "";
         this.mail = "";
     }
@@ -79,11 +83,11 @@ public class Student {
     }
 
     public String getFirtsName() {
-        return first_name;
+        return firstName;
     }
 
-    public void setFirstName(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getIdentification() {
@@ -95,11 +99,11 @@ public class Student {
     }
 
     public String getLastName() {
-        return last_name;
+        return lastName;
     }
 
-    public void setLastName(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUuid() {
